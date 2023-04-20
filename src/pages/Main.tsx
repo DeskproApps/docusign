@@ -1,79 +1,66 @@
-import { useState } from "react";
 import {
-  Context,
-  H1,
-  HorizontalDivider,
-  LoadingSpinner,
-  Property,
-  proxyFetch,
-  Stack,
   useDeskproAppEvents,
   useInitialisedDeskproAppClient,
 } from "@deskpro/app-sdk";
-import * as React from "react";
-/*
-    Note: the following page component contains example code, please remove the contents of this component before you
-    develop your app. For more information, please refer to our apps
-    guides @see https://support.deskpro.com/en-US/guides/developers/anatomy-of-an-app
-*/
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLinkContact } from "../hooks/useLinkContact";
 
 export const Main = () => {
-  const [ticketContext, setTicketContext] = useState<Context | null>(null);
-  const [examplePosts, setExamplePosts] = useState<
-    { id: string; title: string }[]
-  >([]);
-
-  // Add a "refresh" button @see https://support.deskpro.com/en-US/guides/developers/app-elements
+  const navigate = useNavigate();
+  const [contactId, setContactId] = useState<string | null>(null);
+  const { unlinkContact, context, client, getContactId } = useLinkContact();
+  contactId;
   useInitialisedDeskproAppClient((client) => {
-    client.registerElement("myRefreshButton", { type: "refresh_button" });
+    client.registerElement("docusignRefresh", {
+      type: "refresh_button",
+    });
+
+    client.registerElement("docusignMenuButton", {
+      type: "menu",
+      items: [
+        {
+          title: "Unlink contact",
+          payload: {
+            type: "changePage",
+            page: "/",
+          },
+        },
+      ],
+    });
   });
 
-  // Listen for the "change" event and store the context data
-  // as local state @see https://support.deskpro.com/en-US/guides/developers/app-events
-  useDeskproAppEvents({
-    onChange: setTicketContext,
-  });
+  useEffect(() => {
+    if (!context || !client) return;
 
-  // Use the apps proxy to fetch data from a third party
-  // API @see https://support.deskpro.com/en-US/guides/developers/app-proxy
-  useInitialisedDeskproAppClient((client) =>
     (async () => {
-      const fetch = await proxyFetch(client);
+      const getLinkedContactId = await getContactId();
+      console.log(getLinkedContactId);
+      if (!getLinkedContactId) {
+        navigate("/search");
 
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
+        return;
+      }
 
-      const posts = await response.json();
+      setContactId(getLinkedContactId as string);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context, client]);
 
-      setExamplePosts(posts.slice(0, 3));
-    })()
-  );
+  useDeskproAppEvents({
+    async onElementEvent(id) {
+      switch (id) {
+        case "docuSignMenuButton":
+          await unlinkContact();
 
-  // If we don't have a ticket context yet, show a loading spinner
-  if (ticketContext === null) {
-    return <LoadingSpinner />;
-  }
+          navigate("/search");
 
-  // Show some information about a given
-  // ticket @see https://support.deskpro.com/en-US/guides/developers/targets and third party API
-  return (
-    <>
-      <H1>Ticket Data</H1>
-      <Stack gap={12} vertical>
-        <Property title="Ticket ID">{ticketContext.data.ticket.id}</Property>
-        <Property title="Ticket Subject">
-          {ticketContext.data.ticket.subject}
-        </Property>
-      </Stack>
-      <HorizontalDivider width={2} />
-      <H1>Example Posts</H1>
-      {examplePosts.map((post) => (
-        <div key={post.id}>
-          <Property title="Post Title">{post.title}</Property>
-          <HorizontalDivider width={2} />
-        </div>
-      ))}
-    </>
-  );
+          return;
+        case "docuSignHomeButton":
+          navigate("/redirect");
+      }
+    },
+  });
+
+  return <h1>a</h1>;
 };
