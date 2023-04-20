@@ -44,6 +44,7 @@ const installedRequest = async (
     method,
     headers: {
       Authorization: ACCESS_TOKEN,
+      "X-Proxy-Origin": "",
     },
   };
 
@@ -64,6 +65,7 @@ const installedRequest = async (
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Basic __integration_key+':'+secret_key.base64__`,
+        "X-Proxy-Origin": "",
       },
     };
 
@@ -115,6 +117,7 @@ const installedRequest = async (
     options.headers = {
       ...options.headers,
       Authorization: ACCESS_TOKEN,
+      "X-Proxy-Origin": "",
     };
 
     response = await fetch(`https://demo.docusign.net/${url.trim()}`, options);

@@ -1,6 +1,7 @@
 import { IDeskproClient, adminGenericProxyFetch } from "@deskpro/app-sdk";
 import { ISettings } from "../types/settings";
 import { IUserInfo } from "../types/docusign";
+import base64 from "base64-min";
 
 export const login = async (
   client: IDeskproClient,
@@ -14,7 +15,7 @@ export const login = async (
     {
       method: "POST",
       headers: {
-        Authorization: `Basic ${btoa(
+        Authorization: `Basic ${base64.encode(
           `${secrets.integration_key}:${secrets.secret_key}`
         )}`,
       },

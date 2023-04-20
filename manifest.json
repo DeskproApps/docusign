@@ -33,7 +33,7 @@
       "title": "",
       "type": "app_embedded",
       "options": {
-        "entrypoint": "http://localhost:3000/#/admin/globalauth"
+        "entrypoint": "http://localhost:3001/#/admin/globalauth"
       },
       "isRequired": true,
       "isBackendOnly": true,
