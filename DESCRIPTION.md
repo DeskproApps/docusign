@@ -1,4 +1,3 @@
-My App
-======
+# DocuSign
 
-todo: add a description that will appear alongside your app in Deskpro admin
+Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with DocuSign.

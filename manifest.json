@@ -1,26 +1,75 @@
 {
-  "name": "@deskpro-apps/my-app",
-  "title": "My App",
-  "description": "My Deskpro app",
-  "version": "0.0.1",
+  "name": "@deskpro-apps/docusign",
+  "title": "DocuSign",
+  "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with DocuSign.",
+  "version": "0.0.0",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
-  "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
+  "targets": [
+    {
+      "target": "user_sidebar",
+      "entrypoint": "index.html"
+    }
+  ],
   "settings": {
-    "example": {
-      "title": "Example Setting",
-      "description": "Example backend only setting",
+    "integration_key": {
+      "title": "Integration Key",
+      "description": "Integration Key can be obtained by following our setup guide",
       "type": "string",
-      "isRequired": false,
-      "isBackendOnly": true
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 10
+    },
+    "secret_key": {
+      "title": "Secret Key",
+      "description": "Secret Key can be obtained by following our setup guide",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 20
+    },
+    "global_access_token": {
+      "title": "",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "http://localhost:3000/#/admin/globalauth"
+      },
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 30
     }
   },
   "proxy": {
     "whitelist": [
       {
-        "url": "https://jsonplaceholder.typicode.com/.*",
-        "methods": ["GET"],
+        "url": "https://account-d.docusign.com/.*",
+        "methods": [
+          "GET",
+          "POST"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": "https://demo.docusign.net/.*",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": ".*",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ],
         "timeout": 20
       }
     ]
