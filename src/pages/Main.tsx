@@ -1,22 +1,28 @@
 import {
+  H1,
+  H3,
+  Stack,
   useDeskproAppEvents,
   useInitialisedDeskproAppClient,
+  useQueryWithClient,
 } from "@deskpro/app-sdk";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLinkContact } from "../hooks/useLinkContact";
+import { useLinkRecipient } from "../hooks/useLinkRecipient";
+import { FieldMapping } from "../components/FieldMapping/FieldMapping";
+import envelopeJson from "../mapping/envelope.json";
+import { promiseAllEnvelopes } from "../utils/utils";
 
 export const Main = () => {
   const navigate = useNavigate();
-  const [contactId, setContactId] = useState<string | null>(null);
-  const { unlinkContact, context, client, getContactId } = useLinkContact();
-  contactId;
+
+  const { unlinkRecipient, context, getEnvelopeIds } = useLinkRecipient();
+
   useInitialisedDeskproAppClient((client) => {
     client.registerElement("docusignRefresh", {
       type: "refresh_button",
     });
 
-    client.registerElement("docusignMenuButton", {
+    client.registerElement("docuSignMenuButton", {
       type: "menu",
       items: [
         {
@@ -30,29 +36,27 @@ export const Main = () => {
     });
   });
 
-  useEffect(() => {
-    if (!context || !client) return;
+  const envelopesIdsWithRecipient = useQueryWithClient(
+    ["contactIds", context?.data.user.primaryEmail ?? ""],
+    getEnvelopeIds,
+    {
+      enabled: !!context?.data.user.primaryEmail,
+    }
+  );
 
-    (async () => {
-      const getLinkedContactId = await getContactId();
-      console.log(getLinkedContactId);
-      if (!getLinkedContactId) {
-        navigate("/search");
-
-        return;
-      }
-
-      setContactId(getLinkedContactId as string);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context, client]);
+  const envelopesQuery = useQueryWithClient(
+    ["envelopes", ...(envelopesIdsWithRecipient.data?.envelopeIds ?? [])],
+    (client) => promiseAllEnvelopes(client, envelopesIdsWithRecipient.data),
+    {
+      enabled: !!envelopesIdsWithRecipient.data?.envelopeIds?.length,
+    }
+  );
 
   useDeskproAppEvents({
     async onElementEvent(id) {
       switch (id) {
         case "docuSignMenuButton":
-          await unlinkContact();
-
+          await unlinkRecipient();
           navigate("/search");
 
           return;
@@ -62,5 +66,38 @@ export const Main = () => {
     },
   });
 
-  return <h1>a</h1>;
+  const envelopes = envelopesQuery.data;
+
+  if (!envelopesIdsWithRecipient.isLoading && !envelopesIdsWithRecipient.data) {
+    navigate("/search");
+  } else if (
+    !envelopesIdsWithRecipient.isLoading &&
+    envelopesIdsWithRecipient.data?.envelopeIds.length === 0
+  ) {
+    return <H1>No data was found.</H1>;
+  }
+
+  return (
+    <Stack>
+      {envelopes && (
+        <Stack vertical gap={5} style={{ width: "100%" }}>
+          <H1>Envelopes ({envelopes.length})</H1>
+          <Stack vertical gap={5} style={{ width: "100%" }}>
+            <FieldMapping
+              childTitleAccessor={(field) => (
+                <H3 style={{ lineHeight: "18px" }}>{field.emailSubject}</H3>
+              )}
+              idKey={envelopeJson.idKey}
+              externalChildUrl={envelopeJson.externalUrl}
+              fields={envelopes.map((e) => ({
+                ...e,
+                recipient: envelopesIdsWithRecipient.data?.name,
+              }))}
+              metadata={envelopeJson.main}
+            />
+          </Stack>
+        </Stack>
+      )}
+    </Stack>
+  );
 };

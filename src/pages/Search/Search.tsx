@@ -1,50 +1,65 @@
 import {
   Button,
   Input,
-  Label,
+  P1,
   Radio,
   Spinner,
   Stack,
+  useDeskproAppTheme,
   useInitialisedDeskproAppClient,
   useQueryWithClient,
 } from "@deskpro/app-sdk";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { getContactsByQuery } from "../../api/api";
+import { useMemo, useState } from "react";
+import { getRecipients } from "../../api/api";
 import useDebounce from "../../hooks/useDebounce";
-import { useLinkContact } from "../../hooks/useLinkContact";
+import { useLinkRecipient } from "../../hooks/useLinkRecipient";
 import { HorizontalDivider } from "../../components/HorizontalDivider/HorizontalDivider";
+import { IEnvelopeWithRecipients } from "../../api/types";
+import { parseArray } from "../../utils/utils";
 
 export const Search = () => {
-  const { linkContact, isLinking } = useLinkContact();
-  const [selectedContact, setSelectedContact] = useState<string | null>(null);
+  const { theme } = useDeskproAppTheme();
+  const { linkRecipient, isLinking } = useLinkRecipient();
+  const [selectedRecipient, setSelectedRecipient] = useState<string | null>(
+    null
+  );
   const [inputText, setInputText] = useState<string>("");
   const { debouncedValue: deboundedText } = useDebounce(inputText, 300);
 
   useInitialisedDeskproAppClient((client) => {
-    client.setTitle("Find Contact");
+    client.setTitle("Find recipient");
   });
 
-  const contactsQuery = useQueryWithClient(
-    ["contacts"],
-    (client) => getContactsByQuery(client, deboundedText),
-    {
-      enabled: deboundedText.length > 0,
-    }
+  const recipientsQuery = useQueryWithClient(["recipients"], (client) =>
+    getRecipients(client)
   );
 
-  const contacts = contactsQuery.data;
+  const recipients = useMemo(
+    () =>
+      (parseArray(recipientsQuery.data) as IEnvelopeWithRecipients[])?.filter(
+        (e) =>
+          deboundedText.length > 1
+            ? [e.email.toLowerCase(), e.name.toLowerCase()].some(
+                (e) => e.indexOf(deboundedText.toLowerCase()) > -1
+              )
+            : true
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [recipientsQuery.isSuccess, deboundedText]
+  );
 
   return (
-    <Stack>
+    <Stack vertical>
       <Input
         onChange={(e) => setInputText(e.target.value)}
         value={inputText}
         placeholder="Enter item details"
         type="text"
+        data-testid="search-input"
         leftIcon={faMagnifyingGlass}
       />
-      {contactsQuery.isLoading ? (
+      {recipientsQuery.isFetching ? (
         <Stack style={{ margin: "auto", marginTop: "20px" }}>
           <Spinner size="extra-large" />
         </Stack>
@@ -56,34 +71,48 @@ export const Search = () => {
             gap={2}
           >
             <Button
-              onClick={() => selectedContact && linkContact(selectedContact)}
+              onClick={() =>
+                selectedRecipient && linkRecipient(selectedRecipient)
+              }
               disabled={isLinking}
-              text="Link Contact"
+              text="Link Recipient"
             ></Button>
             <HorizontalDivider />
           </Stack>
-          <Stack vertical style={{ width: "100%" }}>
-            {contacts.data?.Contacts?.map((contact: any, i: number) => (
+          <Stack vertical style={{ width: "100%" }} gap={8}>
+            {recipients?.map((recipient, i: number) => (
               <div style={{ width: "100%" }} key={i}>
                 <Stack style={{ justifyContent: "space-between" }}>
-                  <Stack vertical justify="start" key={i}>
+                  <Stack justify="start" key={i} gap={5} align="start">
                     <Radio
-                      label={contact.Name}
-                      style={{ color: "#3A8DDE" }}
-                      checked={selectedContact === contact.ContactID}
-                      onChange={() => setSelectedContact(contact.ContactID)}
+                      checked={selectedRecipient === recipient.email}
+                      onChange={() => setSelectedRecipient(recipient.email)}
+                      style={{ marginTop: "4px" }}
                     />
-                    <Stack>
-                      <Label
-                        style={{ marginLeft: "20px" }}
-                        label={contact.EmailAddress || "No email address"}
-                      ></Label>
+                    <Stack vertical style={{ overflow: "hidden" }}>
+                      <P1
+                        style={{
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {recipient.name}
+                      </P1>
+                      <P1
+                        style={{
+                          color: theme.colors.grey80,
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {recipient.email}
+                      </P1>
                     </Stack>
                   </Stack>
                 </Stack>
-                <HorizontalDivider />
               </div>
             ))}
+            <HorizontalDivider backgroundColor={theme.colors.grey10} />
           </Stack>
         </Stack>
       )}

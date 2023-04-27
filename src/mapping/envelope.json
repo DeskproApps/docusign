@@ -1,0 +1,25 @@
+{
+  "idKey": "envelopeId",
+  "externalUrl": "/documents/details/",
+  "main": [
+    [
+      {
+        "name": "recipient",
+        "label": "Recipient",
+        "type": "text"
+      },
+      {
+        "name": "status",
+        "label": "Status",
+        "type": "text"
+      }
+    ],
+    [
+      {
+        "name": "statusChangedDateTime",
+        "label": "Last change date",
+        "type": "date"
+      }
+    ]
+  ]
+}

@@ -9,7 +9,7 @@ import {
 } from "@deskpro/app-sdk";
 
 import { ISettings } from "../types/settings";
-import { getUserInfo, login } from "../api/preInstallApi";
+import { getEnvelopes, getUserInfo, login } from "../api/preInstallApi";
 import { Account, IAuth } from "../types/docusign";
 
 export const useGlobalAuth = () => {
@@ -31,6 +31,7 @@ export const useGlobalAuth = () => {
     error?: string;
     success?: string;
   } | null>(null);
+  const [reviewed, setReviewed] = useState<boolean | null>(null);
 
   useDeskproAppEvents(
     {
@@ -133,10 +134,8 @@ export const useGlobalAuth = () => {
     (async () => {
       const user = await getUserInfo(client, oauth2Tokens.access_token);
 
-      setAccounts(user.accounts);
-
       setMessage({
-        success: `Successfully signed in. Welcome ${user.name}!`,
+        success: `Successfully signed in. Welcome ${user.name}! Has your app been reviewed?`,
       });
     })();
   }, [client, oauth2Tokens]);
@@ -150,8 +149,22 @@ export const useGlobalAuth = () => {
   });
 
   useEffect(() => {
-    if (!oauth2Tokens || !client) return;
-  }, [oauth2Tokens, client]);
+    if (!client || !oauth2Tokens || reviewed != false) return;
+
+    new Array(20).fill(0).forEach((_) => {
+      getEnvelopes(client, oauth2Tokens.access_token);
+    });
+  }, [client, oauth2Tokens, reviewed]);
+
+  useEffect(() => {
+    if (!client || !oauth2Tokens || !reviewed) return;
+
+    (async () => {
+      const user = await getUserInfo(client, oauth2Tokens.access_token);
+
+      setAccounts(user.accounts);
+    })();
+  }, [client, oauth2Tokens, reviewed]);
 
   return {
     callbackUrl,
@@ -166,5 +179,7 @@ export const useGlobalAuth = () => {
     accounts,
     selectedAccount,
     setSelectedAccount,
+    setReviewed,
+    reviewed,
   };
 };

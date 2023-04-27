@@ -1,36 +1,118 @@
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
-import { RequestMethod } from "./types";
-import { ACCESS_TOKEN, ACCOUNT_ID, REFRESH_TOKEN } from "../utils/consts";
+import {
+  IEnvelope,
+  IEnvelopeFromList,
+  IEnvelopeWithRecipients,
+  RequestMethod,
+} from "./types";
+import {
+  ACCESS_TOKEN,
+  ACCOUNT_ID,
+  DAY_MS,
+  REFRESH_TOKEN,
+} from "../utils/consts";
+import { addToState, encodeHex, getFormattedDate } from "../utils/utils";
 
-export const getContactById = (
+export const getEnvelopesWithRecipients = async (
   client: IDeskproClient,
-  contactId: string
-): Promise<any> => {
-  return installedRequest(
+  userEmail: string
+): Promise<IEnvelopeWithRecipients | null> => {
+  const dateState = (await client.getState("lastFetchDate"))[0]?.data as string;
+
+  //check if a day has passed
+  let date =
+    new Date().getTime() - new Date(dateState || "2000-01-01").getTime() >
+    DAY_MS
+      ? getFormattedDate(new Date(new Date().getTime() - DAY_MS))
+      : dateState;
+
+  date = "2000-01-01";
+
+  const envelopes = await installedRequest(
     client,
-    `restapi/v2.1/accounts/${ACCOUNT_ID}/contacts/${contactId}`,
+    `restapi/v2.1/accounts/${ACCOUNT_ID}/envelopes?from_date=${date}`,
     "GET"
   );
+
+  await client.setState("lastFetchDate", getFormattedDate(new Date()));
+
+  if (!envelopes.envelopes?.length) {
+    return (
+      ((await client.getState(`emailsWithIds/${encodeHex(userEmail)}`))?.[0]
+        ?.data as IEnvelopeWithRecipients) || null
+    );
+  }
+
+  const envelopesWithRecipients = (await Promise.all(
+    (envelopes.envelopes as IEnvelopeFromList[]).map(async (envelope) => {
+      const recipients = await installedRequest(
+        client,
+        `restapi/v2.1/accounts/${ACCOUNT_ID}/envelopes/${envelope.envelopeId}/recipients`,
+        "GET"
+      );
+
+      return {
+        envelopeId: envelope.envelopeId,
+        recipients: recipients.signers.map(
+          (signer: { email: string; name: string }) => ({
+            email: signer.email,
+            name: signer.name,
+          })
+        ),
+      };
+    })
+  )) as { envelopeId: string; recipients: { email: string; name: string }[] }[];
+
+  const emailArr = envelopesWithRecipients.reduce(
+    (
+      acc: {
+        email: string;
+        name: string;
+        envelopeIds: string[];
+      }[],
+      envelope
+    ) => {
+      envelope.recipients.forEach((recipient) => {
+        const foundEmail = acc.find((e) => e.email === recipient.email);
+
+        if (!foundEmail) {
+          acc.push({
+            email: recipient.email,
+            name: recipient.name,
+            envelopeIds: [envelope.envelopeId],
+          });
+        } else {
+          foundEmail.envelopeIds.push(envelope.envelopeId);
+        }
+      });
+
+      return acc;
+    },
+    []
+  ) as IEnvelopeWithRecipients[];
+
+  await Promise.all(
+    emailArr.map(
+      async (data) => await addToState(client, data, date === "2000-01-01")
+    )
+  );
+
+  return emailArr.find((e) => e.email === userEmail) ?? null;
 };
 
-export const getContactsByQuery = (
+export const getEnvelopeById = (
   client: IDeskproClient,
-  query: string
-): Promise<any> => {
+  envelopeId: string
+): Promise<IEnvelope> => {
   return installedRequest(
     client,
-    `restapi/v2/accounts/${ACCOUNT_ID}/contacts?search_text=${query}`,
+    `restapi/v2.1/accounts/${ACCOUNT_ID}/envelopes/${envelopeId}`,
     "GET"
   );
 };
 
-export const getContacts = (client: IDeskproClient): Promise<any> => {
-  return installedRequest(
-    client,
-    `restapi/v2.1/accounts/${ACCOUNT_ID}/users`,
-    "GET"
-  );
-};
+export const getRecipients = (client: IDeskproClient) =>
+  client.getState("emailsWithIds/*");
 
 const installedRequest = async (
   client: IDeskproClient,

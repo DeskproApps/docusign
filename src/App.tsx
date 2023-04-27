@@ -17,6 +17,7 @@ import { Main } from "./pages/Main";
 import { Search } from "./pages/Search/Search";
 import { SendTemplate } from "./pages/SendTemplate/SendTemplate";
 import { query } from "./utils/query";
+import { Warning } from "./pages/Admin/Warning";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                     <Route index element={<Main />} />
                     <Route path="admin">
                       <Route path="globalauth" element={<GlobalAuth />} />
+                      <Route path="warning" element={<Warning />} />
                     </Route>
                     <Route path="search" element={<Search />} />
                     <Route path="sendtemplate" element={<SendTemplate />} />

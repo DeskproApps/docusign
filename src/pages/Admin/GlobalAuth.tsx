@@ -4,6 +4,7 @@ import {
   H1,
   H2,
   P1,
+  P5,
   Radio,
   Stack,
   useDeskproAppTheme,
@@ -14,7 +15,6 @@ import { useGlobalAuth } from "../../hooks/useGlobalAuth";
 
 export const GlobalAuth = () => {
   const { theme } = useDeskproAppTheme();
-
   useEffect(() => {
     document.body.style.margin = "0px";
   }, []);
@@ -27,10 +27,12 @@ export const GlobalAuth = () => {
     accounts,
     setSelectedAccount,
     selectedAccount,
+    setReviewed,
+    reviewed,
   } = useGlobalAuth();
 
   return (
-    <Stack vertical gap={10} style={{ margin: "0px", height: "1000px" }}>
+    <Stack vertical gap={10} style={{ height: "1000px" }}>
       {callbackUrl && (
         <>
           <H2 style={{ marginBottom: "5px" }}>Callback URL</H2>
@@ -62,9 +64,29 @@ export const GlobalAuth = () => {
       ) : (
         <H1>{message.success}</H1>
       )}
-      {accounts && !selectedAccount && (
+      {message?.success && (
+        <Stack gap={5}>
+          <Button
+            text="Reviewed"
+            intent="secondary"
+            onClick={() => setReviewed(true)}
+          ></Button>
+          <Button
+            text="Not reviewed"
+            intent="secondary"
+            onClick={() => setReviewed(false)}
+          ></Button>
+        </Stack>
+      )}
+      {reviewed == false && (
+        <P5>
+          20 requests have been made. Please come back once the app has been
+          reviewed and a production account has been added
+        </P5>
+      )}
+      {!!reviewed && accounts && !selectedAccount && (
         <Stack vertical>
-          <H1>Please select the tenant you'd like to use:</H1>
+          <H1>Please select the account you'd like to use:</H1>
           <Stack vertical style={{ marginTop: "10px" }} gap={10}>
             {!selectedAccount && (
               <Stack vertical gap={10}>
