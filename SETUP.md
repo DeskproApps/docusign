@@ -8,7 +8,7 @@ Enter https://admindemo.docusign.com/apps-and-keys, click on Add App and Integra
 
 [![](/docs/assets/setup/apps_and_keys_page.png)](/docs/assets/setup/apps_and_keys_page.png)
 
-Now, on the App Settings, under "Is your application able to securely store a client secret?" select Yes.
+Now, on the Authentication section, under "Is your application able to securely store a client secret?" select Yes.
 
 Click on the Add Secret Key Button, and copy its content, and the Integration Key on top of the page, and paste them into the fields under the settings tab in Deskpro's drawer for DocuSign.
 
@@ -16,7 +16,7 @@ Click on the Add Secret Key Button, and copy its content, and the Integration Ke
 
 [![](/docs/assets/setup/deskpro_sign_in.png)](/docs/assets/setup/deskpro_sign_in.png)
 
-Copy the Redirect URI in the Deskpro's settings tab and paste it into the Redirect URIs field when you click Add URI.
+Copy the Redirect URI in Deskpro's settings tab and paste it into the Redirect URIs field in DocuSign when you click Add URI.
 
 [![](/docs/assets/setup/redirect_uri_field.png)](/docs/assets/setup/redirect_uri_field.png)
 
@@ -26,7 +26,9 @@ On the Deskpro DocuSign settings tab, click "Sign In".
 
 Approve all the scopes, and if there are no errors you should get an Authorization Complete page.
 
-If your app has yet to be authorized, click on the Not Authorized button, and the DocuSign Deskpro App will make 20 requests, as it's needed to ask for a review to use production account.
+https://developers.docusign.com/docs/esign-rest-api/go-live/
+
+If your app has yet to be authorized, click on the Not Authorized button, and the DocuSign Deskpro App will make 20 requests, as it's needed to ask for a review to use production account (it may take up to 15 minutes for the requests to be registered).
 
 Once done, click on Submit for review, and wait until the review has been approved. (might need to wait a few minutes for this to appear)
 

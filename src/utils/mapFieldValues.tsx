@@ -23,9 +23,13 @@ export const mapFieldValues = (
         (() => {
           const date = new Date(field[metadataField.name] as string);
 
-          value = `${date.toLocaleDateString(
-            "en-UK"
-          )} at ${date.getHours()}:${date.getMinutes()}`;
+          const minutes = date.getMinutes();
+
+          const hours = date.getHours();
+
+          value = `${date.toLocaleDateString("en-UK")} at ${
+            hours < 10 ? `0${hours}` : hours
+          }:${minutes < 10 ? `0${minutes}` : minutes}`;
         })();
 
         break;
