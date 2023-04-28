@@ -18,7 +18,7 @@ export const addToState = async (
 ) => {
   const currentState = JSON.parse(
     ((await client.getState(`emailsWithIds/${encodeHex(data.email)}`))?.[0]
-      ?.data as string) ?? "[]"
+      ?.data as string) ?? "{}"
   );
 
   await client.setState(
@@ -26,7 +26,13 @@ export const addToState = async (
     JSON.stringify(
       allTime
         ? data
-        : { ...data, envelopes: [...currentState, ...data.envelopeIds] }
+        : {
+            ...data,
+            envelopeIds: [
+              ...currentState.envelopeIds,
+              ...data.envelopeIds,
+            ].filter((e, i, a) => a.indexOf(e) === i),
+          }
     )
   );
 };

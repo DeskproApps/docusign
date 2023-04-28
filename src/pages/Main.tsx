@@ -1,6 +1,8 @@
 import {
+  Button,
   H1,
   H3,
+  LoadingSpinner,
   Stack,
   useDeskproAppEvents,
   useInitialisedDeskproAppClient,
@@ -11,6 +13,7 @@ import { useLinkRecipient } from "../hooks/useLinkRecipient";
 import { FieldMapping } from "../components/FieldMapping/FieldMapping";
 import envelopeJson from "../mapping/envelope.json";
 import { promiseAllEnvelopes } from "../utils/utils";
+import { HorizontalDivider } from "../components/HorizontalDivider/HorizontalDivider";
 
 export const Main = () => {
   const navigate = useNavigate();
@@ -75,10 +78,25 @@ export const Main = () => {
     envelopesIdsWithRecipient.data?.envelopeIds.length === 0
   ) {
     return <H1>No data was found.</H1>;
+  } else if (envelopesIdsWithRecipient.isLoading || envelopesQuery.isLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
   }
 
   return (
-    <Stack>
+    <Stack vertical gap={5}>
+      <Stack vertical gap={3} style={{ width: "100%" }}>
+        <Button
+          text="Send Template"
+          onClick={() =>
+            navigate(
+              `sendtemplate?email=${encodeURIComponent(
+                envelopesIdsWithRecipient.data?.email ?? ""
+              )}`
+            )
+          }
+        ></Button>
+        <HorizontalDivider />
+      </Stack>
       {envelopes && (
         <Stack vertical gap={5} style={{ width: "100%" }}>
           <H1>Envelopes ({envelopes.length})</H1>
@@ -89,10 +107,16 @@ export const Main = () => {
               )}
               idKey={envelopeJson.idKey}
               externalChildUrl={envelopeJson.externalUrl}
-              fields={envelopes.map((e) => ({
-                ...e,
-                recipient: envelopesIdsWithRecipient.data?.name,
-              }))}
+              fields={envelopes
+                .map((e) => ({
+                  ...e,
+                  recipient: envelopesIdsWithRecipient.data?.name,
+                }))
+                .sort(
+                  (a, b) =>
+                    new Date(b.lastModifiedDateTime).getTime() -
+                    new Date(a.lastModifiedDateTime).getTime()
+                )}
               metadata={envelopeJson.main}
             />
           </Stack>

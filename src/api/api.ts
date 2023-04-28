@@ -20,13 +20,11 @@ export const getEnvelopesWithRecipients = async (
   const dateState = (await client.getState("lastFetchDate"))[0]?.data as string;
 
   //check if a day has passed
-  let date =
+  const date =
     new Date().getTime() - new Date(dateState || "2000-01-01").getTime() >
     DAY_MS
       ? getFormattedDate(new Date(new Date().getTime() - DAY_MS))
       : dateState;
-
-  date = "2000-01-01";
 
   const envelopes = await installedRequest(
     client,
@@ -37,10 +35,12 @@ export const getEnvelopesWithRecipients = async (
   await client.setState("lastFetchDate", getFormattedDate(new Date()));
 
   if (!envelopes.envelopes?.length) {
-    return (
-      ((await client.getState(`emailsWithIds/${encodeHex(userEmail)}`))?.[0]
-        ?.data as IEnvelopeWithRecipients) || null
-    );
+    return JSON.parse(
+      (((await client.getState(`emailsWithIds/${encodeHex(userEmail)}`))?.[0]
+        ?.data as string) ||
+        null) ??
+        "{}"
+    ) as IEnvelopeWithRecipients;
   }
 
   const envelopesWithRecipients = (await Promise.all(
@@ -97,7 +97,10 @@ export const getEnvelopesWithRecipients = async (
     )
   );
 
-  return emailArr.find((e) => e.email === userEmail) ?? null;
+  return JSON.parse(
+    ((await client.getState(`emailsWithIds/${encodeHex(userEmail)}`))?.[0]
+      ?.data as string) ?? "{}"
+  );
 };
 
 export const getEnvelopeById = (
