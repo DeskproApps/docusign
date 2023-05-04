@@ -12,7 +12,7 @@ const renderPage = () => {
 };
 
 jest.mock("../../src/hooks/useLinkRecipient", () => ({
-  ...jest.requireActual("../../src/api/api"),
+  ...jest.requireActual("../../src/hooks/useLinkRecipient"),
   useLinkRecipient: () => ({
     unlinkRecipient: () => {},
     getEnvelopeIds: () => ({

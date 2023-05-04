@@ -11,7 +11,7 @@ export const ErrorFallback = ({
   return (
     <Stack vertical gap={10} role="alert">
       <H1>Something went wrong:</H1>
-      <H2>{error.message}</H2>
+      <H2>{JSON.parse(error.message)}</H2>
       <Button
         text="Reload"
         onClick={resetErrorBoundary}
