@@ -14,19 +14,24 @@
     "bumpManifestVer": "node ./bin/bumpManifestVer.js"
   },
   "dependencies": {
-    "@deskpro/app-sdk": "1.2.8",
+    "@deskpro/app-sdk": "1.2.14",
     "@heroicons/react": "1.0.6",
+    "@tanstack/react-query": "^4.29.3",
+    "base64-min": "^2.0.0",
+    "buffer": "^6.0.3",
     "polished": "^4.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-is": "^18.2.0"
+    "react-error-boundary": "^4.0.4",
+    "react-is": "^18.2.0",
+    "react-router-dom": "^6.10.0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.3.1",
     "@swc/core": "^1.3.45",
     "@swc/helpers": "^0.5.0",
-    "@testing-library/dom": "^9.2.0",
-    "@jest/globals": "^29.3.1",
     "@swc/jest": "^0.2.22",
+    "@testing-library/dom": "^9.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",

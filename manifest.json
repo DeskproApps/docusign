@@ -1,26 +1,74 @@
 {
-  "name": "@deskpro-apps/my-app",
-  "title": "My App",
-  "description": "My Deskpro app",
-  "version": "0.0.1",
+  "name": "@deskpro-apps/docusign",
+  "title": "DocuSign",
+  "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with DocuSign.",
+  "version": "0.0.0",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
-  "targets": [{ "target": "ticket_sidebar", "entrypoint": "index.html" }],
+  "targets": [
+    {
+      "target": "user_sidebar",
+      "entrypoint": "index.html"
+    }
+  ],
   "settings": {
-    "example": {
-      "title": "Example Setting",
-      "description": "Example backend only setting",
-      "type": "string",
+    "warning_page": {
+      "title": "",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "#/admin/warning"
+      },
       "isRequired": false,
-      "isBackendOnly": true
+      "isBackendOnly": false,
+      "order": 10
+    },
+    "integration_key": {
+      "title": "Integration Key",
+      "description": "Integration Key can be obtained by following our setup guide",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 20
+    },
+    "secret_key": {
+      "title": "Secret Key",
+      "description": "Secret Key can be obtained by following our setup guide",
+      "type": "string",
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 30
+    },
+    "global_access_token": {
+      "title": "",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "#/admin/globalauth"
+      },
+      "isRequired": true,
+      "isBackendOnly": true,
+      "order": 40
     }
   },
   "proxy": {
     "whitelist": [
       {
-        "url": "https://jsonplaceholder.typicode.com/.*",
-        "methods": ["GET"],
+        "url": "https://account-d.docusign.com/.*",
+        "methods": [
+          "GET",
+          "POST"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": "https://demo.docusign.net/.*",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ],
         "timeout": 20
       }
     ]

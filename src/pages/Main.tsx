@@ -1,79 +1,127 @@
-import { useState } from "react";
 import {
-  Context,
+  Button,
   H1,
-  HorizontalDivider,
+  H3,
   LoadingSpinner,
-  Property,
-  proxyFetch,
   Stack,
   useDeskproAppEvents,
   useInitialisedDeskproAppClient,
+  useQueryWithClient,
 } from "@deskpro/app-sdk";
-import * as React from "react";
-/*
-    Note: the following page component contains example code, please remove the contents of this component before you
-    develop your app. For more information, please refer to our apps
-    guides @see https://support.deskpro.com/en-US/guides/developers/anatomy-of-an-app
-*/
+import { useNavigate } from "react-router-dom";
+import { useLinkRecipient } from "../hooks/useLinkRecipient";
+import { FieldMapping } from "../components/FieldMapping/FieldMapping";
+import envelopeJson from "../mapping/envelope.json";
+import { promiseAllEnvelopes } from "../utils/utils";
+import { HorizontalDivider } from "../components/HorizontalDivider/HorizontalDivider";
 
 export const Main = () => {
-  const [ticketContext, setTicketContext] = useState<Context | null>(null);
-  const [examplePosts, setExamplePosts] = useState<
-    { id: string; title: string }[]
-  >([]);
+  const navigate = useNavigate();
 
-  // Add a "refresh" button @see https://support.deskpro.com/en-US/guides/developers/app-elements
+  const { unlinkRecipient, context, getEnvelopeIds } = useLinkRecipient();
+
   useInitialisedDeskproAppClient((client) => {
-    client.registerElement("myRefreshButton", { type: "refresh_button" });
+    client.registerElement("docusignRefresh", {
+      type: "refresh_button",
+    });
+
+    client.registerElement("docuSignMenuButton", {
+      type: "menu",
+      items: [
+        {
+          title: "Unlink contact",
+          payload: {
+            type: "changePage",
+            page: "/",
+          },
+        },
+      ],
+    });
   });
 
-  // Listen for the "change" event and store the context data
-  // as local state @see https://support.deskpro.com/en-US/guides/developers/app-events
-  useDeskproAppEvents({
-    onChange: setTicketContext,
-  });
-
-  // Use the apps proxy to fetch data from a third party
-  // API @see https://support.deskpro.com/en-US/guides/developers/app-proxy
-  useInitialisedDeskproAppClient((client) =>
-    (async () => {
-      const fetch = await proxyFetch(client);
-
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
-
-      const posts = await response.json();
-
-      setExamplePosts(posts.slice(0, 3));
-    })()
+  const envelopesIdsWithRecipient = useQueryWithClient(
+    ["contactIds", context?.data.user.primaryEmail ?? ""],
+    getEnvelopeIds,
+    {
+      enabled: !!context?.data.user.primaryEmail,
+    }
   );
 
-  // If we don't have a ticket context yet, show a loading spinner
-  if (ticketContext === null) {
-    return <LoadingSpinner />;
+  const envelopesQuery = useQueryWithClient(
+    ["envelopes", ...(envelopesIdsWithRecipient.data?.envelopeIds ?? [])],
+    (client) => promiseAllEnvelopes(client, envelopesIdsWithRecipient.data),
+    {
+      enabled: !!envelopesIdsWithRecipient.data?.envelopeIds?.length,
+    }
+  );
+
+  useDeskproAppEvents({
+    async onElementEvent(id) {
+      switch (id) {
+        case "docuSignMenuButton":
+          await unlinkRecipient();
+          navigate("/search");
+
+          return;
+        case "docuSignHomeButton":
+          navigate("/redirect");
+      }
+    },
+  });
+
+  const envelopes = envelopesQuery.data;
+
+  if (!envelopesIdsWithRecipient.isLoading && !envelopesIdsWithRecipient.data) {
+    navigate("/search");
+  } else if (
+    !envelopesIdsWithRecipient.isLoading &&
+    envelopesIdsWithRecipient.data?.envelopeIds.length === 0
+  ) {
+    return <H1>No data was found.</H1>;
+  } else if (envelopesIdsWithRecipient.isLoading || envelopesQuery.isLoading) {
+    return <LoadingSpinner></LoadingSpinner>;
   }
 
-  // Show some information about a given
-  // ticket @see https://support.deskpro.com/en-US/guides/developers/targets and third party API
   return (
-    <>
-      <H1>Ticket Data</H1>
-      <Stack gap={12} vertical>
-        <Property title="Ticket ID">{ticketContext.data.ticket.id}</Property>
-        <Property title="Ticket Subject">
-          {ticketContext.data.ticket.subject}
-        </Property>
+    <Stack vertical gap={5}>
+      <Stack vertical gap={3} style={{ width: "100%" }}>
+        <Button
+          text="Send Template"
+          onClick={() =>
+            navigate(
+              `sendtemplate?email=${encodeURIComponent(
+                envelopesIdsWithRecipient.data?.email ?? ""
+              )}`
+            )
+          }
+        ></Button>
+        <HorizontalDivider />
       </Stack>
-      <HorizontalDivider width={2} />
-      <H1>Example Posts</H1>
-      {examplePosts.map((post) => (
-        <div key={post.id}>
-          <Property title="Post Title">{post.title}</Property>
-          <HorizontalDivider width={2} />
-        </div>
-      ))}
-    </>
+      {envelopes && (
+        <Stack vertical gap={5} style={{ width: "100%" }}>
+          <H1>Envelopes ({envelopes.length})</H1>
+          <Stack vertical gap={5} style={{ width: "100%" }}>
+            <FieldMapping
+              childTitleAccessor={(field) => (
+                <H3 style={{ lineHeight: "18px" }}>{field.emailSubject}</H3>
+              )}
+              idKey={envelopeJson.idKey}
+              externalChildUrl={envelopeJson.externalUrl}
+              fields={envelopes
+                .map((e) => ({
+                  ...e,
+                  recipient: envelopesIdsWithRecipient.data?.name,
+                }))
+                .sort(
+                  (a, b) =>
+                    new Date(b.lastModifiedDateTime).getTime() -
+                    new Date(a.lastModifiedDateTime).getTime()
+                )}
+              metadata={envelopeJson.main}
+            />
+          </Stack>
+        </Stack>
+      )}
+    </Stack>
   );
 };
