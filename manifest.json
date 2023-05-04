@@ -2,23 +2,16 @@
   "name": "@deskpro-apps/docusign",
   "title": "DocuSign",
   "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with DocuSign.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
-  "targets": [
-    {
-      "target": "user_sidebar",
-      "entrypoint": "index.html"
-    }
-  ],
+  "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
   "settings": {
     "warning_page": {
       "title": "",
       "type": "app_embedded",
-      "options": {
-        "entrypoint": "#/admin/warning"
-      },
+      "options": { "entrypoint": "#/admin/warning" },
       "isRequired": false,
       "isBackendOnly": false,
       "order": 10
@@ -42,9 +35,7 @@
     "global_access_token": {
       "title": "",
       "type": "app_embedded",
-      "options": {
-        "entrypoint": "#/admin/globalauth"
-      },
+      "options": { "entrypoint": "#/admin/globalauth" },
       "isRequired": true,
       "isBackendOnly": true,
       "order": 40
@@ -54,21 +45,12 @@
     "whitelist": [
       {
         "url": "https://account-d.docusign.com/.*",
-        "methods": [
-          "GET",
-          "POST"
-        ],
+        "methods": ["GET", "POST"],
         "timeout": 20
       },
       {
         "url": "https://demo.docusign.net/.*",
-        "methods": [
-          "GET",
-          "POST",
-          "PUT",
-          "DELETE",
-          "PATCH"
-        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"],
         "timeout": 20
       }
     ]
