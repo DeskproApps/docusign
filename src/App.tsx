@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { LoadingSpinner } from "@deskpro/app-sdk";
+import "@deskpro/deskpro-ui/dist/deskpro-custom-icons.css";
+import "@deskpro/deskpro-ui/dist/deskpro-ui.css";
 import {
   QueryClientProvider,
   QueryErrorResetBoundary,
@@ -13,10 +15,10 @@ import "tippy.js/dist/tippy.css";
 import { ErrorFallback } from "./components/ErrorFallback/ErrorFallback";
 import { Redirect } from "./components/Redirect/Redirect";
 import { GlobalAuth } from "./pages/Admin/GlobalAuth";
-import { Main } from "./pages/Main";
-import { CreateEnvelope } from "./pages/Create/CreateEnvelope";
-import { query } from "./utils/query";
 import { Warning } from "./pages/Admin/Warning";
+import { CreateEnvelope } from "./pages/Create/CreateEnvelope";
+import { Main } from "./pages/Main";
+import { query } from "./utils/query";
 
 function App() {
   return (

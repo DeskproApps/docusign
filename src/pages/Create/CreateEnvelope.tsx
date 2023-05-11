@@ -4,6 +4,7 @@ import {
   AttachmentTag,
   Button,
   H1,
+  LoadingSpinner,
   P8,
   Stack,
   useDeskproAppTheme,
@@ -29,18 +30,13 @@ import { getMetadataBasedSchema } from "../../schemas/default";
 import { toBase64 } from "../../utils/utils";
 
 const initialState = {
-  ccs: [
-    {
-      name: "",
-      email: "",
-    },
-  ],
   signers: [
     {
       name: "",
       email: "",
     },
   ],
+  ccs: [],
 };
 
 type ReducerType = {
@@ -148,14 +144,7 @@ export const CreateEnvelope = () => {
 
     const newObj: { [key: string]: ZodTypeAny } = {
       emailSubject: z.string().nonempty(),
-      attachments:
-        submitType === "file"
-          ? z.object({
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              //@ts-ignore
-              [z.string()]: z.any(),
-            })
-          : z.any().optional(),
+      attachments: submitType === "file" ? z.any() : z.any().optional(),
       templateId:
         submitType === "template" ? z.string() : z.string().optional(),
     };
@@ -247,12 +236,16 @@ export const CreateEnvelope = () => {
 
   const file = watch("attachments");
 
+  if (templatesQuery.isFetching) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Stack vertical gap={8}>
         <H1>Send a Template</H1>
         {submitType === "template" && templatesQuery.isSuccess && (
-          <Stack vertical>
+          <Stack vertical style={{ width: "100%" }}>
             <DropdownSelect
               title="Select a template"
               value={watch("templateId")}
@@ -311,7 +304,7 @@ export const CreateEnvelope = () => {
               minimal
             >
               <LabelButtonFileInput
-                accept="image/jpeg, image/jpg, image/png, image/pjpeg, application/pdf"
+                accept="image/jpeg, image/jpg, image/png, image/pjpeg, application/pdf, application/word, application/doc, application/docx"
                 data-testid="file-input"
                 onChange={(e) =>
                   setValue("attachments", e.target?.files?.[0] ?? null)
@@ -428,15 +421,15 @@ export const CreateEnvelope = () => {
             text="Add a CC"
           />
         </Stack>
-        <Stack gap={8}>
+        <Stack gap={8} justify="space-between" style={{ width: "100%" }}>
           <Button
             type="submit"
             text={(() => {
               switch (`${submitType}-${submitMutation.isLoading}`) {
                 case "file-true":
-                  return "Creating...";
+                  return "Sending...";
                 case "file-false":
-                  return "Create";
+                  return "Send";
                 case "template-true":
                   return "Sending...";
                 case "template-false":
@@ -453,6 +446,7 @@ export const CreateEnvelope = () => {
             text="Cancel"
           />
         </Stack>
+
         {submitMutation.isError && (
           <P8 style={{ color: theme.colors.red100 }}>
             {submitMutation.error as string}

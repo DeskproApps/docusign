@@ -233,12 +233,10 @@ const installedRequest = async (
   }
 
   if (isResponseError(response)) {
-    throw new Error(
-      JSON.stringify({
-        status: response.status,
-        message: await response.text(),
-      })
-    );
+    throw JSON.stringify({
+      status: response.status,
+      message: await response.text(),
+    });
   }
 
   return response.json();
