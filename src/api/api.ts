@@ -2,6 +2,7 @@ import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
 import {
   IEnvelope,
   IEnvelopeFromList,
+  IEnvelopeTemplate,
   IEnvelopeWithRecipients,
   RequestMethod,
 } from "./types";
@@ -103,6 +104,18 @@ export const getEnvelopesWithRecipients = async (
   );
 };
 
+export const sendEnvelope = async (
+  client: IDeskproClient,
+  envelope: IEnvelope
+): Promise<IEnvelope | null> => {
+  return await installedRequest(
+    client,
+    `restapi/v2.1/accounts/${ACCOUNT_ID}/envelopes`,
+    "POST",
+    envelope
+  );
+};
+
 export const getEnvelopeById = (
   client: IDeskproClient,
   envelopeId: string
@@ -110,6 +123,16 @@ export const getEnvelopeById = (
   return installedRequest(
     client,
     `restapi/v2.1/accounts/${ACCOUNT_ID}/envelopes/${envelopeId}`,
+    "GET"
+  );
+};
+
+export const getTemplates = (
+  client: IDeskproClient
+): Promise<{ envelopeTemplates: IEnvelopeTemplate[] }> => {
+  return installedRequest(
+    client,
+    `restapi/v2.1/accounts/${ACCOUNT_ID}/templates/`,
     "GET"
   );
 };
@@ -130,6 +153,7 @@ const installedRequest = async (
     headers: {
       Authorization: ACCESS_TOKEN,
       "X-Proxy-Origin": "",
+      "Content-Type": "application/json",
     },
   };
 
@@ -209,12 +233,10 @@ const installedRequest = async (
   }
 
   if (isResponseError(response)) {
-    throw new Error(
-      JSON.stringify({
-        status: response.status,
-        message: await response.text(),
-      })
-    );
+    throw JSON.stringify({
+      status: response.status,
+      message: await response.text(),
+    });
   }
 
   return response.json();

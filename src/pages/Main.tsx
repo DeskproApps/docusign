@@ -3,6 +3,7 @@ import {
   H1,
   H3,
   LoadingSpinner,
+  P5,
   Stack,
   useDeskproAppEvents,
   useInitialisedDeskproAppClient,
@@ -18,32 +19,19 @@ import { HorizontalDivider } from "../components/HorizontalDivider/HorizontalDiv
 export const Main = () => {
   const navigate = useNavigate();
 
-  const { unlinkRecipient, context, getEnvelopeIds } = useLinkRecipient();
+  const { context, getEnvelopeIds } = useLinkRecipient();
 
   useInitialisedDeskproAppClient((client) => {
     client.registerElement("docusignRefresh", {
       type: "refresh_button",
     });
-
-    client.registerElement("docuSignMenuButton", {
-      type: "menu",
-      items: [
-        {
-          title: "Unlink contact",
-          payload: {
-            type: "changePage",
-            page: "/",
-          },
-        },
-      ],
-    });
   });
 
   const envelopesIdsWithRecipient = useQueryWithClient(
-    ["contactIds", context?.data.user.primaryEmail ?? ""],
+    ["contactIds", context?.toString() ?? ""],
     getEnvelopeIds,
     {
-      enabled: !!context?.data.user.primaryEmail,
+      enabled: !!context,
     }
   );
 
@@ -58,11 +46,6 @@ export const Main = () => {
   useDeskproAppEvents({
     async onElementEvent(id) {
       switch (id) {
-        case "docuSignMenuButton":
-          await unlinkRecipient();
-          navigate("/search");
-
-          return;
         case "docuSignHomeButton":
           navigate("/redirect");
       }
@@ -71,29 +54,28 @@ export const Main = () => {
 
   const envelopes = envelopesQuery.data;
 
-  if (!envelopesIdsWithRecipient.isLoading && !envelopesIdsWithRecipient.data) {
-    navigate("/search");
-  } else if (
-    !envelopesIdsWithRecipient.isLoading &&
-    envelopesIdsWithRecipient.data?.envelopeIds.length === 0
+  if (
+    envelopesIdsWithRecipient.isFetched &&
+    (!envelopesIdsWithRecipient.data?.envelopeIds?.length ||
+      !envelopesIdsWithRecipient.data)
   ) {
-    return <H1>No data was found.</H1>;
+    return <P5>No envelopes found under this recipient</P5>;
   } else if (envelopesIdsWithRecipient.isLoading || envelopesQuery.isLoading) {
     return <LoadingSpinner></LoadingSpinner>;
   }
 
   return (
     <Stack vertical gap={5}>
-      <Stack vertical gap={3} style={{ width: "100%" }}>
+      <Stack vertical gap={8} style={{ width: "100%" }}>
         <Button
-          text="Send Template"
-          onClick={() =>
-            navigate(
-              `sendtemplate?email=${encodeURIComponent(
-                envelopesIdsWithRecipient.data?.email ?? ""
-              )}`
-            )
-          }
+          text="Create envelope"
+          intent="secondary"
+          onClick={() => navigate(`createEnvelope/file`)}
+        ></Button>
+        <Button
+          text="Send existing Template"
+          intent="secondary"
+          onClick={() => navigate(`createEnvelope/template`)}
         ></Button>
         <HorizontalDivider />
       </Stack>

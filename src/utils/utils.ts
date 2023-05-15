@@ -1,7 +1,7 @@
 import { IDeskproClient } from "@deskpro/app-sdk";
 import { IEnvelopeWithRecipients } from "../api/types";
 import { Buffer } from "buffer";
-import { getEnvelopeById } from "../api/api";
+import * as ApiFns from "../api/api";
 
 export const getFormattedDate = (date: Date) => {
   const year = date.getFullYear();
@@ -29,8 +29,8 @@ export const addToState = async (
         : {
             ...data,
             envelopeIds: [
-              ...currentState.envelopeIds,
-              ...data.envelopeIds,
+              ...(currentState.envelopeIds || []),
+              ...(data.envelopeIds || []),
             ].filter((e, i, a) => a.indexOf(e) === i),
           }
     )
@@ -54,10 +54,30 @@ export const promiseAllEnvelopes = (
   data: IEnvelopeWithRecipients | null | undefined
 ) => {
   return Promise.all(
-    data?.envelopeIds.map((id) => getEnvelopeById(client, id)) ?? []
+    data?.envelopeIds.map((id) => ApiFns.getEnvelopeById(client, id)) ?? []
   );
 };
 
 export const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const toBase64 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const base64 = event.target.result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    try {
+      reader.readAsDataURL(file);
+      // eslint-disable-next-line no-empty
+    } catch (e) {
+      resolve(1);
+    }
+  });
