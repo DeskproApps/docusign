@@ -30,7 +30,7 @@ https://developers.docusign.com/docs/esign-rest-api/go-live/
 
 If your app has yet to be authorized, click on the Not Authorized button, and the DocuSign Deskpro App will make 20 requests, as it's needed to ask for a review to use production account (it may take up to 15 minutes for the requests to be registered).
 
-Once done, click on Submit for review, and wait until the review has been approved. (might need to wait a few minutes for this to appear)
+Once done, click on Submit for review, and wait until the review has been approved. (might need to wait a few minutes for this to appear).
 
 [![](/docs/assets/setup/submit_for_review.png)](/docs/assets/setup/submit_for_review.png)
 
