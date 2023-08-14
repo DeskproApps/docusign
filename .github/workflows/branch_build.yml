@@ -84,7 +84,7 @@ jobs:
             milestone=$(echo "$pull_request_info" | jq -r '.labels[].name' | grep -E 'major-version|minor-version' | head -1)
           fi
 
-          echo "::set-output name=milestone::${milestone}"
+          echo "milestone=${milestone}" >> $GITHUB_OUTPUT
 
       - name: Bump Version
         run: |
@@ -123,62 +123,39 @@ jobs:
       - name: Read manifest
         id: read_manifest
         run: |
-          content=`cat ./manifest.json`
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          echo "::set-output name=manifest::$content"
+          content=`cat ./manifest.json | tr -d '\n'`
+          echo "manifest=$content" >> $GITHUB_OUTPUT
 
       - name: Create safe package filename
         id: create_package_filename
         run: |
           packageFilename=`echo "${{ fromJson(steps.read_manifest.outputs.manifest).name }}" | iconv -t ascii//TRANSLIT | sed -r s/[~\^]+//g | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z`
-          echo "::set-output name=packageFilename::$packageFilename"
-
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
-          release_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
-          draft: false
-          prerelease: false
+          echo "packageFilename=$packageFilename" >> $GITHUB_OUTPUT
 
       - name: Rename package
         id: rename_app_package
         run: |
           (cd ./dist && mv app.zip ${{ steps.create_package_filename.outputs.packageFilename }}.zip)
 
-      - name: Add app asset to release
-        id: add_app_asset_to_release
-        uses: actions/upload-release-asset@v1
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/${{ steps.create_package_filename.outputs.packageFilename }}.zip
-          asset_name: ${{ steps.create_package_filename.outputs.packageFilename }}.zip
-          asset_content_type: application/zip
-
-      - name: Add app manifest to release
-        id: add_app_manifest_to_release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/manifest.json
-          asset_name: manifest.json
-          asset_content_type: application/json
+          tag_name: ${{ fromJson(steps.read_manifest.outputs.manifest).version }}
+          draft: false
+          prerelease: false
+          files: |
+            ./dist/${{ steps.create_package_filename.outputs.packageFilename }}.zip
+            ./dist/manifest.json
 
       - name: Register release with apps registry
         id: register_with_apps_registry
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://apps.deskpro-service.com/register'
-          method: 'POST'
+          url: "https://apps.deskpro-service.com/register"
+          method: "POST"
           customHeaders: '{"Content-Type": "application/json", "x-api-key": "${{ secrets.APP_REGISTRY_KEY }}"}'
           data: '{"repositoryUrl": "${{ github.server_url }}/${{ github.repository }}", "type": "github"}'
 
@@ -186,7 +163,7 @@ jobs:
         id: trigger_release
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://apps.deskpro-service.com/release'
-          method: 'POST'
+          url: "https://apps.deskpro-service.com/release"
+          method: "POST"
           customHeaders: '{"Content-Type": "application/json", "x-api-key": "${{ secrets.APP_REGISTRY_KEY }}"}'
           data: '{"repositoryUrl": "${{ github.server_url }}/${{ github.repository }}"}'

@@ -1,42 +1,42 @@
-name: 'Deploy PR demo'
+name: "Deploy PR demo"
 
 on:
   workflow_call:
     inputs:
       ref:
         type: string
-        description: 'The commit ref to build'
+        description: "The commit ref to build"
         default: ${{ github.ref }}
         required: false
 
       deskpro-docker-repository:
         type: string
-        description: 'Deskpro docker repository'
+        description: "Deskpro docker repository"
         required: false
-        default: 'registry.deskprodemo.com/deskpro/deskpro-product-dev'
+        default: "registry.deskprodemo.com/deskpro/deskpro-product-dev"
 
       mysql-docker-repository:
         type: string
-        description: 'MySQL docker repository'
+        description: "MySQL docker repository"
         required: false
-        default: 'registry.deskprodemo.com/deskpro/deskpro-mysql-dev'
+        default: "registry.deskprodemo.com/deskpro/deskpro-mysql-dev"
 
       artifact-name:
         type: string
-        description: 'The artifact name to download that contains the package build output'
-        default: 'app-package'
+        description: "The artifact name to download that contains the package build output"
+        default: "app-package"
         required: false
 
     secrets:
-      DESKPRO_SERVICE_TOKEN: { required: true}
-      DEMO_SERVER_SSH_KEY: { required: true}
-      DEMO_SERVER_SSH_USER: { required: true}
-      DEMO_SERVER_SSH_HOST: { required: true}
-      DOCKER_REPO_USERNAME: { required: true}
-      DOCKER_REPO_TOKEN: { required: true}
-      DESKPRO_LICENSE_KEY: { required: true}
-      DESKPRO_DEMO_FQDN: { required: true}
-      APP_SETTINGS: { required: true}
+      DESKPRO_SERVICE_TOKEN: { required: true }
+      DEMO_SERVER_SSH_KEY: { required: true }
+      DEMO_SERVER_SSH_USER: { required: true }
+      DEMO_SERVER_SSH_HOST: { required: true }
+      DOCKER_REPO_USERNAME: { required: true }
+      DOCKER_REPO_TOKEN: { required: true }
+      DESKPRO_LICENSE_KEY: { required: true }
+      DESKPRO_DEMO_FQDN: { required: true }
+      APP_SETTINGS: { required: true }
 
 jobs:
   deploy:
@@ -47,7 +47,7 @@ jobs:
     steps:
       - run: |
           mkdir -p compose
-          
+
           curl -fsSL \
             -H "Accept: application/vnd.github.VERSION.raw" \
             -H "Authorization: token ${{ secrets.DESKPRO_SERVICE_TOKEN }}" \
@@ -57,7 +57,7 @@ jobs:
       - name: Create Docker SSH context
         uses: deskpro/gh-actions/create-ssh-docker-context@master
         with:
-          context-name: 'demo'
+          context-name: "demo"
           private-key: ${{ secrets.DEMO_SERVER_SSH_KEY }}
           user: ${{ secrets.DEMO_SERVER_SSH_USER }}
           host: ${{ secrets.DEMO_SERVER_SSH_HOST }}
@@ -82,21 +82,21 @@ jobs:
           license-key: ${{ secrets.DESKPRO_LICENSE_KEY }}
           vhost-domain: ${{ secrets.DESKPRO_DEMO_FQDN }}
 
-          url-resource: '/horizon-ui/app'
+          url-resource: "/horizon-ui/app"
 
       - name: Lookup container ID
         id: container
         run: |
           service_name="${{ steps.deployment.outputs.swarm-stack-name }}_deskpro"
           service_id="$(docker service ps -q "${service_name}" | head -1)"
-          
+
           if [ -z "${service_id}" ]; then
             echo "::error title=Deskpro Swarm service ${service_name} not found::Deskpro Swarm service ${service_name} not found"
             exit 1
           fi
-          
+
           container_id="$(docker inspect --format '{{.Status.ContainerStatus.ContainerID}}' "${service_id}")"
-          echo "::set-output name=id::${container_id}"
+          echo "id=${container_id}" >> $GITHUB_OUTPUT
 
       - name: Download package
         uses: actions/download-artifact@v3
@@ -109,7 +109,7 @@ jobs:
         working-directory: app-package
         run: |
           app_name=$(jq -r '.name' manifest.json)
-          echo "::set-output name=name::${app_name}"
+          echo "name=${app_name}" >> $GITHUB_OUTPUT
 
       - name: Copy package to container
         working-directory: app-package
