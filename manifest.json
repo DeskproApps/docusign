@@ -2,7 +2,7 @@
   "name": "@deskpro-apps/docusign",
   "title": "DocuSign",
   "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with DocuSign.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scope": "agent",
   "isSingleInstall": false,
   "hasDevMode": true,
