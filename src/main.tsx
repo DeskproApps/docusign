@@ -8,7 +8,9 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <DeskproAppProvider>
-    <Scrollbar style={{height: "100%", width: "100%"}}><App /></Scrollbar>
-  </DeskproAppProvider>
+  <Scrollbar style={{ height: "100%", width: "100%" }}>
+    <DeskproAppProvider>
+      <App />
+    </DeskproAppProvider>
+  </Scrollbar>
 );
