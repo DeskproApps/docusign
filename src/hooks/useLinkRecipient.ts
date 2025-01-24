@@ -12,7 +12,7 @@ export const useLinkRecipient = () => {
       lastName: string;
       primaryEmail: string;
     }
-  }, {}>();
+  }, unknown>();
   const { client } = useDeskproAppClient();
 
   const deskproUser = context?.data?.user;

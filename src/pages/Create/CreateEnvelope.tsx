@@ -106,7 +106,7 @@ export const CreateEnvelope = () => {
       lastName: string;
       primaryEmail: string;
     }
-  }, {}>();
+  }, unknown>();
   const [isReset, setIsReset] = useState(false);
 
   const navigate = useNavigate();
