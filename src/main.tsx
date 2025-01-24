@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { DeskproAppProvider, Scrollbar } from "@deskpro/app-sdk";
+import { DeskproAppProvider } from "@deskpro/app-sdk";
+import { Scrollbar } from "@deskpro/deskpro-ui";
 import "./main.css";
 import "simplebar/dist/simplebar.min.css";
 

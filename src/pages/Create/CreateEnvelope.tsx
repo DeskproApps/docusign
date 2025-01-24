@@ -1,22 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  AnyIcon,
-  AttachmentTag,
-  Button,
-  H1,
   LoadingSpinner,
-  P8,
-  Stack,
   useDeskproAppTheme,
   useDeskproLatestAppContext,
   useQueryWithClient,
 } from "@deskpro/app-sdk";
+import {
+  AnyIcon,
+  AttachmentTag,
+  Button,
+  H1,
+  P8,
+  Stack,
+} from "@deskpro/deskpro-ui"
 import { LabelButton, LabelButtonFileInput } from "@deskpro/deskpro-ui";
 import { faFile, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Reducer, useEffect, useReducer, useState } from "react";
+import { ChangeEvent, Reducer, useEffect, useReducer, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ZodObject, ZodTypeAny, z } from "zod";
@@ -98,7 +100,13 @@ export const CreateEnvelope = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { theme } = useDeskproAppTheme();
   const [schema, setSchema] = useState<ZodTypeAny>(z.object({}));
-  const { context } = useDeskproLatestAppContext();
+  const { context } = useDeskproLatestAppContext<{
+    user: {
+      firstName: string;
+      lastName: string;
+      primaryEmail: string;
+    }
+  }, unknown>();
   const [isReset, setIsReset] = useState(false);
 
   const navigate = useNavigate();
@@ -127,7 +135,7 @@ export const CreateEnvelope = () => {
   });
 
   useEffect(() => {
-    if (!context || !dispatch || isReset) return;
+    if (!context?.data || !dispatch || isReset) return;
 
     dispatch({
       type: "edit-signer",
@@ -307,7 +315,7 @@ export const CreateEnvelope = () => {
               <LabelButtonFileInput
                 accept="image/jpeg, image/jpg, image/png, image/pjpeg, application/pdf, application/word, application/doc, application/docx"
                 data-testid="file-input"
-                onChange={(e) =>
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("attachments", e.target?.files?.[0] ?? null)
                 }
               />

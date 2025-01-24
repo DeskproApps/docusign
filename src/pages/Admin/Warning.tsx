@@ -1,4 +1,5 @@
-import { H1, P5, Stack, useDeskproAppTheme } from "@deskpro/app-sdk";
+import { useDeskproAppTheme } from "@deskpro/app-sdk";
+import { H1, P5, Stack } from "@deskpro/deskpro-ui";
 import { useEffect } from "react";
 
 export const Warning = () => {

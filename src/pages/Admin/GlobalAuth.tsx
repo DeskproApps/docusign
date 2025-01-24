@@ -1,14 +1,16 @@
 import {
-  Button,
   CopyToClipboardInput,
+  useDeskproAppTheme,
+} from "@deskpro/app-sdk";
+import {
+  Button,
   H1,
   H2,
   P1,
   P5,
   Radio,
   Stack,
-  useDeskproAppTheme,
-} from "@deskpro/app-sdk";
+} from "@deskpro/deskpro-ui";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGlobalAuth } from "../../hooks/useGlobalAuth";

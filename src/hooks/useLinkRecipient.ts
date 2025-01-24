@@ -6,10 +6,16 @@ import { useCallback } from "react";
 import { getEnvelopesWithRecipients } from "../api/api";
 
 export const useLinkRecipient = () => {
-  const { context } = useDeskproLatestAppContext();
+  const { context } = useDeskproLatestAppContext<{
+    user: {
+      firstName: string;
+      lastName: string;
+      primaryEmail: string;
+    }
+  }, unknown>();
   const { client } = useDeskproAppClient();
 
-  const deskproUser = context?.data.user;
+  const deskproUser = context?.data?.user;
 
   const getEnvelopeIds = useCallback(async () => {
     if (!client || !deskproUser) return null;

@@ -1,4 +1,4 @@
-import { Stack, H1, H2, Button } from "@deskpro/app-sdk";
+import { Stack, H1, H2, Button } from "@deskpro/deskpro-ui";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 
 export const ErrorFallback = ({
