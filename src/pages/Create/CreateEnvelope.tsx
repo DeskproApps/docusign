@@ -18,7 +18,7 @@ import { faFile, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { v4 as uuidv4 } from "uuid";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Reducer, useEffect, useReducer, useState } from "react";
+import { ChangeEvent, Reducer, useEffect, useReducer, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ZodObject, ZodTypeAny, z } from "zod";
@@ -315,7 +315,7 @@ export const CreateEnvelope = () => {
               <LabelButtonFileInput
                 accept="image/jpeg, image/jpg, image/png, image/pjpeg, application/pdf, application/word, application/doc, application/docx"
                 data-testid="file-input"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValue("attachments", e.target?.files?.[0] ?? null)
                 }
               />
