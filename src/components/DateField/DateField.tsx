@@ -3,16 +3,21 @@ import { FC, forwardRef } from "react";
 import styled from "styled-components";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import {
-  Input,
-  DatePickerProps,
   useDeskproAppTheme,
+} from "@deskpro/app-sdk";
+import {
+  Input,
   Label as UILabel,
   Stack,
   H1,
-  DateTimePicker,
   P8,
-} from "@deskpro/app-sdk";
+} from "@deskpro/deskpro-ui";
 import "./DateField.css";
+
+// @todo: this is a placeholder for the actual component
+function DateTimePicker(props: any) { return <div {...props} />} 
+type DatePickerProps = any;
+
 
 const LabelDate = styled(UILabel)`
   margin-top: 5px;

@@ -1,4 +1,6 @@
-import { H1, Input, P8, Stack, useDeskproAppTheme } from "@deskpro/app-sdk";
+import { useDeskproAppTheme } from "@deskpro/app-sdk";
+import { H1, Input, P8, Stack } from "@deskpro/deskpro-ui"
+import React from "react";
 
 interface Props {
   title: string;
@@ -42,7 +44,7 @@ export const InputWithTitleReducer = ({
         placeholder={`Enter value`}
         style={{ fontWeight: "normal" }}
         type={"title"}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           dispatch({
             type: `edit-${type}`,
             index: i,

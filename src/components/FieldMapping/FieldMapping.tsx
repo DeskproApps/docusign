@@ -1,12 +1,14 @@
 import {
+  useDeskproAppTheme,
+} from "@deskpro/app-sdk";
+import {
   H1,
   H3,
   P11,
   P8,
   Stack,
-  useDeskproAppTheme,
   P5,
-} from "@deskpro/app-sdk";
+} from "@deskpro/deskpro-ui";
 import { IJson } from "../../types/json";
 import { ReactElement } from "react";
 import { mapFieldValues } from "../../utils/mapFieldValues";

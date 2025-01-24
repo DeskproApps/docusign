@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  useDeskproAppTheme,
+} from "@deskpro/app-sdk";
+import {
   DivAsInput,
   Dropdown as DropdownComponent,
   DropdownTargetProps,
   Label,
   H1,
   Stack,
-  useDeskproAppTheme,
   P8,
-} from "@deskpro/app-sdk";
+} from "@deskpro/deskpro-ui";
 import {
   faCheck,
   faExternalLinkAlt,

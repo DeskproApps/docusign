@@ -1,14 +1,16 @@
 import {
-  Button,
-  H1,
-  H3,
   LoadingSpinner,
-  P5,
-  Stack,
   useDeskproAppEvents,
   useInitialisedDeskproAppClient,
   useQueryWithClient,
 } from "@deskpro/app-sdk";
+import {
+  Button,
+  H1,
+  H3,
+  P5,
+  Stack,
+} from "@deskpro/deskpro-ui";
 import { useNavigate } from "react-router-dom";
 import { useLinkRecipient } from "../hooks/useLinkRecipient";
 import { FieldMapping } from "../components/FieldMapping/FieldMapping";
