@@ -42,8 +42,8 @@ importers:
         specifier: ^7.55.0
         version: 7.55.0(react@18.3.1)
       react-is:
-        specifier: ^18.3.1
-        version: 18.3.1
+        specifier: ^19.1.0
+        version: 19.1.0
       react-router-dom:
         specifier: ^6.30.0
         version: 6.30.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2671,6 +2671,9 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
+  react-is@19.1.0:
+    resolution: {integrity: sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==}
+
   react-popper@2.3.0:
     resolution: {integrity: sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==}
     peerDependencies:
@@ -3929,7 +3932,7 @@ snapshots:
       '@motionone/easing': 10.18.0
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/dom@10.12.0':
     dependencies:
@@ -3938,18 +3941,18 @@ snapshots:
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/easing@10.18.0':
     dependencies:
       '@motionone/utils': 10.18.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/generators@10.18.0':
     dependencies:
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/types@10.17.1': {}
 
@@ -3957,7 +3960,7 @@ snapshots:
     dependencies:
       '@motionone/types': 10.17.1
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -5079,7 +5082,7 @@ snapshots:
       react: 18.3.1
       react-fast-compare: 2.0.4
       tiny-warning: 1.0.3
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   framer-motion@6.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -5090,13 +5093,13 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       style-value-types: 5.0.0
-      tslib: 2.4.1
+      tslib: 2.8.1
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
 
   framesync@6.0.1:
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   fs-extra@8.1.0:
     dependencies:
@@ -6030,7 +6033,7 @@ snapshots:
       framesync: 6.0.1
       hey-listen: 1.0.8
       style-value-types: 5.0.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   possible-typed-array-names@1.1.0: {}
 
@@ -6150,6 +6153,8 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
+
+  react-is@19.1.0: {}
 
   react-popper@2.3.0(@popperjs/core@2.11.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -6415,7 +6420,7 @@ snapshots:
   style-value-types@5.0.0:
     dependencies:
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
