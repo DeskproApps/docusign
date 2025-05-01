@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@deskpro/app-sdk':
         specifier: 5.1.1
-        version: 5.1.1(@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
+        version: 5.1.1(@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       '@heroicons/react':
         specifier: 1.0.6
         version: 1.0.6(react@18.3.1)
@@ -136,8 +136,8 @@ importers:
         specifier: ^1.6.6
         version: 1.6.6
       styled-components:
-        specifier: ^6.1.15
-        version: 6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.1.17
+        version: 6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ts-jest:
         specifier: ^27.1.5
         version: 27.1.5(@babel/core@7.26.10)(@types/jest@29.5.14)(jest@29.7.0(@types/node@22.14.1))(typescript@5.8.3)
@@ -1458,8 +1458,8 @@ packages:
   copy-to-clipboard@3.3.3:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
 
-  core-js@3.41.0:
-    resolution: {integrity: sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==}
+  core-js@3.42.0:
+    resolution: {integrity: sha512-Sz4PP4ZA+Rq4II21qkNqOEDTDrCvcANId3xpIgB34NDkWc3UduWj2dqEtN9yZIq8Dk3HyPI33x9sqqU5C8sr0g==}
 
   create-jest@29.7.0:
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}
@@ -2909,8 +2909,8 @@ packages:
   style-value-types@5.0.0:
     resolution: {integrity: sha512-08yq36Ikn4kx4YU6RD7jWEv27v4V+PUsOGa4n/as8Et3CuODMJQ00ENeAVXAeydX4Z2j1XHZF1K2sX4mGl18fA==}
 
-  styled-components@6.1.15:
-    resolution: {integrity: sha512-PpOTEztW87Ua2xbmLa7yssjNyUF9vE7wdldRfn1I2E6RTkqknkBYpj771OxM/xrvRGinLy2oysa7GOd7NcZZIA==}
+  styled-components@6.1.17:
+    resolution: {integrity: sha512-97D7DwWanI7nN24v0D4SvbfjLE9656umNSJZkBkDIWL37aZqG/wRQ+Y9pWtXyBIM/NSfcBzHLErEsqHmJNSVUg==}
     engines: {node: '>= 16'}
     peerDependencies:
       react: '>= 16.8.0'
@@ -3464,9 +3464,9 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@deskpro/app-sdk@5.1.1(@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)':
+  '@deskpro/app-sdk@5.1.1(@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)':
     dependencies:
-      '@deskpro/deskpro-ui': 4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      '@deskpro/deskpro-ui': 4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@fortawesome/fontawesome-svg-core': 6.7.2
       '@fortawesome/free-brands-svg-icons': 6.7.2
       '@fortawesome/free-regular-svg-icons': 6.7.2
@@ -3491,14 +3491,14 @@ snapshots:
       regenerator-runtime: 0.14.1
       sass: 1.86.3
       shortcut-buttons-flatpickr: 0.4.0
-      styled-components: 6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      styled-components: 6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ts-pattern: 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - react-native
       - typescript
 
-  '@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@deskpro/deskpro-ui@4.7.0(@types/web@0.0.86)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@fortawesome/fontawesome-svg-core': 6.7.2
       '@fortawesome/free-solid-svg-icons': 6.7.2
@@ -3518,7 +3518,7 @@ snapshots:
       react-popper: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       simplebar: 5.3.9
       simplebar-react: 2.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      styled-components: 6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      styled-components: 6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tippy.js: 6.3.7
       ts-pattern: 4.3.0
       tslib: 2.4.1
@@ -3929,7 +3929,7 @@ snapshots:
       '@motionone/easing': 10.18.0
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/dom@10.12.0':
     dependencies:
@@ -3938,18 +3938,18 @@ snapshots:
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/easing@10.18.0':
     dependencies:
       '@motionone/utils': 10.18.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/generators@10.18.0':
     dependencies:
       '@motionone/types': 10.17.1
       '@motionone/utils': 10.18.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@motionone/types@10.17.1': {}
 
@@ -3957,7 +3957,7 @@ snapshots:
     dependencies:
       '@motionone/types': 10.17.1
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -4676,7 +4676,7 @@ snapshots:
     dependencies:
       toggle-selection: 1.0.6
 
-  core-js@3.41.0: {}
+  core-js@3.42.0: {}
 
   create-jest@29.7.0(@types/node@22.14.1):
     dependencies:
@@ -5079,7 +5079,7 @@ snapshots:
       react: 18.3.1
       react-fast-compare: 2.0.4
       tiny-warning: 1.0.3
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   framer-motion@6.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -5090,13 +5090,13 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       style-value-types: 5.0.0
-      tslib: 2.4.1
+      tslib: 2.8.1
     optionalDependencies:
       '@emotion/is-prop-valid': 0.8.8
 
   framesync@6.0.1:
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   fs-extra@8.1.0:
     dependencies:
@@ -6030,7 +6030,7 @@ snapshots:
       framesync: 6.0.1
       hey-listen: 1.0.8
       style-value-types: 5.0.0
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   possible-typed-array-names@1.1.0: {}
 
@@ -6356,7 +6356,7 @@ snapshots:
     dependencies:
       '@juggle/resize-observer': 3.4.0
       can-use-dom: 0.1.0
-      core-js: 3.41.0
+      core-js: 3.42.0
       lodash.debounce: 4.0.8
       lodash.memoize: 4.1.2
       lodash.throttle: 4.1.1
@@ -6415,9 +6415,9 @@ snapshots:
   style-value-types@5.0.0:
     dependencies:
       hey-listen: 1.0.8
-      tslib: 2.4.1
+      tslib: 2.8.1
 
-  styled-components@6.1.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  styled-components@6.1.17(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@emotion/is-prop-valid': 1.2.2
       '@emotion/unitless': 0.8.1
