@@ -2,7 +2,7 @@
 <div align="center">
   <a target="_blank" href=""><img src="https://img.shields.io/github/contributors/deskproapps/docusign.svg?style=for-the-badge" alt="Contributors" /></a>
   <a target="_blank" href="https://github.com/deskproapps/docusign/issues"><img src="https://img.shields.io/github/issues/deskproapps/docusign.svg?style=for-the-badge" alt="Issues" /></a>
-  <a target="_blank" href="https://github.com/deskproapps/docusign/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/deskproapps/docusign.svg?style=for-the-badge" alt="MIT License" /></a>
+  <a target="_blank" href="https://github.com/deskproapps/docusign/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/deskproapps/docusign.svg?style=for-the-badge" alt="MIT License" /></a>
   <a target="_blank" href="https://github.com/deskproapps/docusign/releases"><img src="https://img.shields.io/github/v/release/deskproapps/docusign?style=for-the-badge" alt="GitHub Release" /></a>
   <a target="_blank" href="https://www.linkedin.com/company/deskpro"><img src="https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555" alt="LinkedIn" /></a>
 
