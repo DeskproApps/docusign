@@ -1,7 +1,7 @@
 {
   "name": "@deskpro-apps/docusign",
-  "title": "DocuSign",
-  "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with DocuSign.",
+  "title": "Docusign",
+  "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with Docusign.",
   "version": "0.0.20",
   "scope": "agent",
   "isSingleInstall": false,
