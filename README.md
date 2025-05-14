@@ -25,7 +25,7 @@
 
 
 ## **About the app**
-Docusign is an eSignature platform that lets users securely send, sign, and manage documents online. Our DocuSign integration links Docusign contacts to Deskpro users, allowing agents to view the status of a contact’s envelopes directly within Deskpro without needing to switch between systems.
+Docusign is an eSignature platform that lets users securely send, sign, and manage documents online. Our Docusign integration links Docusign contacts to Deskpro users, allowing agents to view the status of a contact’s envelopes directly within Deskpro without needing to switch between systems.
 
 ## **Setting up the app in Deskpro**
 You can follow our [setup guide](./SETUP.md) for a step-by-step guide to setting up the Docusign app in Deskpro.
