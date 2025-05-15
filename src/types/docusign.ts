@@ -23,3 +23,10 @@ export interface Account {
   account_name: string;
   base_uri: string;
 }
+
+export interface BaseDocusignPaginatedResponse{
+  nextUri: string,
+  previousUri: string
+  resultSetSize: string
+  totalSetSize: string
+}
