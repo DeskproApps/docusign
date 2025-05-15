@@ -1,13 +1,8 @@
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
-import { REFRESH_TOKEN } from "@/utils/consts";
 
 export default async function refreshAccessToken(client: IDeskproClient) {
     const dpFetch = await proxyFetch(client)
-
-    const body = new URLSearchParams({
-        grant_type: "refresh_token",
-        refresh_token: REFRESH_TOKEN,
-    }).toString()
+    const body = `grant_type=refresh_token&refresh_token=[[oauth/global/refresh_token]]`
 
     const refreshRequestOptions: RequestInit = {
         method: "POST",
@@ -18,7 +13,6 @@ export default async function refreshAccessToken(client: IDeskproClient) {
             "X-Proxy-Origin": "",
         },
     }
-
     const response = await dpFetch("https://account-d.docusign.com/oauth/token", refreshRequestOptions)
     const data = await response.json()
 
