@@ -1,9 +1,8 @@
 import { Button, H1, Stack } from "@deskpro/deskpro-ui";
 import { ContextData } from "@/types/deskpro"
-import { HorizontalDivider } from "@/components/HorizontalDivider/HorizontalDivider";
-import { LoadingSpinner, useDeskproAppTheme, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { HorizontalDivider, LoadingSpinner, useDeskproAppTheme, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Callout from "@/components/Callout";
 import EnvelopeInfo from "./EnvelopeInfo";
 import getUserEnvelopes, { UserEnvelopes } from "./getUserEnvelopes";
@@ -73,7 +72,8 @@ export default function EnvelopeListPage() {
           onClick={() => { void navigate(`createEnvelope/template`) }}
         ></Button>
       </Stack>
-      <HorizontalDivider />
+
+      <HorizontalDivider style={{ width: "100%" }} />
 
       {/* Show the error callout if an error occurs while fetching. */}
       {fetchError ? (
@@ -106,15 +106,23 @@ export default function EnvelopeListPage() {
           // Show the envelopes as usual if all is well.
           <Stack vertical padding={12} gap={5} style={{ width: "100%" }}>
             <H1>Envelopes ({sortedEnvelopes?.length ?? 0})</H1>
-            <Stack vertical gap={5} style={{ width: "100%" }}>
-              {sortedEnvelopes?.map((envelope) => (
-                <EnvelopeInfo
-                  key={envelope.envelopeId}
-                  envelope={envelope}
-                  user={userEnvelopesMeta.user}
-                  theme={theme}
-                />
+            <Stack vertical gap={20} style={{ width: "100%" }}>
+              {sortedEnvelopes?.map((envelope, index) => (
+
+                <Fragment key={envelope.envelopeId}>
+                  <EnvelopeInfo
+                    key={envelope.envelopeId}
+                    envelope={envelope}
+                    user={userEnvelopesMeta.user}
+                    theme={theme}
+                  />
+
+                  {index + 1 !== sortedEnvelopes.length && <HorizontalDivider style={{ width: "100%" }} />}
+                </Fragment>
+
               ))}
+
+
             </Stack>
           </Stack>
         )}
