@@ -17,8 +17,8 @@ import { Redirect } from "./components/Redirect/Redirect";
 import { GlobalAuth } from "./pages/Admin/GlobalAuth";
 import { Warning } from "./pages/Admin/Warning";
 import { CreateEnvelope } from "./pages/Create/CreateEnvelope";
-import { Main } from "./pages/Main";
 import { query } from "./utils/query";
+import { EnvelopeListPage } from "./pages/envelopes";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
                 <Routes>
                   <Route path="/">
                     <Route path="/redirect" element={<Redirect />} />
-                    <Route index element={<Main />} />
+                    <Route index element={<EnvelopeListPage />} />
                     <Route path="admin">
                       <Route path="globalauth" element={<GlobalAuth />} />
                       <Route path="warning" element={<Warning />} />
