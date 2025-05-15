@@ -48,7 +48,7 @@ export default function Callout(props: Readonly<CalloutProps>) {
                 </div>)}
 
                 <div className="callout-text">
-                    {headingText && (<h2>{headingText}</h2>)}
+                    {headingText && (<div className="heading-text">{headingText}</div>)}
                     <p>{children}</p>
                 </div>
             </div>

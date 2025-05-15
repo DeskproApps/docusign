@@ -25,7 +25,11 @@
     gap: 4px;
 }
 
-.callout-text h2,
+.callout-text .heading-text{
+font-weight: 600;
+}
+
+.callout-text .heading-text,
 .callout-text p {
     font-size: 12px;
     margin: 0;
