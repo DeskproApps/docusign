@@ -1,5 +1,5 @@
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
-import { REFRESH_TOKEN } from "../../utils/consts";
+import { REFRESH_TOKEN } from "@/utils/consts";
 
 export default async function refreshAccessToken(client: IDeskproClient) {
     const dpFetch = await proxyFetch(client)

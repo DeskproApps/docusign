@@ -22,14 +22,14 @@ import { ChangeEvent, Reducer, useEffect, useReducer, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ZodObject, ZodTypeAny, z } from "zod";
-import { getTemplates, sendEnvelope } from "../../api/api";
-import { DropdownSelect } from "../../components/DropdownSelect/DropdownSelect";
-import { HorizontalDivider } from "../../components/HorizontalDivider/HorizontalDivider";
-import { InputWithTitleForm } from "../../components/InputWithTitle/InputWithTitleForm";
-import { InputWithTitleReducer } from "../../components/InputWithTitle/InputWithTitleReducer";
-import { useQueryMutationWithClient } from "../../hooks/useQueryMutation";
-import { getMetadataBasedSchema } from "../../schemas/default";
-import { toBase64 } from "../../utils/utils";
+import { getTemplates, sendEnvelope } from "@/api/api";
+import { DropdownSelect } from "@/components/DropdownSelect/DropdownSelect";
+import { HorizontalDivider } from "@/components/HorizontalDivider/HorizontalDivider";
+import { InputWithTitleForm } from "@/components/InputWithTitle/InputWithTitleForm";
+import { InputWithTitleReducer } from "@/components/InputWithTitle/InputWithTitleReducer";
+import { useQueryMutationWithClient } from "@/hooks/useQueryMutation";
+import { getMetadataBasedSchema } from "@/schemas/default";
+import { toBase64 } from "@/utils/utils";
 
 const initialState = {
   signers: [

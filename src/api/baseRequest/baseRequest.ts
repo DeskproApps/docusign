@@ -1,6 +1,6 @@
-import { ACCESS_TOKEN as ACCESS_TOKEN_PLACEHOLDER, ACCOUNT_ID } from "../../utils/consts";
+import { ACCESS_TOKEN as ACCESS_TOKEN_PLACEHOLDER, ACCOUNT_ID } from "@/utils/consts";
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
-import { RequestMethod } from "../types";
+import { RequestMethod } from "@/api/types";
 import refreshAccessToken from "./refreshAccessToken";
 
 interface BaseRequestParams {

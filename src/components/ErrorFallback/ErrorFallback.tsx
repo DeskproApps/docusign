@@ -1,6 +1,6 @@
 import { faExclamationTriangle, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { Stack, Button } from "@deskpro/deskpro-ui";
-import Callout from "../Callout";
+import Callout from "@/components/Callout";
 
 interface ErrorFallbackProps {
   error: unknown

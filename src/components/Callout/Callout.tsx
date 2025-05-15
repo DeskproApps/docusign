@@ -1,7 +1,7 @@
 import "./Callout.css";
 import { faTimes, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Prettify } from "../../types/general";
+import { Prettify } from "@/types/general";
 import { useDeskproAppTheme } from "@deskpro/app-sdk";
 import { useState } from "react";
 import getCalloutThemeColors, { CalloutTheme } from "./getCalloutThemeColors";

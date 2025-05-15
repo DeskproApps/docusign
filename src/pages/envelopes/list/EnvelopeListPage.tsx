@@ -1,10 +1,10 @@
 import { Button, H1, Stack } from "@deskpro/deskpro-ui";
-import { ContextData } from "../../../types/deskpro"
-import { HorizontalDivider } from "../../../components/HorizontalDivider/HorizontalDivider";
+import { ContextData } from "@/types/deskpro"
+import { HorizontalDivider } from "@/components/HorizontalDivider/HorizontalDivider";
 import { LoadingSpinner, useDeskproAppTheme, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Callout from "../../../components/Callout";
+import Callout from "@/components/Callout";
 import EnvelopeInfo from "./EnvelopeInfo";
 import getUserEnvelopes, { UserEnvelopes } from "./getUserEnvelopes";
 

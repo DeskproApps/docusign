@@ -1,6 +1,6 @@
-import { getEnvelopeById, getEnvelopeListByEmail } from "../../../api";
+import { getEnvelopeById, getEnvelopeListByEmail } from "@/api";
 import { IDeskproClient } from "@deskpro/app-sdk";
-import { IEnvelope } from "../../../api/types";
+import { IEnvelope } from "@/api/types";
 
 export interface UserEnvelopes {
     user: {

@@ -1,8 +1,8 @@
-import { BaseDocusignPaginatedResponse } from "../../types/docusign"
-import { baseRequest } from "../baseRequest"
+import { BaseDocusignPaginatedResponse } from "@/types/docusign"
+import { baseRequest } from "@/api/baseRequest"
 import { createSearchParams } from "react-router-dom"
 import { IDeskproClient } from "@deskpro/app-sdk"
-import { IEnvelopeFromList, IEnvelopeWithRecipients } from "../types"
+import { IEnvelopeFromList, IEnvelopeWithRecipients } from "@/api/types"
 
 interface EnvelopesFetchResponse extends BaseDocusignPaginatedResponse {
     envelopes?: IEnvelopeFromList[]

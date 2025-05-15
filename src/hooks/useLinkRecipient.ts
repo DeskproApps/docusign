@@ -3,7 +3,7 @@ import {
   useDeskproLatestAppContext,
 } from "@deskpro/app-sdk";
 import { useCallback } from "react";
-import { getEnvelopesWithRecipients } from "../api/api";
+import { getEnvelopesWithRecipients } from "@/api/api";
 
 export const useLinkRecipient = () => {
   const { context } = useDeskproLatestAppContext<{
