@@ -1,17 +1,26 @@
-import { Stack, H1, H2, Button } from "@deskpro/deskpro-ui";
-import { faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationTriangle, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { Stack, Button } from "@deskpro/deskpro-ui";
+import Callout from "../Callout";
 
-export const ErrorFallback = ({
-  error,
-  resetErrorBoundary,
-}: {
-  error: Error;
-  resetErrorBoundary: () => void;
-}) => {
+interface ErrorFallbackProps {
+  error: unknown
+  resetErrorBoundary: () => void
+}
+
+export default function ErrorFallback(props: Readonly<ErrorFallbackProps>) {
+  const { error, resetErrorBoundary } = props
+  const errorMessage = error instanceof Error ? error.message : "Unknown Error"
+  
   return (
-    <Stack vertical gap={10} role="alert">
-      <H1>Something went wrong:</H1>
-      <H2>{JSON.parse(error.message)}</H2>
+    <Stack style={{ width: "100%" }} vertical gap={10} padding={12} role="alert">
+      <Callout
+        accent="red"
+        headingText={"Something went wrong"}
+        icon={faExclamationTriangle}
+        style={{ width: "100%" }}
+      >
+        {errorMessage}
+      </Callout>
       <Button
         text="Reload"
         onClick={resetErrorBoundary}

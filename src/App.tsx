@@ -12,7 +12,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import "simplebar/dist/simplebar.min.css";
 import "tippy.js/dist/tippy.css";
-import { ErrorFallback } from "./components/ErrorFallback/ErrorFallback";
+import ErrorFallback  from "./components/ErrorFallback/";
 import { Redirect } from "./components/Redirect/Redirect";
 import { GlobalAuth } from "./pages/Admin/GlobalAuth";
 import { Warning } from "./pages/Admin/Warning";
