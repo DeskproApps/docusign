@@ -1,6 +1,6 @@
 import { Button, H1, Stack } from "@deskpro/deskpro-ui";
 import { ContextData } from "@/types/deskpro"
-import { HorizontalDivider, LoadingSpinner, useDeskproAppTheme, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { HorizontalDivider, LoadingSpinner, useDeskproAppTheme, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { useNavigate } from "react-router-dom";
 import { Fragment, useState } from "react";
 import Callout from "@/components/Callout";
@@ -16,11 +16,10 @@ export default function EnvelopeListPage() {
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [userEnvelopesMeta, setUserEnvelopesMeta] = useState<UserEnvelopes | null>(null)
 
-  useInitialisedDeskproAppClient((client) => {
-    client.registerElement("docusignRefresh", {
-      type: "refresh_button",
-    })
-  }, [])
+  useDeskproElements(({clearElements, registerElement})=>{
+          clearElements()
+          registerElement("refresh", {type: "refresh_button"})
+      }, [])
 
   const deskproUser = context?.data?.user
   const userEmail = deskproUser?.primaryEmail
@@ -64,7 +63,7 @@ export default function EnvelopeListPage() {
         <Button
           text="Create envelope"
           intent="secondary"
-          onClick={() => { void navigate(`createEnvelope/file`) }}
+          onClick={() => { void navigate(`/envelopes/create`) }}
         ></Button>
         <Button
           text="Send existing Template"

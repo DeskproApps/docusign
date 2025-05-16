@@ -18,7 +18,7 @@ import { GlobalAuth } from "./pages/Admin/GlobalAuth";
 import { Warning } from "./pages/Admin/Warning";
 import { CreateEnvelope } from "./pages/Create/CreateEnvelope";
 import { query } from "./utils/query";
-import { EnvelopeListPage } from "./pages/envelopes";
+import { CreateEnvelopePage, EnvelopeListPage } from "./pages/envelopes";
 
 function App() {
   return (
@@ -35,6 +35,9 @@ function App() {
                     <Route path="admin">
                       <Route path="globalauth" element={<GlobalAuth />} />
                       <Route path="warning" element={<Warning />} />
+                    </Route>
+                    <Route path="envelopes">
+                      <Route path="create" element={<CreateEnvelopePage />} />
                     </Route>
                     <Route
                       path="createEnvelope/:submitType"
