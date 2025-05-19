@@ -5,14 +5,14 @@ export const documentSchema = z.object({
     name: z.string(),
     fileExtension: z.string(),
     documentId: z.string(),
-}).optional()
+})
 
 export const signerSchema = z.object({
     email: z.string().email("Enter a valid email."),
     name: z.string().min(1, "Name cannot be empty."),
     fullName: z.string(),
     recipientId: z.string(),
-    routingOrder: z.string().optional(),
+    routingOrder: z.string().optional()
 })
 
 export const ccSchema = z.object({
