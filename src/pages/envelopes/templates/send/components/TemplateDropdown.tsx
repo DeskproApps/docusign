@@ -1,4 +1,4 @@
-import { DivAsInput, Dropdown, DropdownTargetProps, Label, P8, Stack } from "@deskpro/deskpro-ui"
+import { DivAsInput, Dropdown, DropdownTargetProps, DropdownValueType, Label, P8, Stack } from "@deskpro/deskpro-ui"
 import { faCaretDown, faCheck, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons"
 import { IEnvelopeTemplate } from "@/api/types"
 import { useDeskproAppTheme } from "@deskpro/app-sdk"
@@ -12,28 +12,20 @@ interface EnvelopeTemplateDropdownProps {
     envelopeTemplates: IEnvelopeTemplate[]
 }
 
-interface Status {
-    key: string
-    label: JSX.Element
-    value: string
-    type: "value"
-}
-
-function buildDropdownOption(template: IEnvelopeTemplate) {
+function buildDropdownOption(template: IEnvelopeTemplate): DropdownValueType<string> {
     return {
         key: template.templateId,
         label: <Label label={template.name} />,
         value: template.name,
         type: "value" as const,
     }
-
 }
 
 export default function EnvelopeTemplateDropdown(props: Readonly<EnvelopeTemplateDropdownProps>) {
     const { formData, envelopeTemplates } = props
     const { theme } = useDeskproAppTheme()
 
-    const dropdownOptions: Status[] = useMemo(() => {
+    const dropdownOptions: DropdownValueType<string>[] = useMemo(() => {
         return envelopeTemplates?.map((template) => {
             return buildDropdownOption(template)
         })
@@ -46,11 +38,9 @@ export default function EnvelopeTemplateDropdown(props: Readonly<EnvelopeTemplat
                 <P8 style={{ color: theme?.colors?.grey80 }}>Select a Template <Required /></P8>
             </Stack>
 
-
-            <Dropdown<Status, HTMLDivElement>
+            <Dropdown<string, HTMLDivElement>
                 placement="bottom-start"
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                options={dropdownOptions as any}
+                options={dropdownOptions}
                 fetchMoreText={"Fetch more"}
                 autoscrollText={"Autoscroll"}
                 selectedIcon={faCheck}
