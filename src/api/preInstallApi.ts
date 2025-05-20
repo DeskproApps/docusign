@@ -4,7 +4,6 @@ import { IUserInfo } from "../types/docusign";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore no types
 import base64 from "base64-min";
-import { getFormattedDate } from "../utils/utils";
 
 export const getEnvelopes = async (client: IDeskproClient, token: string) => {
   const fetch = await adminGenericProxyFetch(client);
@@ -14,7 +13,7 @@ export const getEnvelopes = async (client: IDeskproClient, token: string) => {
   return fetch(
     `https://demo.docusign.net/restapi/v2.1/accounts/${
       user.accounts[0].account_id
-    }/envelopes?from_date=${getFormattedDate(new Date())}`,
+    }/envelopes?from_date=2000-01-01`, // This SHOULD be changed when the auth is refactored.
     {
       method: "GET",
       headers: {
