@@ -33,7 +33,7 @@ describe("EnvelopeInfo", () => {
     it("should render formatted date and status", () => {
         renderEnvelopeInfo()
 
-        expect(screen.getByText("01/01/2023 at 12:00")).toBeInTheDocument()
+        expect(screen.getByText("1 Jan 2023 12:00")).toBeInTheDocument()
         expect(screen.getByText("sent")).toBeInTheDocument()
     });
 });
