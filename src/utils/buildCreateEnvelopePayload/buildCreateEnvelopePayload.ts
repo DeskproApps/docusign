@@ -3,9 +3,12 @@ import { CreateEnvelopePayload } from "@/api/createEnvelope";
 import { v4 as uuidv4 } from "uuid";
 
 export default function buildCreateEnvelopePayload(data: CreateEnvelopeFormMeta): CreateEnvelopePayload {
+    const emailMessage = data.emailBlurb
+    const isValidEmailMessage = (emailMessage && emailMessage.trim()) !== ""
+
     const payload: CreateEnvelopePayload = {
         emailSubject: data.emailSubject,
-        emailBlurb: data.emailBlurb,
+        emailBlurb: isValidEmailMessage ? emailMessage : undefined,
         status: "sent",
         documents: data.documents.filter((document) => document !== undefined),
         recipients: {

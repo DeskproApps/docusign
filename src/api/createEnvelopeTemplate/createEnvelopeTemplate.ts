@@ -32,6 +32,7 @@ interface CompositeTemplate {
 }
 export interface CreateEnvelopeTemplatePayload {
     emailSubject: string
+    emailBlurb?: string
     status: "sent" | "created"
     compositeTemplates: CompositeTemplate[]
 }

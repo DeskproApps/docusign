@@ -11,6 +11,7 @@ export default function buildCreateEnvelopeTemplatePayload(data: Prettify<Create
     const payload: CreateEnvelopeTemplatePayload = {
         emailSubject: data.emailSubject,
         status: "sent",
+        emailBlurb: isValidEmailMessage ? emailMessage : undefined,
         compositeTemplates: [
             {
                 serverTemplates: [{
@@ -34,7 +35,6 @@ export default function buildCreateEnvelopeTemplatePayload(data: Prettify<Create
                                 email: carbonCopy.email,
                                 fullName: carbonCopy.name,
                                 recipientId: uuidv4(),
-                                emailMessage: isValidEmailMessage ? emailMessage : undefined
                             }
                         })
                     }
