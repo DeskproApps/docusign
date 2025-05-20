@@ -62,14 +62,14 @@ export default function EnvelopeListPage() {
     <Stack vertical gap={5}>
       <Stack vertical padding={12} gap={16} style={{ width: "100%" }}>
         <Button
-          text="Create envelope"
+          text="Create an envelope"
           intent="secondary"
           onClick={() => { void navigate(`/envelopes/create`) }}
         />
         <Button
-          text="Send existing Template"
+          text="Send a template"
           intent="secondary"
-          onClick={() => { void navigate(`/envelopes/send-template`) }}
+          onClick={() => { void navigate(`/envelopes/templates/send`) }}
         />
       </Stack>
 

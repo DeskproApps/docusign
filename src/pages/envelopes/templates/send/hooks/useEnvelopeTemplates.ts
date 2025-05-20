@@ -1,4 +1,4 @@
-import { getTemplates } from "@/api/api";
+import { getTemplates } from "@/api";
 import { useQueryWithClient } from "@deskpro/app-sdk";
 
 export default function useEnvelopeTemplates() {
