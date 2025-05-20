@@ -30,8 +30,8 @@ export interface UseCreateEnvelopeResult {
 
     },
     recipients: {
-        signers: Recipient<"signers">,
-        carbonCopies?: Recipient<"carbonCopies">
+        signers: Recipient<"signers", CreateEnvelopeFormMeta>,
+        carbonCopies?: Recipient<"carbonCopies", CreateEnvelopeFormMeta>
     }
 }
 
@@ -62,14 +62,14 @@ export default function useCreateEnvelopeForm(params: Readonly<UseCreateEnvelope
         fullName: ""
     }
 
-    const carbonCopies: Recipient<"carbonCopies"> = {
+    const carbonCopies: Recipient<"carbonCopies", CreateEnvelopeFormMeta> = {
         fields: carbonCopyFields,
         append: appendCarbonCopy,
         remove: removeCarbonCopy,
         default: defaultRecipient
     }
 
-    const signers: Recipient<"signers"> = {
+    const signers: Recipient<"signers", CreateEnvelopeFormMeta> = {
         fields: signerFields,
         append: appendSigner,
         remove: removeSigner,
@@ -120,8 +120,7 @@ export default function useCreateEnvelopeForm(params: Readonly<UseCreateEnvelope
             values: formValues,
             onSubmit: handleSubmit(onSubmit),
             isSubmitting: submitFormMutation.isLoading,
-            fetchError,
-
+            fetchError
         },
         recipients: {
             signers,

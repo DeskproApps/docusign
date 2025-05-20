@@ -1,17 +1,29 @@
+import { AllowedRecipientFormMeta, DefaultRecipient, Recipient } from "@/types/docusign/form"
 import { Button } from "@deskpro/deskpro-ui";
-import { CreateEnvelopeFormMeta } from "@/pages/envelopes/create/schema";
-import { DefaultRecipient, Recipient } from "@/types/docusign/form"
 import { FieldError, FieldErrorsImpl, Merge, UseFormRegister } from "react-hook-form";
 import { Fragment } from "react";
 import { HorizontalDivider } from "@deskpro/app-sdk";
 import ErrorText from "@/components/ErrorText";
 import InputGroup from "@/components/InputGroup";
 
+type CarbonCopyRecipient<M extends AllowedRecipientFormMeta> = Recipient<"carbonCopies", M>
+
+// Automatically create a union of all allowed form types.
+// We just need to update AllowedRecipientFormMeta in the future to support new forms.
+type CarbonCopyRecipientUnion = AllowedRecipientFormMeta extends infer FormMeta
+    ? FormMeta extends AllowedRecipientFormMeta
+    ? CarbonCopyRecipient<FormMeta>
+    : never
+    : never
 
 interface CarbonCopyFieldsProps {
-    carbonCopies: Recipient<"carbonCopies"> | undefined
+    carbonCopies: CarbonCopyRecipientUnion | undefined
     carbonCopyErrors: Merge<FieldError, (Merge<FieldError, FieldErrorsImpl<DefaultRecipient>> | undefined)[]> | undefined
-    register: UseFormRegister<CreateEnvelopeFormMeta>
+
+    // I tried using a discriminated union to accurately represent the type here but couldn't
+    // get rid of the signature mismatch error.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register: UseFormRegister<any>
 }
 
 export default function CarbonCopyFields(props: Readonly<CarbonCopyFieldsProps>) {

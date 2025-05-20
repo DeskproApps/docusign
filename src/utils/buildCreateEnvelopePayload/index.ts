@@ -1,1 +1,1 @@
-export {default} from "./buildCreateEnvelopePayload"
+export { default } from "./buildCreateEnvelopePayload"

@@ -16,10 +16,11 @@ export default function EnvelopeListPage() {
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [userEnvelopesMeta, setUserEnvelopesMeta] = useState<UserEnvelopes | null>(null)
 
-  useDeskproElements(({clearElements, registerElement})=>{
-          clearElements()
-          registerElement("refresh", {type: "refresh_button"})
-      }, [])
+  useDeskproElements(({ clearElements, registerElement }) => {
+    clearElements()
+    registerElement("refresh", { type: "refresh_button" })
+    registerElement("menu", { type: "menu", items: [] })
+  }, [])
 
   const deskproUser = context?.data?.user
   const userEmail = deskproUser?.primaryEmail
@@ -64,12 +65,12 @@ export default function EnvelopeListPage() {
           text="Create envelope"
           intent="secondary"
           onClick={() => { void navigate(`/envelopes/create`) }}
-        ></Button>
+        />
         <Button
           text="Send existing Template"
           intent="secondary"
-          onClick={() => { void navigate(`createEnvelope/template`) }}
-        ></Button>
+          onClick={() => { void navigate(`/envelopes/send-template`) }}
+        />
       </Stack>
 
       <HorizontalDivider style={{ width: "100%" }} />
@@ -107,7 +108,6 @@ export default function EnvelopeListPage() {
             <H1>Envelopes ({sortedEnvelopes?.length ?? 0})</H1>
             <Stack vertical gap={20} style={{ width: "100%" }}>
               {sortedEnvelopes?.map((envelope, index) => (
-
                 <Fragment key={envelope.envelopeId}>
                   <EnvelopeInfo
                     key={envelope.envelopeId}
@@ -118,10 +118,7 @@ export default function EnvelopeListPage() {
 
                   {index + 1 !== sortedEnvelopes.length && <HorizontalDivider style={{ width: "100%" }} />}
                 </Fragment>
-
               ))}
-
-
             </Stack>
           </Stack>
         )}

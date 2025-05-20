@@ -16,9 +16,8 @@ import ErrorFallback  from "./components/ErrorFallback/";
 import { Redirect } from "./components/Redirect/Redirect";
 import { GlobalAuth } from "./pages/Admin/GlobalAuth";
 import { Warning } from "./pages/Admin/Warning";
-import { CreateEnvelope } from "./pages/Create/CreateEnvelope";
 import { query } from "./utils/query";
-import { CreateEnvelopePage, EnvelopeListPage } from "./pages/envelopes";
+import { CreateEnvelopePage, EnvelopeListPage, SendEnvelopeTemplatePage } from "./pages/envelopes";
 
 function App() {
   return (
@@ -38,11 +37,8 @@ function App() {
                     </Route>
                     <Route path="envelopes">
                       <Route path="create" element={<CreateEnvelopePage />} />
+                      <Route path="send-template" element={<SendEnvelopeTemplatePage />} />
                     </Route>
-                    <Route
-                      path="createEnvelope/:submitType"
-                      element={<CreateEnvelope />}
-                    />
                   </Route>
                 </Routes>
               </ErrorBoundary>
