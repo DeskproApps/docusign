@@ -74,6 +74,19 @@ export interface IEnvelopeFromList {
   isSignatureProviderEnvelope: string;
   anySigner: null;
   envelopeLocation: string;
+
+  recipients?: {
+    carbonCopies?: {
+      userId: string
+      email: string
+      name: string
+    }[],
+    signers?: {
+      userId: string
+      email: string
+      name: string
+    }[]
+  }
 }
 
 export interface Sender {

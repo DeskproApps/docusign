@@ -1,0 +1,1 @@
+export { default, SEARCH_QUERY_MIN_LENGTH } from "./getUsersByQuery"
