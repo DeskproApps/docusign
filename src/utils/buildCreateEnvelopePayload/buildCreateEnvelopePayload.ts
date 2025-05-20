@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export default function buildCreateEnvelopePayload(data: CreateEnvelopeFormMeta): CreateEnvelopePayload {
     const payload: CreateEnvelopePayload = {
         emailSubject: data.emailSubject,
+        emailBlurb: data.emailBlurb,
         status: "sent",
         documents: data.documents.filter((document) => document !== undefined),
         recipients: {

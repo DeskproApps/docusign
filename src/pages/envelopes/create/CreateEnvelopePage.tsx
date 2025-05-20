@@ -56,6 +56,17 @@ export default function CreateEnvelopePage() {
                         {formData.errors.emailSubject?.message}
                     </ErrorText>
 
+                    <InputGroup
+                        type="text"
+                        label="Email Message"
+                        name="emailMessage"
+                        hasError={!!formData.errors.emailBlurb}
+                        register={formData.register("emailBlurb")}
+                    />
+                    <ErrorText>
+                        {formData.errors.emailBlurb?.message}
+                    </ErrorText>
+
                     {/* File Upload Button. */}
                     <UploadFileButton formData={formData} onFileChange={onFileChange} />
                 </FormSection>

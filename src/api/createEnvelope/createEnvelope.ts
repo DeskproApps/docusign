@@ -10,6 +10,7 @@ interface Signer {
 
 export interface CreateEnvelopePayload {
     emailSubject: string
+    emailBlurb?: string
     status: "sent" | "created"
     documents?: {
         name: string
