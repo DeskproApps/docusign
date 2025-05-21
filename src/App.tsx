@@ -33,11 +33,14 @@ function App() {
               .then(() => {
                 navigate("/users/link")
               })
+              .catch(() => {
+                navigate("/users/link")
+              })
             break
         }
       }
     },
-  }, [])
+  }, [deskproUser?.id, client])
 
   return (
     <Routes>
