@@ -1,1 +1,1 @@
-export { default } from "./ErrorFallback"
+export { default } from "./ErrorFallbackPage"

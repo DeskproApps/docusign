@@ -3,12 +3,12 @@ import { Stack, Button } from "@deskpro/deskpro-ui";
 import Callout from "@/components/Callout";
 import { DocusignError, isErrorWithMessage } from "@/api/baseRequest";
 
-interface ErrorFallbackProps {
+interface ErrorFallbackPageProps {
   error: unknown
   resetErrorBoundary: () => void
 }
 
-export default function ErrorFallback(props: Readonly<ErrorFallbackProps>) {
+export default function ErrorFallbackPage(props: Readonly<ErrorFallbackPageProps>) {
   const { error, resetErrorBoundary } = props
   let errorMessage = "Unknown Error"
 

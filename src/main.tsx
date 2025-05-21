@@ -12,7 +12,7 @@ import { QueryClientProvider, QueryErrorResetBoundary } from "@tanstack/react-qu
 import { Scrollbar } from "@deskpro/deskpro-ui";
 import { Suspense } from "react";
 import App from "./App";
-import ErrorFallback from "./components/ErrorFallback";
+import ErrorFallbackPage from "./pages/error";
 import ReactDOM from "react-dom/client";
 
 
@@ -28,7 +28,7 @@ root.render(
             <QueryErrorResetBoundary>
               {({ reset }) => {
 
-                return (<ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback}>
+                return (<ErrorBoundary onReset={reset} FallbackComponent={ErrorFallbackPage}>
 
                   <App />
 
