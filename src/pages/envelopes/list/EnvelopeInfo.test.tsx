@@ -1,5 +1,5 @@
 import { DeskproTheme, lightTheme, ThemeProvider } from "@deskpro/deskpro-ui";
-import { IEnvelope } from "../../../api/types";
+import { IEnvelopeFromList } from "../../../api/types";
 import { render, screen } from "@testing-library/react";
 import EnvelopeInfo from "./EnvelopeInfo";
 
@@ -12,7 +12,14 @@ function renderEnvelopeInfo() {
             emailSubject: "Test Subject",
             status: "sent",
             lastModifiedDateTime: "2023-01-01T12:00:00Z",
-        } as IEnvelope,
+            recipients: {
+                signers: [{
+                    name: "Jane Doe",
+                    email: "fake@notImportant.com",
+                    userId: "1"
+                }]
+            }
+        } as IEnvelopeFromList,
     }
 
     return render(
