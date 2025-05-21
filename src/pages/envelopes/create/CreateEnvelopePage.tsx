@@ -1,6 +1,5 @@
 import { Button, Stack } from "@deskpro/deskpro-ui";
-import { ContextData } from "@/types/deskpro";
-import { HorizontalDivider, useDeskproAppEvents, useDeskproElements, useDeskproLatestAppContext } from "@deskpro/app-sdk";
+import { HorizontalDivider, useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { useNavigate } from "react-router-dom";
 import Callout from "@/components/Callout";
 import CarbonCopyFields from "@/components/forms/CarbonCopyFields";
@@ -11,30 +10,40 @@ import SignerFields from "@/components/forms/SignerFields";
 import useCreateEnvelopeForm from "./hooks/useCreateEnvelopeForm";
 import useUploadFile from "./hooks/useUploadFile";
 import UploadFileButton from "./components/UploadFileButton";
+import useLinkedUser from "@/hooks/useLinkedUser";
 
 export default function CreateEnvelopePage() {
-    const { context } = useDeskproLatestAppContext<ContextData, unknown>()
-
     const navigate = useNavigate()
 
+    // Set the nav elements.
     useDeskproElements(({ clearElements, registerElement }) => {
         clearElements()
-        registerElement("home", { type: "home_button" })
+        registerElement("home", {
+            type: "home_button",
+            payload: { type: "changePath", path: "/" },
+        })
         registerElement("refresh", { type: "refresh_button" })
+        registerElement("menu", {
+            type: "menu",
+            items: [
+                {
+                    title: "Unlink User",
+                    payload: {
+                        type: "unlink",
+                    },
+                }
+            ]
+        })
     }, [])
 
-    useDeskproAppEvents({
-        async onElementEvent(id,) {
-            switch (id) {
-                case "home":
-                    void navigate("/")
-            }
-        },
-    })
+    // Set the header title.
+    useInitialisedDeskproAppClient((client) => {
+        client.setTitle("Docusign")
+    }, [])
 
-    const deskproUser = context?.data?.user
+    const { linkedUser } = useLinkedUser()
 
-    const { formData, recipients: { signers, carbonCopies } } = useCreateEnvelopeForm({ deskproUser })
+    const { formData, recipients: { signers, carbonCopies } } = useCreateEnvelopeForm({ linkedUser: linkedUser ?? undefined })
     const { onFileChange } = useUploadFile({ form: formData })
 
     const formHasVisibleErrors = Object.keys(formData.errors).length > 0

@@ -27,7 +27,6 @@ export default function EnvelopeListPage() {
           title: "Unlink User",
           payload: {
             type: "unlink",
-            userId: "/users",
           },
         }
       ]

@@ -1,6 +1,5 @@
 import { Button, Stack } from "@deskpro/deskpro-ui";
-import { ContextData } from "@/types/deskpro"
-import { HorizontalDivider, LoadingSpinner, useDeskproAppEvents, useDeskproElements, useDeskproLatestAppContext } from "@deskpro/app-sdk"
+import { HorizontalDivider, LoadingSpinner, useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
 import { useNavigate } from "react-router-dom"
 import Callout from "@/components/Callout";
 import CarbonCopyFields from "@/components/forms/CarbonCopyFields";
@@ -11,41 +10,53 @@ import InputGroup from "@/components/InputGroup";
 import SignerFields from "@/components/forms/SignerFields";
 import useEnvelopeTemplates from "./hooks/useEnvelopeTemplates";
 import useSendEnvelopeTemplateForm from "./hooks/useSendEnvelopeTemplateForm";
+import useLinkedUser from "@/hooks/useLinkedUser";
 
 export default function SendEnvelopeTemplatePage() {
-    const { context } = useDeskproLatestAppContext<ContextData, unknown>()
     const navigate = useNavigate()
 
+    // Set the nav elements.
     useDeskproElements(({ clearElements, registerElement }) => {
         clearElements()
-        registerElement("home", { type: "home_button" })
+        registerElement("home", {
+            type: "home_button",
+            payload: { type: "changePath", path: "/" },
+        })
         registerElement("refresh", { type: "refresh_button" })
+        registerElement("menu", {
+            type: "menu",
+            items: [
+                {
+                    title: "Unlink User",
+                    payload: {
+                        type: "unlink",
+                    },
+                }
+            ]
+        })
     }, [])
 
-    useDeskproAppEvents({
-        async onElementEvent(id,) {
-            switch (id) {
-                case "home":
-                    void navigate("/")
-            }
-        },
-    })
+    // Set the header title.
+    useInitialisedDeskproAppClient((client) => {
+        client.setTitle("Docusign")
+    }, [])
 
-    const deskproUser = context?.data?.user
-    const { formData, recipients: { signers, carbonCopies } } = useSendEnvelopeTemplateForm({ deskproUser })
+    const { linkedUser } = useLinkedUser()
+
+    const { formData, recipients: { signers, carbonCopies } } = useSendEnvelopeTemplateForm({ linkedUser: linkedUser ?? undefined })
     const { isLoading, templates } = useEnvelopeTemplates()
 
     const formHasVisibleErrors = Object.keys(formData.errors).length > 0
 
-    if (isLoading){
-        return <LoadingSpinner/>
+    if (isLoading) {
+        return <LoadingSpinner />
     }
 
     return (
         <form onSubmit={formData.onSubmit}>
             <Stack vertical gap={8} style={{ width: "100%" }}>
                 <FormSection headingText="Send a template">
-                    <EnvelopeTemplateDropdown formData={formData} envelopeTemplates={templates}/>
+                    <EnvelopeTemplateDropdown formData={formData} envelopeTemplates={templates} />
                     <InputGroup
                         type="text"
                         label="Email Subject"

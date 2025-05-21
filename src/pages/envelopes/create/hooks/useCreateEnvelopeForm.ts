@@ -1,4 +1,3 @@
-import { ContextData } from "@/types/deskpro"
 import { createEnvelope } from "@/api"
 import { CreateEnvelopeFormMeta, createEnvelopeSchema, setFormDefaultValues } from "../schema"
 import { CreateEnvelopePayload } from "@/api/createEnvelope"
@@ -6,12 +5,13 @@ import { DefaultRecipient, Recipient } from "@/types/docusign/form"
 import { FieldErrors, useFieldArray, useForm, UseFormClearErrors, UseFormRegister, UseFormSetError, UseFormSetValue, UseFormWatch } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { useQueryMutationWithClient } from "@/hooks/useQueryMutation"
+import { UserEntityMetadata } from "@/services"
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import buildCreateEnvelopePayload from "@/utils/buildCreateEnvelopePayload"
 
 interface UseCreateEnvelopeFormParams {
-    deskproUser?: ContextData["user"]
+    linkedUser: UserEntityMetadata | undefined
 }
 
 export interface UseCreateEnvelopeResult {
@@ -36,13 +36,13 @@ export interface UseCreateEnvelopeResult {
 }
 
 export default function useCreateEnvelopeForm(params: Readonly<UseCreateEnvelopeFormParams>): UseCreateEnvelopeResult {
-    const { deskproUser } = params
+    const { linkedUser } = params
     const [fetchError, setFetchError] = useState<string | null>(null)
     const navigate = useNavigate()
 
     const { register, clearErrors, control, formState: { errors }, handleSubmit, setValue, watch: getValue, setError } = useForm<CreateEnvelopeFormMeta>({
         resolver: zodResolver(createEnvelopeSchema),
-        defaultValues: setFormDefaultValues(deskproUser)
+        defaultValues: setFormDefaultValues(linkedUser)
     })
 
     const { fields: signerFields, append: appendSigner, remove: removeSigner } = useFieldArray({

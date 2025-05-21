@@ -1,4 +1,3 @@
-import { ContextData } from "@/types/deskpro";
 import { createEnvelopeTemplate } from "@/api";
 import { CreateEnvelopeTemplateFormMeta, setFormDefaultValues, createEnvelopeTemplateSchema } from "../schema";
 import { CreateEnvelopeTemplatePayload } from "@/api/createEnvelopeTemplate/createEnvelopeTemplate";
@@ -9,9 +8,10 @@ import { useQueryMutationWithClient } from "@/hooks/useQueryMutation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import buildCreateEnvelopeTemplatePayload from "@/utils/buildCreateEnvelopeTemplatePayload";
+import { UserEntityMetadata } from "@/services";
 
 interface UseSendEnvelopeTemplateFormParams {
-    deskproUser?: ContextData["user"]
+    linkedUser: UserEntityMetadata | undefined
 }
 
 export interface UseSendEnvelopeTemplateForm {
@@ -36,13 +36,13 @@ export interface UseSendEnvelopeTemplateForm {
 }
 
 export default function useSendEnvelopeTemplateForm(params: Readonly<UseSendEnvelopeTemplateFormParams>): UseSendEnvelopeTemplateForm {
-    const { deskproUser } = params
+    const { linkedUser } = params
     const [fetchError, setFetchError] = useState<string | null>(null)
     const navigate = useNavigate()
 
     const { register, clearErrors, control, formState: { errors }, handleSubmit, setValue, watch: getValue, setError } = useForm<CreateEnvelopeTemplateFormMeta>({
         resolver: zodResolver(createEnvelopeTemplateSchema),
-        defaultValues: setFormDefaultValues(deskproUser)
+        defaultValues: setFormDefaultValues(linkedUser)
     })
 
     const { fields: signerFields, append: appendSigner, remove: removeSigner } = useFieldArray({

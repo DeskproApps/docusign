@@ -1,6 +1,6 @@
-import { ContextData } from "@/types/deskpro";
 import { recipientsSchema } from "@/schemas/docusign";
 import { z } from "zod";
+import { UserEntityMetadata } from "@/services";
 
 export const createEnvelopeTemplateSchema = z.object({
     templateId: z.string().min(1, "A template is required."),
@@ -15,10 +15,7 @@ export interface CreateEnvelopeTemplateFormMeta extends z.infer<typeof createEnv
     kind: "create-envelope-template"
 }
 
-export function setFormDefaultValues(deskproUser?: ContextData["user"]): CreateEnvelopeTemplateFormMeta {
-
-    const defaultSignerName = deskproUser ? `${deskproUser.firstName} ${deskproUser.lastName}` : ""
-
+export function setFormDefaultValues(linkedUser?: UserEntityMetadata): CreateEnvelopeTemplateFormMeta {
     return {
         kind: "create-envelope-template",
         templateId: "",
@@ -27,9 +24,9 @@ export function setFormDefaultValues(deskproUser?: ContextData["user"]): CreateE
         recipients: {
             signers: [
                 {
-                    name: defaultSignerName,
-                    fullName: defaultSignerName,
-                    email: deskproUser?.primaryEmail ?? "",
+                    name: linkedUser?.name ?? "",
+                    fullName: linkedUser?.name ?? "",
+                    email: linkedUser?.email ?? "",
                     recipientId: "1"
                 }],
             carbonCopies: [],
