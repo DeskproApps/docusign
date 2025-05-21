@@ -8,7 +8,6 @@ import useDocusignUsers from "./hooks/useDocusignUsers";
 import UserList from "./components/UserList";
 
 export default function LinkUserPage() {
-
     useInitialisedDeskproAppClient((client) => {
         client.setTitle("Link User")
     }, [])
@@ -16,6 +15,8 @@ export default function LinkUserPage() {
     useDeskproElements(({ clearElements, registerElement }) => {
         clearElements()
         registerElement("refresh", { type: "refresh_button" })
+        // Should return the agent to the envelope list page with the linked user
+        // being the Deskpro user [unless something weird happens].
         registerElement("home", {
             type: "home_button",
             payload: { type: "changePath", path: "/" },

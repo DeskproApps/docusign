@@ -1,26 +1,38 @@
-import { useDeskproAppEvents } from "@deskpro/app-sdk";
-
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { GlobalAuth } from "./pages/Admin/GlobalAuth";
-import { Warning } from "./pages/Admin/Warning";
+import { clearLinkedUserEntities } from "./services";
+import { ContextData } from "./types/deskpro";
 import { CreateEnvelopePage, EnvelopeListPage, SendEnvelopeTemplatePage } from "./pages/envelopes";
+import { GlobalAuth } from "./pages/Admin/GlobalAuth";
 import { LinkUserPage } from "./pages/users";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useDeskproAppClient, useDeskproAppEvents, useDeskproLatestAppContext } from "@deskpro/app-sdk";
+import { Warning } from "./pages/Admin/Warning";
 import isValidPayload from "./utils/isValidPayload";
 
 function App() {
   const navigate = useNavigate()
+  const { client } = useDeskproAppClient()
+  const { context } = useDeskproLatestAppContext<ContextData, unknown>()
+  const deskproUser = context?.data?.user
 
   useDeskproAppEvents({
     async onElementEvent(id, _type, payload) {
 
       if (isValidPayload(payload)) {
         switch (payload.type) {
-          case "changePath": {
+          case "changePath":
             if (payload.path) {
               void navigate(payload.path)
             }
             break
-          }
+          case "unlink":
+            if (!deskproUser?.id || !client) {
+              return
+            }
+            void clearLinkedUserEntities(client, deskproUser.id)
+              .then(() => {
+                navigate("/users/link")
+              })
+            break
         }
       }
     },

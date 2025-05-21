@@ -24,15 +24,16 @@ export default function EnvelopeListPage() {
       type: "menu",
       items: [
         {
-          title: "Change Linked User",
+          title: "Unlink User",
           payload: {
-            type: "changePath",
-            path: "/users/link",
+            type: "unlink",
+            userId: "/users",
           },
         }
       ]
     })
   }, [])
+
 
   if (isLoading) {
     return (<LoadingSpinner />)

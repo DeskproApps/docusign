@@ -2,7 +2,7 @@
 type Payload =
     { type: "changePath", path?: string }
     | { type: "logout" }
-    | { type: "unlink", email?: string }
+    | { type: "unlink"}
 
 
 export default function isValidPayload(payload: unknown): payload is Payload {
