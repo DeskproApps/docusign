@@ -10,11 +10,13 @@ type CarbonCopyRecipient<M extends AllowedRecipientFormMeta> = Recipient<"carbon
 
 // Automatically create a union of all allowed form types.
 // We just need to update AllowedRecipientFormMeta in the future to support new forms.
-type CarbonCopyRecipientUnion = AllowedRecipientFormMeta extends infer FormMeta
-    ? FormMeta extends AllowedRecipientFormMeta
-    ? CarbonCopyRecipient<FormMeta>
-    : never
-    : never
+type CarbonCopyRecipientUnion = (
+    AllowedRecipientFormMeta extends infer FormMeta
+        ? (FormMeta extends AllowedRecipientFormMeta
+            ? CarbonCopyRecipient<FormMeta>
+            : never)
+        : never
+)
 
 interface CarbonCopyFieldsProps {
     carbonCopies: CarbonCopyRecipientUnion | undefined

@@ -10,13 +10,15 @@ type SignerRecipient<M extends AllowedRecipientFormMeta> = Recipient<"signers", 
 
 // Automatically create a union of all allowed form types.
 // We just need to update AllowedRecipientFormMeta in the future to support new forms.
-type SignerRecipientUnion = AllowedRecipientFormMeta extends infer FormMeta
-    ? FormMeta extends AllowedRecipientFormMeta
-    ? SignerRecipient<FormMeta>
+type SignerRecipientUnion = (
+    AllowedRecipientFormMeta extends infer FormMeta
+    ? (FormMeta extends AllowedRecipientFormMeta
+        ? SignerRecipient<FormMeta>
+        : never)
     : never
-    : never
+)
 
-interface SignerFieldsProps{
+interface SignerFieldsProps {
     signers: SignerRecipientUnion
     signerErrors: Merge<FieldError, (Merge<FieldError, FieldErrorsImpl<DefaultRecipient>> | undefined)[]> | undefined
 
