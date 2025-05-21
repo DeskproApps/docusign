@@ -39,7 +39,7 @@ export default function useUserEnvelopes(userEmail: string): UseUserEnvelopesRet
     const envelopes: IEnvelopeFromList[] = userEnvelopesQuery.data ?? []
 
     return {
-        isLoading: false,
+        isLoading: userEnvelopesQuery.isLoading,
         envelopes,
         error
     }
