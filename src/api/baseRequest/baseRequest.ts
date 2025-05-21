@@ -30,7 +30,6 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
             method,
             headers: {
                 Authorization: ACCESS_TOKEN_PLACEHOLDER,
-                "X-Proxy-Origin": "",
                 "Content-Type": "application/json",
             },
         }
