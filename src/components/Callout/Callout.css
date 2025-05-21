@@ -25,8 +25,8 @@
     gap: 4px;
 }
 
-.callout-text .heading-text{
-font-weight: 600;
+.callout-text .heading-text {
+    font-weight: 600;
 }
 
 .callout-text .heading-text,
@@ -46,7 +46,7 @@ font-weight: 600;
     text-decoration: underline;
 }
 
-.callout-close-button{
+.callout-close-button {
     background-color: transparent;
     border: none;
     color: var(--grey-60);
