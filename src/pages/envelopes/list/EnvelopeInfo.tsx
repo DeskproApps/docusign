@@ -1,18 +1,17 @@
 import { DeskproTheme, H3, P5, P8, Stack } from "@deskpro/deskpro-ui";
-import { IEnvelope } from "../../../api/types";
-import { UserEnvelopes } from "./getUserEnvelopes";
-import { LogoAndLinkButton } from "../../../components/LogoAndLinkButton/LogoAndLinkButton";
+import { IEnvelopeFromList } from "@/api/types";
+import { LogoAndLinkButton } from "@/components/LogoAndLinkButton/LogoAndLinkButton";
 import { PropertyRow } from "@deskpro/app-sdk";
 
 interface EnvelopeInfoProps {
-    envelope: IEnvelope
-    user: UserEnvelopes["user"]
+    envelope: IEnvelopeFromList
     theme: DeskproTheme
 }
 
 export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.Element {
-    const { envelope, user, theme } = props
+    const { envelope, theme } = props
 
+    const recipients = extractRecipients(envelope.recipients)
     const paragraphTheme = theme.colors.grey80
 
     return (
@@ -34,9 +33,15 @@ export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.El
                 <PropertyRow>
                     <Stack vertical>
                         <P8 style={{ color: paragraphTheme }}>
-                            Recipient
+                            Recipient(s)
                         </P8>
-                        <P5>{user.name}</P5>
+
+                        {recipients.map((recipient)=>{
+                            return (
+                                // Yes, each recipient is unique.
+                                <P5 key={recipient}>{recipient}</P5>
+                            )
+                        })}
                     </Stack>
 
                     <Stack vertical>
@@ -70,4 +75,18 @@ function formatDate(date: Date) {
     const minutes = String(date.getMinutes()).padStart(2, '0')
 
     return `${day} ${month} ${year} ${hours}:${minutes}`
+}
+
+
+function extractRecipients(recipients: IEnvelopeFromList["recipients"]): string[]{
+    const mergedRecipients = [
+        ...(recipients?.carbonCopies ?? []),
+        ...(recipients?.signers ?? [])
+    ]
+
+    const uniqueNames = [...new Set(mergedRecipients.map(recipient => {
+        return recipient.name
+    }))]
+
+    return uniqueNames
 }
