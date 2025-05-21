@@ -1,2 +1,2 @@
-export { default as baseRequest, DocusignError } from "./baseRequest";
+export { default as baseRequest, DocusignError, isErrorWithMessage } from "./baseRequest";
 export type { DocusignErrorPayload } from "./baseRequest";

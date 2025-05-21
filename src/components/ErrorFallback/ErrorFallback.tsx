@@ -1,6 +1,7 @@
 import { faExclamationTriangle, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { Stack, Button } from "@deskpro/deskpro-ui";
 import Callout from "@/components/Callout";
+import { DocusignError, isErrorWithMessage } from "@/api/baseRequest";
 
 interface ErrorFallbackProps {
   error: unknown
@@ -9,8 +10,14 @@ interface ErrorFallbackProps {
 
 export default function ErrorFallback(props: Readonly<ErrorFallbackProps>) {
   const { error, resetErrorBoundary } = props
-  const errorMessage = error instanceof Error ? error.message : "Unknown Error"
-  
+  let errorMessage = "Unknown Error"
+
+  if (error instanceof DocusignError && isErrorWithMessage(error.data)) {
+    errorMessage = error.data.message
+  } else if (error instanceof Error) {
+    errorMessage = error.message
+  }
+
   return (
     <Stack style={{ width: "100%" }} vertical gap={10} padding={12} role="alert">
       <Callout

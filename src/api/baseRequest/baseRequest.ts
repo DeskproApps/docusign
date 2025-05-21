@@ -86,6 +86,17 @@ export class DocusignError extends Error {
         this.statusCode = payload.statusCode
     }
 }
+interface DocusignErrorData {
+    message: string
+}
+
+export function isErrorWithMessage(data: unknown): data is DocusignErrorData {
+    if (data && typeof data === 'object' && 'message' in data && typeof data.message === "string") {
+        return true
+    }
+
+    return false
+}
 
 function isResponseError(response: Response): boolean {
     return response.status < 200 || response.status >= 400

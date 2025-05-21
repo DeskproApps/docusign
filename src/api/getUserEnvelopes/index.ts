@@ -1,1 +1,1 @@
-export { default } from "./getEnvelopeListByEmail"
+export { default } from "./getUserEnvelopes"
