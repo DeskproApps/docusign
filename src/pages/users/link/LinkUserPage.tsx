@@ -19,7 +19,7 @@ export default function LinkUserPage() {
         // being the Deskpro user [unless something weird happens].
         registerElement("home", {
             type: "home_button",
-            payload: { type: "changePath", path: "/" },
+            payload: { type: "changePath", path: "/envelopes/list" },
         })
         registerElement("refresh", { type: "refresh_button" })
     }, [])

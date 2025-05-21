@@ -1,4 +1,4 @@
-import { BaseDocusignPaginatedResponse } from "@/types/docusign"
+import { BaseDocusignPaginatedResponse } from "@/types/docusign/general"
 import { baseRequest } from "@/api/baseRequest"
 import { createSearchParams } from "react-router-dom"
 import { IDeskproClient } from "@deskpro/app-sdk"

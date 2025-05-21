@@ -1,6 +1,6 @@
 import { IDeskproClient, adminGenericProxyFetch } from "@deskpro/app-sdk";
 import { ISettings } from "../types/settings";
-import { IUserInfo } from "../types/docusign";
+import { IUserInfo } from "../types/docusign/general";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore no types
 import base64 from "base64-min";

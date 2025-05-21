@@ -20,7 +20,7 @@ export default function SendEnvelopeTemplatePage() {
         clearElements()
         registerElement("home", {
             type: "home_button",
-            payload: { type: "changePath", path: "/" },
+            payload: { type: "changePath", path: "/envelopes/list" },
         })
         registerElement("refresh", { type: "refresh_button" })
         registerElement("menu", {
@@ -124,7 +124,7 @@ export default function SendEnvelopeTemplatePage() {
                     <Button
                         intent="secondary"
                         type="button"
-                        onClick={() => { void navigate("/") }}
+                        onClick={() => { void navigate("/envelopes/list") }}
                         text="Cancel"
                     />
                 </Stack>

@@ -10,7 +10,7 @@ import {
 
 import { ISettings } from "@/types/settings";
 import { getEnvelopes, getUserInfo, login } from "@/api/preInstallApi";
-import { Account, IAuth } from "@/types/docusign";
+import { Account, IAuth } from "@/types/docusign/general";
 
 export const useGlobalAuth = () => {
   const { client } = useDeskproAppClient();

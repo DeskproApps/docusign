@@ -93,7 +93,7 @@ export default function useSendEnvelopeTemplateForm(params: Readonly<UseSendEnve
 
         await submitFormMutation.mutateAsync(envelopePayload, {
             onSuccess: () => {
-                void navigate("/")
+                void navigate("/envelopes/list")
             },
             onError: (e) => {
                 setFetchError(e instanceof Error ? e.message : "An unexpected error occurred while creating the envelope.")

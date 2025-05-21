@@ -58,7 +58,7 @@ export default function useDocusignUsers(searchQuery: string, selectedUserId: st
 
         setUserEntityLink(client, { userId: deskproUser.id, email: activeUser.email, metadata: userMeta })
             .then(() => {
-                void navigate("/")
+                void navigate("/envelopes/list")
             })
             .catch(() => { 
                 return

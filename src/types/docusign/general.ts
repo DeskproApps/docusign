@@ -30,3 +30,9 @@ export interface BaseDocusignPaginatedResponse{
   resultSetSize: string
   totalSetSize: string
 }
+
+export interface DocusignUser {
+    userId: string
+    name: string
+    email: string
+}

@@ -2,12 +2,7 @@ import { IDeskproClient } from "@deskpro/app-sdk";
 import { baseRequest } from "../baseRequest";
 import { createSearchParams } from "react-router-dom";
 import { IEnvelopeFromList } from "../types";
-
-interface DocusignUser {
-    userId: string
-    name?: string
-    email: string
-}
+import { DocusignUser } from "@/types/docusign/general";
 
 export const SEARCH_QUERY_MIN_LENGTH = 4 as const
 export default async function getUsersByQuery(client: IDeskproClient, searchQuery: string): Promise<DocusignUser[]> {

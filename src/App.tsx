@@ -7,6 +7,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useDeskproAppClient, useDeskproAppEvents, useDeskproLatestAppContext } from "@deskpro/app-sdk";
 import { Warning } from "./pages/Admin/Warning";
 import isValidPayload from "./utils/isValidPayload";
+import LoadingPage from "./pages/loading";
 
 function App() {
   const navigate = useNavigate()
@@ -41,12 +42,13 @@ function App() {
   return (
     <Routes>
       <Route path="/">
-        <Route index element={<EnvelopeListPage />} />
+        <Route index element={<LoadingPage />} />
         <Route path="admin">
           <Route path="globalauth" element={<GlobalAuth />} />
           <Route path="warning" element={<Warning />} />
         </Route>
         <Route path="envelopes">
+          <Route path="list" element={<EnvelopeListPage />} />
           <Route path="create" element={<CreateEnvelopePage />} />
           <Route path="templates/send" element={<SendEnvelopeTemplatePage />} />
         </Route>
