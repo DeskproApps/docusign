@@ -14,11 +14,11 @@ export default async function refreshAccessToken(client: IDeskproClient) {
         },
     }
     const response = await dpFetch("https://account-d.docusign.com/oauth/token", refreshRequestOptions)
-    const data = await response.json()
-
+    
     if (!response.ok) {
         throw new Error(`Error refreshing access token`)
     }
+    const data = await response.json()
 
     await client.setState<string>(
         "oauth/global/access_token",
