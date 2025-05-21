@@ -43,22 +43,16 @@ export default function LoadingPage() {
 
     if (isAuthenticated) {
         navigate("/envelopes/list")
-    } else {
-        return (
-            <Stack padding={12}>
-                <Callout accent="red">
-                    There was a problem verifying your Docusign account. Please check your credentials
-                    or contact your admin.
-                </Callout>
-            </Stack>
-        )
+        return (<LoadingSpinner />)
     }
 
+
     return (
-        <LoadingSpinner />
+        <Stack padding={12}>
+            <Callout accent="red">
+                There was a problem verifying your Docusign account. Please check your credentials
+                or contact your admin.
+            </Callout>
+        </Stack>
     )
-
-
-
-
 }
