@@ -53,7 +53,5 @@ export default async function getUsersByQuery(client: IDeskproClient, searchQuer
         }
     }
 
-    const users = Array.from(uniqueUsersMap.values())
-
-    return users
+    return Array.from(uniqueUsersMap.values())
 }

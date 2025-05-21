@@ -1,9 +1,5 @@
 /**
  * Trims a filename to a specified maximum length while preserving the file extension.
- *
- * @param filename - The full filename to truncate (e.g., "deskpro_docusign_integration.txt").
- * @param maxLength - The maximum length of the returned string (default is 20).
- * @returns A truncated filename that fits within the maxLength limit.
  */
 export default function truncateFileName(filename: string, maxLength = 20): string {
     const dotIndex = filename.lastIndexOf('.')

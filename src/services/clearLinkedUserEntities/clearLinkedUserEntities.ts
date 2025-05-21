@@ -3,8 +3,6 @@ import { IDeskproClient } from "@deskpro/app-sdk";
 
 /**
  *  Deletes all entity associations linked to the specified Deskpro user.
- * @param client - The Deskpro client.
- * @param userId - The id of the Deskpro user.
  */
 export default async function clearLinkedUserEntities(client: IDeskproClient, userId: string): Promise<void> {
     const linkedEmails = await client.getEntityAssociation(ENTITY_NAME, userId).list()
