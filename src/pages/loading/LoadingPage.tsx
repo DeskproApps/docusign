@@ -1,9 +1,10 @@
+import { DocusignError, isErrorWithMessage } from "@/api/baseRequest"
 import { getAccountUsers } from "@/api"
-import Callout from "@/components/Callout"
 import { LoadingSpinner, useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
 import { Stack } from "@deskpro/deskpro-ui"
-import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import Callout from "@/components/Callout"
 
 export default function LoadingPage() {
     useDeskproElements(({ registerElement, clearElements, deRegisterElement }) => {
@@ -29,7 +30,17 @@ export default function LoadingPage() {
                     setIsAuthenticated(true)
                 }
             })
-            .catch(() => {
+            .catch((error: unknown) => {
+                let errorMessage = "Unknown error."
+
+                if (error instanceof DocusignError && isErrorWithMessage(error.data)) {
+                    errorMessage = error.data.message
+                } else if (error instanceof Error) {
+                    errorMessage = error.message
+                }
+
+                // eslint-disable-next-line no-console
+                console.error("Error authenticating user: ", errorMessage)
                 return
             })
             .finally(() => {
