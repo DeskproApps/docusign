@@ -45,9 +45,12 @@ export default function UserList(props: Readonly<UserListProps>): JSX.Element {
             {users.map((user) => {
                 const isSelected = user.userId === selectedUserId
                 return (
-                    <Stack gap={10} style={{ width: "100%", alignItems: "center" }} >
+                    <Stack
+                        key={user.userId}
+                        gap={10}
+                        style={{ width: "100%", alignItems: "center" }} >
 
-                        <Checkbox onClick={() => {
+                        <Checkbox onChange={() => {
                             if (isSelected) {
                                 setSelectedUserId(undefined)
                                 return
