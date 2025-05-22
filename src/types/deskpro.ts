@@ -41,3 +41,9 @@ export type ContextData = {
         trialDaysLeft?: number
     }
 }
+
+export interface ContextSettings {
+    integration_key?: string
+    use_advanced_connect?: boolean,
+    use_sandbox_account?: boolean,
+}

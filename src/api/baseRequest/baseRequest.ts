@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN as ACCESS_TOKEN_PLACEHOLDER, ACCOUNT_ID } from "@/utils/consts";
+import { ACCESS_TOKEN_PATH, ACCOUNT_ID_PATH } from "@/constants/auth";
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
 import { RequestMethod } from "@/api/types";
 import refreshAccessToken from "./refreshAccessToken";
@@ -20,7 +20,7 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
 
     const { endpoint, method, data } = params
 
-    const baseURL = `https://demo.docusign.net/restapi/v2.1/accounts/${ACCOUNT_ID}/`
+    const baseURL = `https://demo.docusign.net/restapi/v2.1/accounts/[user[${ACCOUNT_ID_PATH}]]`
     const requestURL = `${baseURL}/${endpoint}`
 
     const dpFetch = await proxyFetch(client)
@@ -29,7 +29,7 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
         const options: RequestInit = {
             method,
             headers: {
-                Authorization: ACCESS_TOKEN_PLACEHOLDER,
+                Authorization: `Bearer [user[${ACCESS_TOKEN_PATH}]]`,
                 "Content-Type": "application/json",
             },
         }
@@ -66,7 +66,7 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
 
     }
 
-    return response.json() as T
+    return await response.json() as T
 }
 
 export type DocusignErrorPayload = {

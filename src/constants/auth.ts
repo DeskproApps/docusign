@@ -1,3 +1,16 @@
-export const ACCOUNT_ID = `__global_access_token.json("[account_id]")__`;
-export const ACCESS_TOKEN_PATH = "[[oauth/global/access_token]]";
-export const REFRESH_TOKEN_PATH = "[[oauth/global/refresh_token]]";
+export const ACCOUNT_ID_PATH = `oauth2/account_id`
+export const ACCESS_TOKEN_PATH = "oauth2/access_token"
+export const REFRESH_TOKEN_PATH = "oauth2/refresh_token"
+
+export const SCOPES = [
+    "extended",
+    "signature",
+    "click.manage",
+    "openid",
+    "click.send",
+    "user_read",
+    "account_read",
+    "user_write",
+    "organization_read",
+    "domain_read"
+] as const

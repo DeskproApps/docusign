@@ -1,10 +1,8 @@
 import { DocusignError, isErrorWithMessage } from "@/api/baseRequest"
 import { getAccountUsers } from "@/api"
 import { LoadingSpinner, useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
-import { Stack } from "@deskpro/deskpro-ui"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import Callout from "@/components/Callout"
 
 export default function LoadingPage() {
     useDeskproElements(({ registerElement, clearElements, deRegisterElement }) => {
@@ -52,18 +50,12 @@ export default function LoadingPage() {
         return (<LoadingSpinner />)
     }
 
-    if (isAuthenticated) {
-        navigate("/envelopes/list")
+    if (!isAuthenticated) {
+        navigate("/login")
         return (<LoadingSpinner />)
     }
 
 
-    return (
-        <Stack padding={12}>
-            <Callout accent="red">
-                There was a problem verifying your Docusign account. Please check your credentials
-                or contact your admin.
-            </Callout>
-        </Stack>
-    )
+    navigate("/envelopes/list")
+    return (<LoadingSpinner />)
 }

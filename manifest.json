@@ -24,29 +24,41 @@
       "isBackendOnly": false,
       "order": 10
     },
+    "use_advanced_connect": {
+      "title": "Advanced Connect",
+      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro.",
+      "type": "boolean",
+      "default": false,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 20
+    },
     "integration_key": {
       "title": "Integration Key",
       "description": "Integration Key can be obtained by following our setup guide",
       "type": "string",
-      "isRequired": true,
-      "isBackendOnly": true,
-      "order": 20
+      "isRequired": false,
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 30
     },
     "secret_key": {
       "title": "Secret Key",
       "description": "Secret Key can be obtained by following our setup guide",
       "type": "string",
-      "isRequired": true,
+      "isRequired": false,
       "isBackendOnly": true,
-      "order": 30
-    },
-    "global_access_token": {
-      "title": "",
-      "type": "app_embedded",
-      "options": { "entrypoint": "#/admin/globalauth" },
-      "isRequired": true,
-      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect != false",
       "order": 40
+    },
+    "callback_url": {
+      "title": "Callback URL",
+      "type": "app_embedded",
+      "options": { "entrypoint": "#/admin/callback", "height": "80px" },
+      "isRequired": false,
+      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 50
     }
   },
   "proxy": {
