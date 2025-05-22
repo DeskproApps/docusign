@@ -8,9 +8,9 @@ import {
   useInitialisedDeskproAppClient,
 } from "@deskpro/app-sdk";
 
-import { ISettings } from "../types/settings";
-import { getEnvelopes, getUserInfo, login } from "../api/preInstallApi";
-import { Account, IAuth } from "../types/docusign";
+import { ISettings } from "@/types/settings";
+import { getEnvelopes, getUserInfo, login } from "@/api/preInstallApi";
+import { Account, IAuth } from "@/types/docusign/general";
 
 export const useGlobalAuth = () => {
   const { client } = useDeskproAppClient();

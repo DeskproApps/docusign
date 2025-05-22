@@ -8,6 +8,13 @@
   "hasDevMode": true,
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
   "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
+  "entityAssociations": {
+    "linkedDocusignUsers": {
+      "entity": "person",
+      "type": "external_id",
+      "title": "Docusign User"
+    }
+  },
   "settings": {
     "warning_page": {
       "title": "",

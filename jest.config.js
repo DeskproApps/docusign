@@ -35,10 +35,11 @@ module.exports = {
     "^.+\\.mjs$": "@swc/jest",
   },
   moduleNameMapper: {
-    "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-      "<rootDir>/config/jest/fileTransform.js",
-    "\\.(css|less)$": "<rootDir>/config/jest/fileTransform.js",
-  },
+  "^@/(.*)$": "<rootDir>/src/$1",
+  "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+    "<rootDir>/config/jest/fileTransform.js",
+  "\\.(css|less)$": "<rootDir>/config/jest/fileTransform.js",
+},
   transformIgnorePatterns: [`/node_modules/.pnpm/(?!${esModules})`],
   modulePathIgnorePatterns: ["/node_modules/", ".dist"],
   collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],

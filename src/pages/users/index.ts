@@ -1,0 +1,1 @@
+export { default as LinkUserPage } from "./link"
