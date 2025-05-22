@@ -12,9 +12,8 @@ export default function LinkUserPage() {
         client.setTitle("Link User")
     }, [])
 
-    useDeskproElements(({ clearElements, registerElement, deRegisterElement }) => {
+    useDeskproElements(({ clearElements, registerElement }) => {
         clearElements()
-        deRegisterElement("menu")
         // Should return the agent to the envelope list page with the linked user
         // being the Deskpro user [unless something weird happens].
         registerElement("home", {
@@ -22,6 +21,17 @@ export default function LinkUserPage() {
             payload: { type: "changePath", path: "/envelopes/list" },
         })
         registerElement("refresh", { type: "refresh_button" })
+        registerElement("menu", {
+            type: "menu",
+            items: [
+                {
+                    title: "Logout",
+                    payload: {
+                        type: "logout",
+                    },
+                }
+            ]
+        })
     }, [])
     const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined)
 

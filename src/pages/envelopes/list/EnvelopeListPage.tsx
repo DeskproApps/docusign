@@ -28,6 +28,12 @@ export default function EnvelopeListPage() {
           payload: {
             type: "unlink",
           },
+        },
+        {
+          title: "Logout",
+          payload: {
+            type: "logout",
+          },
         }
       ]
     })

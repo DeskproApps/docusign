@@ -9,11 +9,13 @@ import { Warning } from "./pages/admin/Warning";
 import isValidPayload from "./utils/isValidPayload";
 import LoadingPage from "./pages/loading";
 import LoginPage from "./pages/login";
+import useLogout from "./hooks/useLogout";
 
 function App() {
-  const navigate = useNavigate()
+  const { clearUserAuthState } = useLogout()
   const { client } = useDeskproAppClient()
   const { context } = useDeskproLatestAppContext<ContextData, unknown>()
+  const navigate = useNavigate()
   const deskproUser = context?.data?.user
 
   useDeskproAppEvents({
@@ -38,6 +40,19 @@ function App() {
                 navigate("/users/link")
               })
             break
+          case "logout":
+            if (!client) {
+              return
+            }
+            clearUserAuthState(client)
+              .then(() => {
+                navigate("/login")
+              })
+              .catch(()=>{
+                // eslint-disable-next-line no-console
+                console.error("Error logging out user.")
+              })
+            break
         }
       }
     },
@@ -46,7 +61,7 @@ function App() {
   return (
     <Routes>
       <Route path="/">
-          <Route path="login" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
         <Route index element={<LoadingPage />} />
         <Route path="admin">
           <Route path="callback" element={<AdminCallbackPage />} />
