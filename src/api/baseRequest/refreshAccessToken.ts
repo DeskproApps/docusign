@@ -3,7 +3,7 @@ import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
 
 export default async function refreshAccessToken(client: IDeskproClient) {
     const dpFetch = await proxyFetch(client)
-    const body = `grant_type=refresh_token&refresh_token=[[oauth/global/refresh_token]]`
+    const body = `grant_type=refresh_token&refresh_token=[user[${REFRESH_TOKEN_PATH}]]`
 
     const refreshRequestOptions: RequestInit = {
         method: "POST",
