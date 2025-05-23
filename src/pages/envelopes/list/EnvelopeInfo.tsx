@@ -1,15 +1,16 @@
 import { DeskproTheme, H3, P5, P8, Stack } from "@deskpro/deskpro-ui";
 import { IEnvelopeFromList } from "@/api/types";
-import { LogoAndLinkButton } from "@/components/LogoAndLinkButton/LogoAndLinkButton";
 import { PropertyRow } from "@deskpro/app-sdk";
+import LogoAndLinkButton from "@/components/LogoAndLinkButton";
 
 interface EnvelopeInfoProps {
     envelope: IEnvelopeFromList
     theme: DeskproTheme
+    isSandboxAccount: boolean
 }
 
 export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.Element {
-    const { envelope, theme } = props
+    const { envelope, theme, isSandboxAccount } = props
 
     const recipients = extractRecipients(envelope.recipients)
     const paragraphTheme = theme.colors.grey80
@@ -25,7 +26,7 @@ export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.El
                 }}
             >
                 <H3 style={{ lineHeight: "18px" }}>{envelope.emailSubject}</H3>
-                <LogoAndLinkButton endpoint={`/documents/details/${envelope.envelopeId}`} />
+                <LogoAndLinkButton isSandboxAccount={isSandboxAccount} endpoint={`/send/documents/details/${envelope.envelopeId}`} />
             </Stack>
 
             {/* Envelope metadata. */}

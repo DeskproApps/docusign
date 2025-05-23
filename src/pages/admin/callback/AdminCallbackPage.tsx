@@ -18,7 +18,7 @@ export default function AdminCallbackPage() {
     useInitialisedDeskproAppClient(async (client) => {
         const oauth2: IOAuth2 = await client.startOauth2Local(
             ({ callbackUrl, state }: { callbackUrl: string; state: string }) => {
-                return `https://account-d.docusign.com/oauth/auth?${createSearchParams([
+                return `https://xxx.docusign.com/oauth/auth?${createSearchParams([
                     ["response_type", "code"],
                     ["client_id", "xxx"],
                     ["state", state],

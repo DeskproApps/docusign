@@ -1,10 +1,11 @@
-import { exchangeCodeForToken, getAuthenticatedUser } from "@/api"
 import { ACCESS_TOKEN_PATH, REFRESH_TOKEN_PATH, SCOPES } from "@/constants/auth"
 import { ContextData, ContextSettings } from "@/types/deskpro"
-import { IUserInfo } from "@/types/docusign/general"
-import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
-import { useCallback, useState } from "react"
 import { createSearchParams } from "react-router-dom"
+import { exchangeCodeForToken, getAuthenticatedUser } from "@/api"
+import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
+import { IUserInfo } from "@/types/docusign/general"
+import { useCallback, useState } from "react"
+import resolveSubdomain from "@/utils/resolveSubdomain"
 
 interface UseLoginReturn {
     authURL: string | null,
@@ -26,6 +27,9 @@ export default function useLogin(): UseLoginReturn {
     const settings = context?.settings
     const mode = settings?.use_advanced_connect === false ? 'global' : 'local'
     const integrationKey = settings?.integration_key
+    const isSandboxAccount = settings?.use_advanced_connect !== false && settings?.use_sandbox_account === true
+    const authUrlSubdomain = resolveSubdomain("account", isSandboxAccount)
+
 
     useInitialisedDeskproAppClient(async (client) => {
         if (!settings) {
@@ -42,7 +46,8 @@ export default function useLogin(): UseLoginReturn {
         const oAuthResponse = mode === "local" ?
             await client.startOauth2Local(
                 ({ state, callbackUrl }) => {
-                    return `https://account-d.docusign.com/oauth/auth?${createSearchParams([
+                    const localAuthURL = `https://${authUrlSubdomain}.docusign.com/oauth/auth`
+                    return `${localAuthURL}?${createSearchParams([
                         ["response_type", "code"],
                         ["client_id", integrationKey ?? ""],
                         ["state", state],
@@ -60,7 +65,7 @@ export default function useLogin(): UseLoginReturn {
                         throw new Error("Failed to get callback URL")
                     }
 
-                    const data: OAuth2Result["data"] = await exchangeCodeForToken(client, { code, redirect_uri: redirectUri })
+                    const data: OAuth2Result["data"] = await exchangeCodeForToken(client, { code, redirect_uri: redirectUri, isSandboxAccount })
 
                     return { data }
                 }
@@ -87,7 +92,7 @@ export default function useLogin(): UseLoginReturn {
                     await client.setUserState(REFRESH_TOKEN_PATH, result.data.refresh_token, { backend: true })
                 }
 
-                const activeUser = await getAuthenticatedUser(client)
+                const activeUser = await getAuthenticatedUser(client, isSandboxAccount)
 
                 if (!activeUser) {
                     throw new Error("Error authenticating user.")

@@ -1,8 +1,10 @@
 import { IDeskproClient, OAuth2Result, proxyFetch } from "@deskpro/app-sdk";
+import resolveSubdomain from "@/utils/resolveSubdomain";
 
 interface TokenRequestPayload {
     code: string
     redirect_uri: string
+    isSandboxAccount: boolean
 }
 
 export default async function exchangeCodeForToken(client: IDeskproClient, params: TokenRequestPayload) {
@@ -16,8 +18,8 @@ export default async function exchangeCodeForToken(client: IDeskproClient, param
         redirect_uri: params.redirect_uri,
     })
 
-    // Handle SANDBOX vs PRODUCTION
-    const fetchURL = "https://account-d.docusign.com/oauth/token"
+    const subdomain = resolveSubdomain("account", params.isSandboxAccount)
+    const fetchURL = `https://${subdomain}.docusign.com/oauth/token`
 
     const response = await dpFetch(fetchURL, {
         method: "POST",

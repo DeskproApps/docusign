@@ -1,11 +1,13 @@
 import { ACCESS_TOKEN_PATH } from "@/constants/auth";
-import { IUserInfo } from "@/types/docusign/general";
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
+import { IUserInfo } from "@/types/docusign/general";
+import resolveSubdomain from "@/utils/resolveSubdomain";
 
-export default async function getAuthenticatedUser(client: IDeskproClient): Promise<IUserInfo | null> {
+export default async function getAuthenticatedUser(client: IDeskproClient, isSandboxAccount: boolean): Promise<IUserInfo | null> {
     const dpFetch = await proxyFetch(client)
 
-    const response = await dpFetch("https://account-d.docusign.com/oauth/userinfo", {
+    const subdomain = resolveSubdomain("account", isSandboxAccount)
+    const response = await dpFetch(`https://${subdomain}.docusign.com/oauth/userinfo`, {
         method: "GET",
         headers: {
             Authorization: `Bearer [user[${ACCESS_TOKEN_PATH}]]`,

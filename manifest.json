@@ -7,7 +7,12 @@
   "isSingleInstall": false,
   "hasDevMode": true,
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
-  "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
+  "targets": [
+    {
+      "target": "user_sidebar",
+      "entrypoint": "index.html"
+    }
+  ],
   "entityAssociations": {
     "linkedDocusignUsers": {
       "entity": "person",
@@ -16,17 +21,18 @@
     }
   },
   "settings": {
-    "warning_page": {
-      "title": "",
-      "type": "app_embedded",
-      "options": { "entrypoint": "#/admin/warning" },
+    "use_advanced_connect": {
+      "title": "Advanced Connect",
+      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro.",
+      "type": "boolean",
+      "default": false,
       "isRequired": false,
       "isBackendOnly": false,
       "order": 10
     },
-    "use_advanced_connect": {
-      "title": "Advanced Connect",
-      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro.",
+    "use_sandbox_account": {
+      "title": "Sandbox Account",
+      "description": "Enable this if you are using a Docusign sandbox (demo) account. When turned on, non-sandbox account logins will be disabled. Sandbox accounts cannot be used with quick connect.",
       "type": "boolean",
       "default": false,
       "isRequired": false,
@@ -54,23 +60,65 @@
     "callback_url": {
       "title": "Callback URL",
       "type": "app_embedded",
-      "options": { "entrypoint": "#/admin/callback", "height": "80px" },
+      "options": {
+        "entrypoint": "#/admin/callback",
+        "height": "80px"
+      },
       "isRequired": false,
       "isBackendOnly": true,
       "condition": "settings.use_advanced_connect != false",
       "order": 50
+    },
+        "warning_page": {
+      "title": "",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "#/admin/warning",
+        "height": "150px"
+      },
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 60
     }
   },
   "proxy": {
     "whitelist": [
       {
         "url": "https://account-d.docusign.com/.*",
-        "methods": ["GET", "POST"],
+        "methods": [
+          "GET",
+          "POST"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": "https://account.docusign.com/.*",
+        "methods": [
+          "GET",
+          "POST"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": "https://www.docusign.net/.*",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ],
         "timeout": 20
       },
       {
         "url": "https://demo.docusign.net/.*",
-        "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ],
         "timeout": 20
       }
     ]

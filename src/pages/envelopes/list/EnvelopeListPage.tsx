@@ -1,5 +1,6 @@
 import { Button, Stack } from "@deskpro/deskpro-ui";
-import { HorizontalDivider, LoadingSpinner, useDeskproAppTheme, useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
+import { ContextData, ContextSettings } from "@/types/deskpro";
+import { HorizontalDivider, LoadingSpinner, useDeskproAppTheme, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
 import { useNavigate } from "react-router-dom";
 import EnvelopeListSection from "./components/EnvelopeListSection";
 import useLinkedUser from "@/hooks/useLinkedUser";
@@ -8,9 +9,12 @@ import useUserEnvelopes from "@/hooks/useUserEnvelopes";
 export default function EnvelopeListPage() {
   const navigate = useNavigate()
   const { theme } = useDeskproAppTheme()
-
   const { linkedUser } = useLinkedUser()
   const { envelopes, error, isLoading } = useUserEnvelopes(linkedUser?.email ?? "")
+  const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
+
+  const settings = context?.settings
+  const isSandboxAccount = settings?.use_advanced_connect !== false && settings?.use_sandbox_account === true
 
   useInitialisedDeskproAppClient((client) => {
     client.setTitle("Docusign")
@@ -68,7 +72,14 @@ export default function EnvelopeListPage() {
 
       <HorizontalDivider style={{ width: "100%" }} />
 
-      <EnvelopeListSection navigate={navigate} linkedUser={linkedUser} theme={theme} envelopes={sortedEnvelopes} error={error} />
+      <EnvelopeListSection
+        navigate={navigate}
+        linkedUser={linkedUser}
+        theme={theme}
+        envelopes={sortedEnvelopes}
+        error={error}
+        isSandboxAccount={isSandboxAccount}
+      />
     </Stack>
   )
 }

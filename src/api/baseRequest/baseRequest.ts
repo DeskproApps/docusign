@@ -2,6 +2,7 @@ import { ACCESS_TOKEN_PATH, ACCOUNT_ID_PATH } from "@/constants/auth";
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
 import { RequestMethod } from "@/api/types";
 import refreshAccessToken from "./refreshAccessToken";
+import resolveSubdomain from "@/utils/resolveSubdomain";
 
 interface BaseRequestParams {
     endpoint: string,
@@ -17,10 +18,13 @@ interface BaseRequestParams {
  * @throws {DocusignError} If the HTTP status code indicates a failed request (not 2xx or 3xx).
  */
 export default async function baseRequest<T = unknown>(client: IDeskproClient, params: BaseRequestParams) {
-
     const { endpoint, method, data } = params
 
-    const baseURL = `https://demo.docusign.net/restapi/v2.1/accounts/[user[${ACCOUNT_ID_PATH}]]`
+    const isSandboxAccount = (await client.getUserState<boolean>("isSandboxAccount"))[0]?.data ?? false
+    const isUsingGlobalProxy = (await client.getUserState<boolean>("isUsingGlobalProxy"))[0]?.data ?? false
+    
+    const subdomain  = resolveSubdomain("general-api", isSandboxAccount)
+    const baseURL = `https://${subdomain}.docusign.net/restapi/v2.1/accounts/[user[${ACCOUNT_ID_PATH}]]`
     const requestURL = `${baseURL}/${endpoint}`
 
     const dpFetch = await proxyFetch(client)
@@ -43,9 +47,11 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
 
     let response = await makeRequest()
 
-    if ([401, 403].includes(response.status)) {
+    // We cannot refresh the access token if we are using the global proxy
+    // because the integration key and secret key are not available.
+    if ([401, 403].includes(response.status) && !isUsingGlobalProxy) {
         try {
-            await refreshAccessToken(client)
+            await refreshAccessToken(client, isSandboxAccount)
             response = await makeRequest()
         } catch (err) {
             throw new DocusignError("Error refreshing access token", { statusCode: response.status })
