@@ -1,7 +1,7 @@
-import { ACCESS_TOKEN_PATH, REFRESH_TOKEN_PATH, SCOPES } from "@/constants/auth"
+import { ACCESS_TOKEN_PATH, ACCOUNT_ID_PATH, REFRESH_TOKEN_PATH, SCOPES } from "@/constants/auth"
 import { ContextData, ContextSettings } from "@/types/deskpro"
 import { createSearchParams } from "react-router-dom"
-import { exchangeCodeForToken, getAuthenticatedUser } from "@/api"
+import { exchangeCodeForToken, getAuthenticatedUser, triggerRequests } from "@/api"
 import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
 import { IUserInfo } from "@/types/docusign/general"
 import { useCallback, useState } from "react"
@@ -13,6 +13,7 @@ interface UseLoginReturn {
     isLoading: boolean,
     onSignIn: () => void
     userInfo: IUserInfo | null,
+    hasTriggeredRequests?: boolean
 }
 
 export default function useLogin(): UseLoginReturn {
@@ -20,6 +21,7 @@ export default function useLogin(): UseLoginReturn {
     const [error, setError] = useState<null | string>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [isPolling, setIsPolling] = useState(false)
+    const [hasTriggeredRequests, setHasTriggeredRequests] = useState<boolean | undefined>(undefined)
     const [oAuthContext, setOAuthContext] = useState<IOAuth2 | null>(null)
     const [userInfo, setUserInfo] = useState<IUserInfo | null>(null)
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
@@ -28,6 +30,7 @@ export default function useLogin(): UseLoginReturn {
     const mode = settings?.use_advanced_connect === false ? 'global' : 'local'
     const integrationKey = settings?.integration_key
     const isSandboxAccount = settings?.use_advanced_connect !== false && settings?.use_sandbox_account === true
+    const shouldSend20Requests = isSandboxAccount && settings?.should_send_20_requests_on_login === true
     const authUrlSubdomain = resolveSubdomain("account", isSandboxAccount)
 
 
@@ -98,6 +101,18 @@ export default function useLogin(): UseLoginReturn {
                     throw new Error("Error authenticating user.")
                 }
 
+                oAuthContext.stopPolling
+
+
+                if (shouldSend20Requests) {
+                    await client.setUserState(ACCOUNT_ID_PATH, activeUser.accounts[0].account_id)
+                    const hasTriggered = await triggerRequests(client)
+                    setHasTriggeredRequests(hasTriggered)
+                    if (hasTriggered) {
+                        await client.setSetting("should_send_20_requests_on_login", "false")
+                    }
+                    await client.deleteUserState(ACCOUNT_ID_PATH)
+                }
                 setUserInfo(activeUser)
 
             } catch (error) {
@@ -129,6 +144,7 @@ export default function useLogin(): UseLoginReturn {
         error,
         isLoading,
         onSignIn,
-        userInfo
+        userInfo,
+        hasTriggeredRequests
     }
 }

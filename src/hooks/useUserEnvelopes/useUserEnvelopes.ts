@@ -17,7 +17,7 @@ export default function useUserEnvelopes(userEmail: string): UseUserEnvelopesRet
         ["userEnvelopes", userEmail],
         async (client) => {
             try {
-                return await getUserEnvelopes(client, userEmail)
+                return await getUserEnvelopes(client, { userEmail })
 
             } catch (e) {
                 let message = "Unknown error while retrieving envelopes."

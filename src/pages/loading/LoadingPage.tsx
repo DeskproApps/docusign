@@ -29,7 +29,7 @@ export default function LoadingPage() {
         if (!settings) {
             return
         }
-
+        
         client.setUserState("isSandboxAccount", isSandboxAccount)
         client.setUserState("isUsingGlobalProxy", isUsingGlobalProxy)
 

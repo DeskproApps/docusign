@@ -46,4 +46,5 @@ export interface ContextSettings {
     integration_key?: string
     use_advanced_connect?: boolean,
     use_sandbox_account?: boolean,
+    should_send_20_requests_on_login?: boolean,
 }

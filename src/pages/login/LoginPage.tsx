@@ -32,7 +32,7 @@ export default function LoginPage() {
         navigate("/envelopes/list")
     }, [client, navigate])
 
-    const { authURL, isLoading, onSignIn, error, userInfo } = useLogin()
+    const { authURL, isLoading, onSignIn, error, userInfo, hasTriggeredRequests } = useLogin()
 
     const anchorButtonIsDisabled = !authURL || isLoading || userInfo !== null
     return (
@@ -47,7 +47,18 @@ export default function LoginPage() {
                 text={"Log In"}
             />
 
-            {error && <Callout accent="red">{error}</Callout>}
+            {hasTriggeredRequests !== undefined && (
+                <Callout
+                    style={{ width: "100%" }}
+                    accent={hasTriggeredRequests ? "cyan" : "red"}>
+                    {hasTriggeredRequests
+                        ? "20 requests have been triggered. You can now submit your app for review." :
+                        "Error while triggering 20 requests. Please try again."}
+                </Callout>
+            )
+            }
+
+            {error && <Callout style={{ width: "100%" }} accent="red">{error}</Callout>}
 
             {userInfo && (
                 <AccountSelect onAccountConfirm={onAccountConfirm} user={userInfo} />

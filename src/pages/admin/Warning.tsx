@@ -13,7 +13,7 @@ export const Warning = () => {
     <Stack vertical gap={5}>
       <H1 style={{ color: theme.colors.red60 }}>Warning</H1>
       <P5>
-        Please be advised that in order to use the Docusign app, you will be
+        Please be advised that in order to use the Docusign app for production accounts, you will be
         required to submit a review of the app on their website. We cannot
         guarantee how long it may take for your review to be processed. For more
         information, please refer to our setup guide.{" "}

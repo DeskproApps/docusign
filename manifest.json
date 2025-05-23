@@ -28,7 +28,19 @@
       "default": false,
       "isRequired": false,
       "isBackendOnly": false,
-      "order": 10
+      "order": 5
+    },
+    "warning_page": {
+      "title": "",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "#/admin/warning",
+        "height": "90px"
+      },
+      "isRequired": false,
+      "condition": "settings.use_advanced_connect != false",
+      "isBackendOnly": false,
+      "order": 6
     },
     "use_sandbox_account": {
       "title": "Sandbox Account",
@@ -37,7 +49,18 @@
       "default": false,
       "isRequired": false,
       "isBackendOnly": false,
-      "order": 20
+      "condition": "settings.use_advanced_connect != false",
+      "order": 10
+    },
+    "should_send_20_requests_on_login": {
+      "title": "Send 20 Requests After Logging In",
+      "description": "Enable this if you need 20 requests to make your app eligible for review.",
+      "type": "boolean",
+      "default": false,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect != false && settings.use_sandbox_account == true",
+      "order": 10
     },
     "integration_key": {
       "title": "Integration Key",
@@ -68,18 +91,8 @@
       "isBackendOnly": true,
       "condition": "settings.use_advanced_connect != false",
       "order": 50
-    },
-        "warning_page": {
-      "title": "",
-      "type": "app_embedded",
-      "options": {
-        "entrypoint": "#/admin/warning",
-        "height": "150px"
-      },
-      "isRequired": false,
-      "isBackendOnly": false,
-      "order": 60
     }
+    
   },
   "proxy": {
     "whitelist": [
