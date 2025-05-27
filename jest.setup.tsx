@@ -20,10 +20,6 @@ jest.mock("react-router-dom", () => ({
   useParams: () => ({ submitType: "file" }),
 }));
 
-jest.mock("./src/components/LogoAndLinkButton/LogoAndLinkButton", () => ({
-  LogoAndLinkButton: () => <div>LogoAndLinkButton</div>,
-}));
-
 jest.mock("./src/styles.ts", () => ({
   ...jest.requireActual("./src/styles.ts"),
   StyledLink: () => <div>StyledLink</div>,
