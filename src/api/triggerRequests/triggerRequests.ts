@@ -7,12 +7,10 @@ export default async function triggerRequests(client: IDeskproClient, requestCou
 
     for (let i = 0; i < requestCount; i++) {
         try {
-            const response = await getUserEnvelopes(client, {
+            await getUserEnvelopes(client, {
                 userEmail: "",
                 limit: 1
             })
-            // REMOVE BEFORE PRODUCTION
-            console.log(`Request ${i + 1} was successful:`, response)
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(`Request ${i + 1} failed:`, error)
@@ -25,7 +23,7 @@ export default async function triggerRequests(client: IDeskproClient, requestCou
         }
     }
 
-    // REMOVE BEFORE PRODUCTION
+    // eslint-disable-next-line no-console
     console.log(`All ${requestCount} requests completed successfully!`)
     return true
 }

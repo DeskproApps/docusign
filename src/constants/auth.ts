@@ -14,3 +14,5 @@ export const SCOPES = [
     "organization_read",
     "domain_read"
 ] as const
+
+export const GLOBAL_PROXY_INTEGRATION_KEY = "REPLACE ME BEFORE MERGE"

@@ -5,6 +5,7 @@ import { useDeskproAppClient, useDeskproElements, useInitialisedDeskproAppClient
 import { useNavigate } from "react-router-dom";
 import AccountSelect from "./components/AccountSelect";
 import Callout from "@/components/Callout";
+import TriggerRequests from "./components/TriggerRequests";
 import useLogin from "./hooks/useLogin";
 
 
@@ -32,7 +33,7 @@ export default function LoginPage() {
         navigate("/envelopes/list")
     }, [client, navigate])
 
-    const { authURL, isLoading, onSignIn, error, userInfo, hasTriggeredRequests } = useLogin()
+    const { authURL, isLoading, onSignIn, error, userInfo, triggeredRequest } = useLogin()
 
     const anchorButtonIsDisabled = !authURL || isLoading || userInfo !== null
     return (
@@ -47,16 +48,7 @@ export default function LoginPage() {
                 text={"Log In"}
             />
 
-            {hasTriggeredRequests !== undefined && (
-                <Callout
-                    style={{ width: "100%" }}
-                    accent={hasTriggeredRequests ? "cyan" : "red"}>
-                    {hasTriggeredRequests
-                        ? "20 requests have been triggered. You can now submit your app for review." :
-                        "Error while triggering 20 requests. Please try again."}
-                </Callout>
-            )
-            }
+            <TriggerRequests request={triggeredRequest} />
 
             {error && <Callout style={{ width: "100%" }} accent="red">{error}</Callout>}
 

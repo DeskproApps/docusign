@@ -4,6 +4,7 @@
   "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with Docusign.",
   "version": "0.0.21",
   "scope": "agent",
+  "secrets": "REPLACE ME BEFORE MERGE",
   "isSingleInstall": false,
   "hasDevMode": true,
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",

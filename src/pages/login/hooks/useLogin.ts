@@ -1,9 +1,10 @@
-import { ACCESS_TOKEN_PATH, ACCOUNT_ID_PATH, REFRESH_TOKEN_PATH, SCOPES } from "@/constants/auth"
+import { ACCESS_TOKEN_PATH, ACCOUNT_ID_PATH, GLOBAL_PROXY_INTEGRATION_KEY, REFRESH_TOKEN_PATH, SCOPES } from "@/constants/auth"
 import { ContextData, ContextSettings } from "@/types/deskpro"
 import { createSearchParams } from "react-router-dom"
 import { exchangeCodeForToken, getAuthenticatedUser, triggerRequests } from "@/api"
 import { IOAuth2, OAuth2Result, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
 import { IUserInfo } from "@/types/docusign/general"
+import { TriggeredRequest } from "../components/TriggerRequests"
 import { useCallback, useState } from "react"
 import resolveSubdomain from "@/utils/resolveSubdomain"
 
@@ -13,7 +14,7 @@ interface UseLoginReturn {
     isLoading: boolean,
     onSignIn: () => void
     userInfo: IUserInfo | null,
-    hasTriggeredRequests?: boolean
+    triggeredRequest: TriggeredRequest | null
 }
 
 export default function useLogin(): UseLoginReturn {
@@ -21,8 +22,8 @@ export default function useLogin(): UseLoginReturn {
     const [error, setError] = useState<null | string>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [isPolling, setIsPolling] = useState(false)
-    const [hasTriggeredRequests, setHasTriggeredRequests] = useState<boolean | undefined>(undefined)
     const [oAuthContext, setOAuthContext] = useState<IOAuth2 | null>(null)
+    const [triggeredRequest, setTriggeredRequest] = useState<TriggeredRequest | null>(null)
     const [userInfo, setUserInfo] = useState<IUserInfo | null>(null)
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
 
@@ -32,7 +33,6 @@ export default function useLogin(): UseLoginReturn {
     const isSandboxAccount = settings?.use_advanced_connect !== false && settings?.use_sandbox_account === true
     const shouldSend20Requests = isSandboxAccount && settings?.should_send_20_requests_on_login === true
     const authUrlSubdomain = resolveSubdomain("account", isSandboxAccount)
-
 
     useInitialisedDeskproAppClient(async (client) => {
         if (!settings) {
@@ -74,7 +74,7 @@ export default function useLogin(): UseLoginReturn {
                 }
             ) :
             // Global Proxy Service
-            await client.startOauth2Global("")
+            await client.startOauth2Global(GLOBAL_PROXY_INTEGRATION_KEY)
 
         setAuthURL(oAuthResponse.authorizationUrl)
         setOAuthContext(oAuthResponse)
@@ -103,11 +103,19 @@ export default function useLogin(): UseLoginReturn {
 
                 oAuthContext.stopPolling
 
-
                 if (shouldSend20Requests) {
                     await client.setUserState(ACCOUNT_ID_PATH, activeUser.accounts[0].account_id)
+                    setTriggeredRequest({
+                        isLoading: true,
+                        success: false
+                    })
+
                     const hasTriggered = await triggerRequests(client)
-                    setHasTriggeredRequests(hasTriggered)
+                    setTriggeredRequest({
+                        isLoading: false,
+                        success: hasTriggered
+                    })
+
                     if (hasTriggered) {
                         await client.setSetting("should_send_20_requests_on_login", "false")
                     }
@@ -116,7 +124,7 @@ export default function useLogin(): UseLoginReturn {
                 setUserInfo(activeUser)
 
             } catch (error) {
-                setError(error instanceof Error ? error.message : 'Unknown error');
+                setError(error instanceof Error ? error.message : 'Unknown error')
             } finally {
                 setIsLoading(false)
                 setIsPolling(false)
@@ -126,7 +134,7 @@ export default function useLogin(): UseLoginReturn {
         if (isPolling) {
             void startPolling()
         }
-    }, [isPolling, oAuthContext])
+    }, [isPolling, oAuthContext, shouldSend20Requests, isSandboxAccount])
 
 
     const onSignIn = useCallback(() => {
@@ -145,6 +153,6 @@ export default function useLogin(): UseLoginReturn {
         isLoading,
         onSignIn,
         userInfo,
-        hasTriggeredRequests
+        triggeredRequest
     }
 }
