@@ -1,7 +1,8 @@
 import { DeskproTheme, H3, P5, P8, Stack } from "@deskpro/deskpro-ui";
 import { IEnvelopeFromList } from "@/api/types";
-import { PropertyRow } from "@deskpro/app-sdk";
-import LogoAndLinkButton from "@/components/LogoAndLinkButton";
+import { ExternalIconLink, PropertyRow } from "@deskpro/app-sdk";
+import { DocusignLogo } from "@/components/DocusignLogo/DocusignLogo";
+import resolveSubdomain from "@/utils/resolveSubdomain";
 
 interface EnvelopeInfoProps {
     envelope: IEnvelopeFromList
@@ -14,6 +15,8 @@ export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.El
 
     const recipients = extractRecipients(envelope.recipients)
     const paragraphTheme = theme.colors.grey80
+      const subdomain = resolveSubdomain("web-app", isSandboxAccount)
+    
 
     return (
         <Stack vertical style={{ width: "100%" }} gap={5} key={envelope.envelopeId}>
@@ -26,7 +29,10 @@ export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.El
                 }}
             >
                 <H3 style={{ lineHeight: "18px" }}>{envelope.emailSubject}</H3>
-                <LogoAndLinkButton isSandboxAccount={isSandboxAccount} endpoint={`/send/documents/details/${envelope.envelopeId}`} />
+                <ExternalIconLink
+                    href={`https://${subdomain}.docusign.com/send/documents/details/${envelope.envelopeId}`}
+                    icon={<DocusignLogo />}
+                />
             </Stack>
 
             {/* Envelope metadata. */}
@@ -37,7 +43,7 @@ export default function EnvelopeInfo(props: Readonly<EnvelopeInfoProps>): JSX.El
                             Recipient(s)
                         </P8>
 
-                        {recipients.map((recipient)=>{
+                        {recipients.map((recipient) => {
                             return (
                                 // Yes, each recipient is unique.
                                 <P5 key={recipient}>{recipient}</P5>
@@ -79,7 +85,7 @@ function formatDate(date: Date) {
 }
 
 
-function extractRecipients(recipients: IEnvelopeFromList["recipients"]): string[]{
+function extractRecipients(recipients: IEnvelopeFromList["recipients"]): string[] {
     const mergedRecipients = [
         ...(recipients?.carbonCopies ?? []),
         ...(recipients?.signers ?? [])
