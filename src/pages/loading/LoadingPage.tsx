@@ -1,5 +1,5 @@
 import { ContextData, ContextSettings } from "@/types/deskpro"
-import { DocusignError, isErrorWithMessage } from "@/api/baseRequest"
+import { parseAuthError } from "@/api/baseRequest"
 import { getAccountUsers } from "@/api"
 import { LoadingSpinner, useDeskproElements, useDeskproLatestAppContext, useInitialisedDeskproAppClient } from "@deskpro/app-sdk"
 import { useNavigate } from "react-router-dom"
@@ -18,10 +18,10 @@ export default function LoadingPage() {
     const navigate = useNavigate()
 
     const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
-    
-      const settings = context?.settings
-      const isSandboxAccount = settings?.use_advanced_connect !== false && settings?.use_sandbox_account === true
-      const isUsingGlobalProxy = settings?.use_advanced_connect === false
+
+    const settings = context?.settings
+    const isSandboxAccount = settings?.use_advanced_connect !== false && settings?.use_sandbox_account === true
+    const isUsingGlobalProxy = settings?.use_advanced_connect === false
 
     useInitialisedDeskproAppClient((client) => {
         client.setTitle("Docusign")
@@ -29,7 +29,7 @@ export default function LoadingPage() {
         if (!settings) {
             return
         }
-        
+
         client.setUserState("isSandboxAccount", isSandboxAccount)
         client.setUserState("isUsingGlobalProxy", isUsingGlobalProxy)
 
@@ -42,17 +42,14 @@ export default function LoadingPage() {
                 }
             })
             .catch((error: unknown) => {
-                let errorMessage = "Unknown error."
+                // Auth related errors should lead to the user being
+                // redirected to the login page while other errors
+                // should be passed to the error boundary.
+                const errorData = parseAuthError(error)
 
-                if (error instanceof DocusignError && isErrorWithMessage(error.data)) {
-                    errorMessage = error.data.message
-                } else if (error instanceof Error) {
-                    errorMessage = error.message
+                if (errorData.type !== "AUTH_ERROR") {
+                    throw error
                 }
-
-                // eslint-disable-next-line no-console
-                console.error("Error authenticating user: ", errorMessage)
-                return
             })
             .finally(() => {
                 setIsFetchingAuth(false)

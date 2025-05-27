@@ -29,6 +29,7 @@ export default function useUserEnvelopes(userEmail: string): UseUserEnvelopesRet
                 }
 
                 setError(message)
+                return null
             }
         },
         {

@@ -93,6 +93,7 @@ export class DocusignError extends Error {
 }
 interface DocusignErrorData {
     message: string
+    errorCode?: string
 }
 
 export function isErrorWithMessage(data: unknown): data is DocusignErrorData {
