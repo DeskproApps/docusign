@@ -54,7 +54,7 @@
       "order": 10
     },
     "should_send_20_requests_on_login": {
-      "title": "Send 20 Requests After Logging In",
+      "title": "Send 20 Requests After Next Login",
       "description": "Enable this if you need 20 requests to make your app eligible for review.",
       "type": "boolean",
       "default": false,

@@ -21,7 +21,7 @@ export default function TriggerRequests(props: Readonly<TriggerRequestsProps>) {
     }
 
     if (request.isLoading) {
-        return (<P2>Triggering requests, this might take while...</P2>)
+        return (<P2>Triggering requests, this may take a few moments to complete...</P2>)
     }
 
     return (
