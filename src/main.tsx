@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react';
 import './instrument';
 import "./main.css";
 import "@deskpro/deskpro-ui/dist/deskpro-custom-icons.css";
@@ -15,11 +14,12 @@ import { Suspense } from "react";
 import App from "./App";
 import ErrorFallbackPage from "./pages/error";
 import ReactDOM from "react-dom/client";
+import { ErrorBoundary, reactErrorHandler } from '@sentry/react';
 
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as Element, {
+  onRecoverableError: reactErrorHandler(),
+});
 root.render(
   <Scrollbar style={{ height: "100%", width: "100%" }}>
     <DeskproAppProvider>
@@ -28,12 +28,9 @@ root.render(
           <Suspense fallback={<LoadingSpinner />}>
             <QueryErrorResetBoundary>
               {({ reset }) => {
-
-                return (<Sentry.ErrorBoundary onReset={reset} FallbackComponent={ErrorFallbackPage}>
-
+                return (<ErrorBoundary onReset={reset} fallback={ErrorFallbackPage}>
                   <App />
-
-                </Sentry.ErrorBoundary>)
+                </ErrorBoundary>)
               }}
             </QueryErrorResetBoundary>
           </Suspense>
