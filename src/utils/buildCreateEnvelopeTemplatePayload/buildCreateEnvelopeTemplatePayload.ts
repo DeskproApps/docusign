@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 export default function buildCreateEnvelopeTemplatePayload(data: Prettify<CreateEnvelopeTemplateFormMeta>): CreateEnvelopeTemplatePayload {
 
     const emailMessage = data.emailMessage
-    const isValidEmailMessage = (emailMessage && emailMessage.trim()) !== ""
+    const isValidEmailMessage = typeof emailMessage === "string" && emailMessage.trim() !== ""
 
     const payload: CreateEnvelopeTemplatePayload = {
         emailSubject: data.emailSubject,
