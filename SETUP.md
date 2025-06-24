@@ -29,6 +29,8 @@ In the "Additional settings" section, click "Add URI and paste the callback URL 
 
 Once you're done click save.
 
+⚠️ To view the setup guide after installing the app, click on the Docusign app from the "Available". tab
+
 ## Prepare Your App For Review (For Production Accounts)
 To use the Docusign integration in a production environment, your app must first be reviewed and approved by Docusign. At this stage, your app’s `Go Live Status` will likely show as `Not Started`.
 
