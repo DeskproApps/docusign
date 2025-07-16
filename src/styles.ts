@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { DeskproAppTheme } from "@deskpro/app-sdk";
 
-export const StyledLink = styled(Link)`
+
+export const StyledLink = styled(Link)<DeskproAppTheme>`
   all: unset;
   color: ${({ theme, to }) =>
     to ? theme.colors.cyan100 : theme.colors.black100};
