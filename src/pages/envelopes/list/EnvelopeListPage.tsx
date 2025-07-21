@@ -10,7 +10,7 @@ export default function EnvelopeListPage() {
   const navigate = useNavigate()
   const { theme } = useDeskproAppTheme()
   const { linkedUser } = useLinkedUser()
-  const { envelopes, error, isLoading } = useUserEnvelopes(linkedUser?.email ?? "")
+  const { envelopes, error, isLoading, canViewTemplates } = useUserEnvelopes(linkedUser?.email ?? "")
   const { context } = useDeskproLatestAppContext<ContextData, ContextSettings>()
 
   const settings = context?.settings
@@ -63,11 +63,15 @@ export default function EnvelopeListPage() {
           intent="secondary"
           onClick={() => { void navigate(`/envelopes/create`) }}
         />
-        <Button
+
+        {/* Not all accounts are allowed to send template so we only show the
+         button if the user's account can. */}
+        {canViewTemplates && (<Button
           text="Send a template"
           intent="secondary"
           onClick={() => { void navigate(`/envelopes/templates/send`) }}
-        />
+        />)}
+
       </Stack>
 
       <HorizontalDivider style={{ width: "100%" }} />
