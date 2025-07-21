@@ -1,8 +1,7 @@
-import { ACCESS_TOKEN_PATH, ACCOUNT_ID_PATH } from "@/constants/auth";
+import { ACCESS_TOKEN_PATH, ACCOUNT_BASE_URL_PATH, ACCOUNT_ID_PATH } from "@/constants/auth";
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
 import { RequestMethod } from "@/api/types";
 import refreshAccessToken from "./refreshAccessToken";
-import resolveSubdomain from "@/utils/resolveSubdomain";
 
 interface BaseRequestParams {
     endpoint: string,
@@ -23,8 +22,7 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
     const isSandboxAccount = (await client.getUserState<boolean>("isSandboxAccount"))[0]?.data ?? false
     const isUsingGlobalProxy = (await client.getUserState<boolean>("isUsingGlobalProxy"))[0]?.data ?? false
     
-    const subdomain  = resolveSubdomain("general-api", isSandboxAccount)
-    const baseURL = `https://${subdomain}.docusign.net/restapi/v2.1/accounts/[user[${ACCOUNT_ID_PATH}]]`
+    const baseURL = `[user[${ACCOUNT_BASE_URL_PATH}]]/restapi/v2.1/accounts/[user[${ACCOUNT_ID_PATH}]]`
     const requestURL = `${baseURL}/${endpoint}`
 
     const dpFetch = await proxyFetch(client)

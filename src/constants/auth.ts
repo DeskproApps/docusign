@@ -1,4 +1,5 @@
 export const ACCOUNT_ID_PATH = `oauth2/account_id`
+export const ACCOUNT_BASE_URL_PATH = `oauth2/base_uri`
 export const ACCESS_TOKEN_PATH = "oauth2/access_token"
 export const REFRESH_TOKEN_PATH = "oauth2/refresh_token"
 

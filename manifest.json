@@ -114,18 +114,7 @@
         "timeout": 20
       },
       {
-        "url": "https://www.docusign.net/.*",
-        "methods": [
-          "GET",
-          "POST",
-          "PUT",
-          "DELETE",
-          "PATCH"
-        ],
-        "timeout": 20
-      },
-      {
-        "url": "https://demo.docusign.net/.*",
+        "url": "https://(.*).docusign.net/restapi/v2.1/accounts/.*",
         "methods": [
           "GET",
           "POST",

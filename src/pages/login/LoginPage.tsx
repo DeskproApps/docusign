@@ -1,4 +1,5 @@
-import { ACCOUNT_ID_PATH } from "@/constants/auth";
+import { Account } from "@/types/docusign/general";
+import { ACCOUNT_BASE_URL_PATH, ACCOUNT_ID_PATH } from "@/constants/auth";
 import { AnchorButton, H3, Stack } from "@deskpro/deskpro-ui";
 import { useCallback } from "react";
 import { useDeskproAppClient, useDeskproElements, useInitialisedDeskproAppClient } from "@deskpro/app-sdk";
@@ -24,12 +25,13 @@ export default function LoginPage() {
     const { client } = useDeskproAppClient()
     const navigate = useNavigate()
 
-    const onAccountConfirm = useCallback(async (accountId: string) => {
+    const onAccountConfirm = useCallback(async (account: Account) => {
         if (!client) {
             return
         }
 
-        await client.setUserState(ACCOUNT_ID_PATH, accountId)
+        await client.setUserState(ACCOUNT_BASE_URL_PATH, account.base_uri)
+        await client.setUserState(ACCOUNT_ID_PATH, account.account_id)
         navigate("/envelopes/list")
     }, [client, navigate])
 

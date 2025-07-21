@@ -4,14 +4,14 @@ import { useState } from "react";
 
 interface AccountSelectProps {
     user: IUserInfo
-    onAccountConfirm: (accountId: string) => void
+    onAccountConfirm: (account: Account) => void
 }
 
 export default function AccountSelect(props: Readonly<AccountSelectProps>) {
     const { user, onAccountConfirm } = props
-    const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null)
+    const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
     const accounts = user.accounts
-    const buttonIsDisabled = !selectedAccountId
+    const buttonIsDisabled = !selectedAccount
 
     return (
         <Stack vertical gap={16}>
@@ -23,8 +23,8 @@ export default function AccountSelect(props: Readonly<AccountSelectProps>) {
                         <AccountItem
                             key={account.account_id}
                             account={account}
-                            selectedAccountId={selectedAccountId}
-                            setSelectedAccountId={setSelectedAccountId}
+                            selectedAccount={selectedAccount}
+                            setSelectedAccount={setSelectedAccount}
                         />
                     )
                 })}
@@ -33,13 +33,13 @@ export default function AccountSelect(props: Readonly<AccountSelectProps>) {
             <Button
                 text="Confirm"
                 onClick={() => {
-                    if (selectedAccountId) {
-                        onAccountConfirm(selectedAccountId)
+                    if (selectedAccount) {
+                        onAccountConfirm(selectedAccount)
                     }
                 }}
                 style={{ cursor: buttonIsDisabled ? "not-allowed" : "pointer" }}
                 intent={buttonIsDisabled ? "secondary" : "primary"}
-                disabled={!selectedAccountId}
+                disabled={!selectedAccount}
             />
         </Stack>
     )
@@ -47,18 +47,18 @@ export default function AccountSelect(props: Readonly<AccountSelectProps>) {
 
 interface AccountItemProps {
     account: Account
-    selectedAccountId: string | null
-    setSelectedAccountId: React.Dispatch<React.SetStateAction<string | null>>
+    selectedAccount: Account | null
+    setSelectedAccount: React.Dispatch<React.SetStateAction<Account | null>>
 }
 
 function AccountItem(props: Readonly<AccountItemProps>) {
-    const { account, selectedAccountId, setSelectedAccountId } = props
+    const { account, selectedAccount, setSelectedAccount } = props
     return (
         <Stack gap={5}>
             <Radio
-                checked={selectedAccountId === account.account_id}
+                checked={selectedAccount?.account_id === account.account_id}
                 onChange={() => {
-                    setSelectedAccountId(account.account_id)
+                    setSelectedAccount(account)
                 }}
             />
             <P5>{account.account_name}</P5>
