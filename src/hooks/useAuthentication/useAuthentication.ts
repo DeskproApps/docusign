@@ -1,3 +1,4 @@
+import { ACCOUNT_BASE_URL_PATH } from "@/constants/auth";
 import { getAccountUsers } from "@/api";
 import { parseAuthError } from "@/api/baseRequest";
 import { useQueryWithClient } from "@deskpro/app-sdk";
@@ -16,6 +17,14 @@ export default function useAuthentication(params: Readonly<UseAuthenticationPara
           client.setUserState("isSandboxAccount", isSandboxAccount),
           client.setUserState("isUsingGlobalProxy", isUsingGlobalProxy)
         ])
+
+        // Set a default request URL for the auth check request if one hasn't been provided (It's their first time using the app).
+        // This will be updated to match the user's instance once they log in.
+        const baseUrl = (await client.getUserState<string>(ACCOUNT_BASE_URL_PATH))[0]?.data
+
+        if (!baseUrl) {
+          await client.setUserState(ACCOUNT_BASE_URL_PATH, "https://eu.docusign.net")
+        }
 
         const usersResponse = await getAccountUsers(client)
 

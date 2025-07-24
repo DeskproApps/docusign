@@ -63,7 +63,7 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
         try {
             errorData = JSON.parse(rawText)
         } catch {
-            errorData = { message: "Non-JSON error response received", raw: rawText }
+            errorData = { message: "Unexpected response from Docusign. The error format was not recognised.", raw: rawText }
         }
 
         throw new DocusignError("API Request Failed", { statusCode: response.status, data: errorData })
