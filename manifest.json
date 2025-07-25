@@ -4,10 +4,16 @@
   "description": "Send, sign and manage documents digitally, reduce paper waste, and improve the efficiency of your business processes with Docusign.",
   "version": "0.0.21",
   "scope": "agent",
+  "secrets": "ncMO27GV/j6K0tp8yaTRty0REVviCqCNLgFqGaGX9bA2B4u8REs0NQSFFNTFma+Dnn/gzouuOxwhvyKntl0qWvFfhMYdHRYDzBRsI0gB9yADrCzdZpTvaYrWkgYTOfthCCSB+yMBHA/ncKMshc+7tTMgx0AMuKX6H+dKI9Ra+n49Fu8F9em6E743f/07qPaqMFyf/GcAOOCJ9yBjJCY0vqYpHG0i2e9Ki/02/SMoOEr55iddOpeW6kjwBcXbHU2v+IvR9XBDK2hOSey5NnQSlWVKVIsQAVdx7VBjxRPDbH3eld+9u6hPcSJb9GXneC2G2aGZBxNyRfV8CsHYPJ5rMMrZ/FBcrLtufjzIK9TLC1qzkabuBMilOH2CtSsFq0Y92q52O0P7oReYw4Zrc3LSRiL1Yj2AT6fwuqrUannP5dwOXpreB92DB22MnHiGlpsS/tDnIKkHQfQeEnPz3sjk7ZQ1wKqzr/btJdPYpoUvPRCrXszHne4qeyVoR1tXhEJyGfBUkxf7gag3aoMjJNQPHU82IkAtSKZReJDp0e1Hyfc+VDa7TTvL48DTRQ33VOpiOGMvrtK+7+5TYVEkDbiVVTgXeHxdZwAL9QfsjJw/0pmYYQQsZ51fEBxZcqCSMlybfzfPVRKOSmYfjhQb/T/3LRjyOd0gNnfXzNByU69G3aUS17KrybgUhUJ2WkuSLUg8+GVBk6zM4JEmwvJ/cIWYPA+IcZoWoqT7Pl1Pn8sLiIiBJEzzTF1wQO1cQdej3A1rVxG1gZHLNYIQV4dq2cgjMazIMOc8nlYBtrIxvXQznTYMtz8MiKlducez65NmfmuruGyhbyRqO9fko8NECOnVRYMaF9R84CncGPAUUaFu1W5J77ocWAKTNSuScywt7gbOACvF1majvUoRd3vtIszDQBeaOfbzPt7lmpXHndOVIW0LqAysYg4GmabfPV1TrZwMw9OhOF9m6Xitepne+mZAinayHUwbg/TyY3W0/5PTJuiwgSZKOtYtJhLZwK8tTtScd1TvJuanpOKwBq4mlgML0aceJ16nMPDRS5quAomMYdtuIJb5ZPNc3a5FHFp52TTyk5yBcDl8CXSp5myk4AIAtZYk/HtOE3UY9aitzflZxq9zuiWsB+v2SnmB2/VMVlYzegW+TDzSb2g36yKl6AHxqyuqLOnM84Pe2A3Rg5Msa4qVGDYf75MIvYnZgS7chG9501nwvYeENJxKD1eX5uXq57sHKY67ewTayvB2zEZMWcBcif95g1Cwt5q2safjVw2b",
   "isSingleInstall": false,
   "hasDevMode": true,
   "serveUrl": "https://apps-cdn.deskpro-service.com/__name__/__version__",
-  "targets": [{ "target": "user_sidebar", "entrypoint": "index.html" }],
+  "targets": [
+    {
+      "target": "user_sidebar",
+      "entrypoint": "index.html"
+    }
+  ],
   "entityAssociations": {
     "linkedDocusignUsers": {
       "entity": "person",
@@ -16,49 +22,106 @@
     }
   },
   "settings": {
+    "use_advanced_connect": {
+      "title": "Advanced Connect",
+      "description": "Follow the setup guide and use your credentials to connect the app to Deskpro.",
+      "type": "boolean",
+      "default": false,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "order": 5
+    },
     "warning_page": {
       "title": "",
       "type": "app_embedded",
-      "options": { "entrypoint": "#/admin/warning" },
+      "options": {
+        "entrypoint": "#/admin/warning",
+        "height": "90px"
+      },
+      "isRequired": false,
+      "condition": "settings.use_advanced_connect != false",
+      "isBackendOnly": false,
+      "order": 6
+    },
+    "use_sandbox_account": {
+      "title": "Sandbox Account",
+      "description": "Enable this if you are using a Docusign sandbox (demo) account. When turned on, non-sandbox account logins will be disabled. Sandbox accounts cannot be used with quick connect.",
+      "type": "boolean",
+      "default": false,
       "isRequired": false,
       "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 10
+    },
+    "should_send_20_requests_on_login": {
+      "title": "Send 20 Requests After Next Login",
+      "description": "Enable this if you need 20 requests to make your app eligible for review.",
+      "type": "boolean",
+      "default": false,
+      "isRequired": false,
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect != false && settings.use_sandbox_account == true",
       "order": 10
     },
     "integration_key": {
       "title": "Integration Key",
       "description": "Integration Key can be obtained by following our setup guide",
       "type": "string",
-      "isRequired": true,
-      "isBackendOnly": true,
-      "order": 20
+      "isRequired": false,
+      "isBackendOnly": false,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 30
     },
     "secret_key": {
       "title": "Secret Key",
       "description": "Secret Key can be obtained by following our setup guide",
       "type": "string",
-      "isRequired": true,
+      "isRequired": false,
       "isBackendOnly": true,
-      "order": 30
-    },
-    "global_access_token": {
-      "title": "",
-      "type": "app_embedded",
-      "options": { "entrypoint": "#/admin/globalauth" },
-      "isRequired": true,
-      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect != false",
       "order": 40
+    },
+    "callback_url": {
+      "title": "Callback URL",
+      "type": "app_embedded",
+      "options": {
+        "entrypoint": "#/admin/callback",
+        "height": "80px"
+      },
+      "isRequired": false,
+      "isBackendOnly": true,
+      "condition": "settings.use_advanced_connect != false",
+      "order": 50
     }
+    
   },
   "proxy": {
     "whitelist": [
       {
         "url": "https://account-d.docusign.com/.*",
-        "methods": ["GET", "POST"],
+        "methods": [
+          "GET",
+          "POST"
+        ],
         "timeout": 20
       },
       {
-        "url": "https://demo.docusign.net/.*",
-        "methods": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+        "url": "https://account.docusign.com/.*",
+        "methods": [
+          "GET",
+          "POST"
+        ],
+        "timeout": 20
+      },
+      {
+        "url": "https://(.*).docusign.net/restapi/v2.1/accounts/.*",
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "DELETE",
+          "PATCH"
+        ],
         "timeout": 20
       }
     ]

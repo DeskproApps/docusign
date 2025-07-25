@@ -8,7 +8,13 @@ interface EnvelopesFetchResponse extends BaseDocusignPaginatedResponse {
     envelopes?: IEnvelopeFromList[]
 }
 
-export default async function getUserEnvelopes(client: IDeskproClient, userEmail: string): Promise<IEnvelopeFromList[]> {
+interface GetUserEnvelopesParams {
+    userEmail: string
+    limit?: number
+}
+
+export default async function getUserEnvelopes(client: IDeskproClient, params: GetUserEnvelopesParams): Promise<IEnvelopeFromList[]> {
+    const { userEmail, limit } = params
     const QUERY_START_DATE = "2000-01-01"
     const MAX_ENVELOPES_PER_REQUEST = "1000"
 
@@ -20,7 +26,7 @@ export default async function getUserEnvelopes(client: IDeskproClient, userEmail
                 ["from_date", QUERY_START_DATE],
                 ["search_text", userEmail],
                 ["include", "recipients"],
-                ["count", MAX_ENVELOPES_PER_REQUEST],
+                ["count", limit ? limit.toString() : MAX_ENVELOPES_PER_REQUEST],
             ]).toString()}`, method: "GET"
         }
     )

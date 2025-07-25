@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function buildCreateEnvelopePayload(data: CreateEnvelopeFormMeta): CreateEnvelopePayload {
     const emailMessage = data.emailBlurb
-    const isValidEmailMessage = (emailMessage && emailMessage.trim()) !== ""
+    const isValidEmailMessage = typeof emailMessage === "string" && emailMessage.trim() !== ""
 
     const payload: CreateEnvelopePayload = {
         emailSubject: data.emailSubject,

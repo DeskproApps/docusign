@@ -13,10 +13,11 @@ interface EnvelopeListSectionProps {
     linkedUser: UserEntityMetadata | null
     theme: DeskproTheme
     navigate: NavigateFunction
+    isSandboxAccount: boolean
 }
 
 export default function EnvelopeListSection(props: Readonly<EnvelopeListSectionProps>): JSX.Element {
-    const { envelopes, error, linkedUser, theme, navigate } = props
+    const { envelopes, error, linkedUser, theme, navigate, isSandboxAccount } = props
 
     {/* Show the error callout if an error occurs while fetching. */ }
     if (error) {
@@ -69,6 +70,7 @@ export default function EnvelopeListSection(props: Readonly<EnvelopeListSectionP
                             key={envelope.envelopeId}
                             envelope={envelope}
                             theme={theme}
+                            isSandboxAccount={isSandboxAccount}
                         />
 
                         {index + 1 !== envelopes.length && <HorizontalDivider style={{ width: "100%" }} />}

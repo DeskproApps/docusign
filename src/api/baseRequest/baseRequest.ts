@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN as ACCESS_TOKEN_PLACEHOLDER, ACCOUNT_ID } from "@/utils/consts";
+import { ACCESS_TOKEN_PATH, ACCOUNT_BASE_URL_PATH, ACCOUNT_ID_PATH } from "@/constants/auth";
 import { IDeskproClient, proxyFetch } from "@deskpro/app-sdk";
 import { RequestMethod } from "@/api/types";
 import refreshAccessToken from "./refreshAccessToken";
@@ -17,10 +17,12 @@ interface BaseRequestParams {
  * @throws {DocusignError} If the HTTP status code indicates a failed request (not 2xx or 3xx).
  */
 export default async function baseRequest<T = unknown>(client: IDeskproClient, params: BaseRequestParams) {
-
     const { endpoint, method, data } = params
 
-    const baseURL = `https://demo.docusign.net/restapi/v2.1/accounts/${ACCOUNT_ID}/`
+    const isSandboxAccount = (await client.getUserState<boolean>("isSandboxAccount"))[0]?.data ?? false
+    const isUsingGlobalProxy = (await client.getUserState<boolean>("isUsingGlobalProxy"))[0]?.data ?? false
+    
+    const baseURL = `[user[${ACCOUNT_BASE_URL_PATH}]]/restapi/v2.1/accounts/[user[${ACCOUNT_ID_PATH}]]`
     const requestURL = `${baseURL}/${endpoint}`
 
     const dpFetch = await proxyFetch(client)
@@ -29,7 +31,7 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
         const options: RequestInit = {
             method,
             headers: {
-                Authorization: ACCESS_TOKEN_PLACEHOLDER,
+                Authorization: `Bearer [user[${ACCESS_TOKEN_PATH}]]`,
                 "Content-Type": "application/json",
             },
         }
@@ -43,9 +45,11 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
 
     let response = await makeRequest()
 
-    if ([401, 403].includes(response.status)) {
+    // We cannot refresh the access token if we are using the global proxy
+    // because the integration key and secret key are not available.
+    if ([401, 403].includes(response.status) && !isUsingGlobalProxy) {
         try {
-            await refreshAccessToken(client)
+            await refreshAccessToken(client, isSandboxAccount)
             response = await makeRequest()
         } catch (err) {
             throw new DocusignError("Error refreshing access token", { statusCode: response.status })
@@ -59,14 +63,14 @@ export default async function baseRequest<T = unknown>(client: IDeskproClient, p
         try {
             errorData = JSON.parse(rawText)
         } catch {
-            errorData = { message: "Non-JSON error response received", raw: rawText }
+            errorData = { message: "Unexpected response from Docusign. The error format was not recognised.", raw: rawText }
         }
 
         throw new DocusignError("API Request Failed", { statusCode: response.status, data: errorData })
 
     }
 
-    return response.json() as T
+    return await response.json() as T
 }
 
 export type DocusignErrorPayload = {
@@ -87,6 +91,7 @@ export class DocusignError extends Error {
 }
 interface DocusignErrorData {
     message: string
+    errorCode?: string
 }
 
 export function isErrorWithMessage(data: unknown): data is DocusignErrorData {

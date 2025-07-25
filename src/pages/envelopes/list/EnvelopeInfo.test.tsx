@@ -20,6 +20,7 @@ function renderEnvelopeInfo() {
                 }]
             }
         } as IEnvelopeFromList,
+        isSandboxAccount: false
     }
 
     return render(

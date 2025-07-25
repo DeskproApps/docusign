@@ -1,47 +1,59 @@
-# Docusign Setup Instructions
+Docusign App Setup Instructions
+===
 
-To set up Docusign API access, follow these steps:
+To install the Docusign app, you'll need to create OAuth credentials. Follow these steps to set it up.
 
-Head over to https://developers.docusign.com/ and create an account.
+## Create a Docusign Developer Account
 
-Enter https://admindemo.docusign.com/apps-and-keys, click on Add App and Integration key, give your App a name and click on Create App.
+Start by visiting the [Docusign Developer Center](https://developers.docusign.com/) and signing in. If you don’t already have a developer account, click “Create Account” and complete the sign up process to access the developer sandbox environment.
 
-[![](/docs/assets/setup/apps_and_keys_page.png)](/docs/assets/setup/apps_and_keys_page.png)
+![Docusign developer account unauthenticated dropdown"](/docs/setup/setup-guide-screenshot-01.png)
 
-Now, on the Authentication section, under "Is your application able to securely store a client secret?" select Yes.
+## Create An App
+Once logged in, navigate to the "My Apps & Keys" section under your account settings. Click "Add App & Integration Key" and enter a name for your app, such as “Deskpro DocuSign App.” After creating the app, you’ll be taken to its settings page where the integration key, also known as the client ID, is displayed.
 
-Click on the Add Secret Key Button, and copy its content, and the Integration Key on top of the page, and paste them into the fields under the settings tab in Deskpro's drawer for Docusign.
+![Docusign developer account authenticated dropdown"](/docs/setup/setup-guide-screenshot-02.png)
 
-[![](/docs/assets/setup/app_page.png)](/docs/assets/setup/app_page.png)
+![Create a Docusign app screen"](/docs/setup/setup-guide-screenshot-03.png)
 
-[![](/docs/assets/setup/deskpro_sign_in.png)](/docs/assets/setup/deskpro_sign_in.png)
+## Retrieve OAuth Credentials
+Still on the app settings page, copy the integration key being shown and paste it in the `Integration Key` field in the settings drawer in Deskpro.
 
-Copy the Redirect URI in Deskpro's settings tab and paste it into the Redirect URIs field in Docusign when you click Add URI.
+In the "Authentication" section in Docusign, select `Yes` for "Is your application able to securely store a client secret?" and ensure `Require Proof Key for Code Exchange (PKCE)` is not checked.
 
-[![](/docs/assets/setup/redirect_uri_field.png)](/docs/assets/setup/redirect_uri_field.png)
+Click the "Add Secret Key" button and copy the key into the `Secret Key` field in the Deskpro settings drawer.
 
-Still on the Docusign page, click "Save" to save the changes.
+In the "Additional settings" section, click "Add URI and paste the callback URL from the Deskpro settings drawer.
 
-On the Deskpro Docusign settings tab, click "Sign In".
+![Docusign OAuth app credentials"](/docs/setup/setup-guide-screenshot-04.png)
 
-Approve all the scopes, and if there are no errors you should get an Authorization Complete page.
+Once you're done click save.
 
-https://developers.docusign.com/docs/esign-rest-api/go-live/
+⚠️ To view the setup guide after installing the app, click on the Docusign app from the "Available". tab
 
-If your app has yet to be authorized, click on the Not Authorized button, and the Docusign Deskpro App will make 20 requests, as it's needed to ask for a review to use production account (it may take up to 15 minutes for the requests to be registered).
+## Prepare Your App For Review (For Production Accounts)
+To use the Docusign integration in a production environment, your app must first be reviewed and approved by Docusign. At this stage, your app’s `Go Live Status` will likely show as `Not Started`.
 
-Once done, click on Submit for review, and wait until the review has been approved. (might need to wait a few minutes for this to appear).
+![Docusign OAuth app with status of `Not Started`"](/docs/setup/setup-guide-screenshot-05.png)
 
-[![](/docs/assets/setup/submit_for_review.png)](/docs/assets/setup/submit_for_review.png)
+To prepare your app for review, begin by opening the settings drawer in Deskpro. Enable the `Sandbox Account` & `Send 20 Requests After Next Login` options, then click Save/Install to apply the changes.
 
-Once this has been approved, go click on Actions -> Select Go-Live Account, accept the terms and conditions and login with your production Docusign account on the pop up page.
+![Deskpro Docusign app settings drawer"](/docs/setup/setup-guide-screenshot-06.png)
 
-[![](/docs/assets/setup/go_live.png)](/docs/assets/setup/go_live.png)
+Next, open any ticket in Deskpro and launch the Docusign app from the user sidebar. Log in to your Docusign developer account. After a successful login, the app will automatically send 20 API requests in the background. This may take a few moments to complete. During this process, you will be prompted to choose which account you'd like to use with the integration. If you're only preparing the app for review, you can skip this step.
 
-Once done, select your account and click on Select.
+![Trigged requests confirmation callout"](/docs/setup/setup-guide-screenshot-07.png)
 
-You should now have access to the production account, so head back to Deskpro and click on Authorized.
+Once a message appears confirming that the requests have been successfully sent, return to your DocuSign Apps and Integration Keys dashboard. After a short wait, your app’s `Go Live Status` should change to `Submit for Review`.
 
-You will now be able to see the list of production accounts. You can select your desired production account and proceed to click on the "Install" button to complete the installation process.
+![Docusign OAuth app with status of `Submit for review`"](/docs/setup/setup-guide-screenshot-08.png)
 
-[![](/docs/assets/setup/select_account.png)](/docs/assets/setup/select_account.png)
+Click the status link and then click the `Submit for Review` button. The status will update to `Review Pending`. Once your app passes review, click the `Actions` dropdown, select `Select Go-Live Account`, accept the terms and conditions, and choose your production account.
+
+![Docusign OAuth app `Actions` dropdown"](/docs/setup/setup-guide-screenshot-09.png)
+
+To complete the transition to production, return to Deskpro and disable the Sandbox Account option. Your the Docusign app will now operate using your production credentials.
+
+## Configure Permissions & Install the App
+
+Finally, configure who can access the app by going to the "Permissions" tab. Select the users and/or groups that should have access. Once you’re satisfied with the settings, click "Install" to complete the setup.

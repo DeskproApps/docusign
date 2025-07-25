@@ -31,6 +31,12 @@ export default function SendEnvelopeTemplatePage() {
                     payload: {
                         type: "unlink",
                     },
+                },
+                {
+                    title: "Logout",
+                    payload: {
+                        type: "logout",
+                    },
                 }
             ]
         })
