@@ -23,9 +23,11 @@ In the "Authentication" section in Docusign, select `Yes` for "Is your applicati
 
 Click the "Add Secret Key" button and copy the key into the `Secret Key` field in the Deskpro settings drawer.
 
-In the "Additional settings" section, click "Add URI and paste the callback URL from the Deskpro settings drawer.
-
 ![Docusign OAuth app credentials"](/docs/setup/setup-guide-screenshot-04.png)
+
+## Paste the Redirect URL
+
+In the "Additional settings" section, click "Add URI and paste the callback URL from the Deskpro settings drawer.
 
 Once you're done click save.
 
