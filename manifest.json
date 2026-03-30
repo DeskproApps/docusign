@@ -93,12 +93,12 @@
       "condition": "settings.use_advanced_connect != false",
       "order": 50
     }
-    
+
   },
   "proxy": {
     "whitelist": [
       {
-        "url": "https://account-d.docusign.com/.*",
+        "url": "https://account-d\\.docusign\\.com/.*",
         "methods": [
           "GET",
           "POST"
@@ -106,7 +106,7 @@
         "timeout": 20
       },
       {
-        "url": "https://account.docusign.com/.*",
+        "url": "https://account\\.docusign\\.com/.*",
         "methods": [
           "GET",
           "POST"
@@ -114,7 +114,7 @@
         "timeout": 20
       },
       {
-        "url": "https://(.*).docusign.net/restapi/v2.1/accounts/.*",
+        "url": "https://(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)*[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.docusign\\.net/restapi/v2\\.1/accounts/.*",
         "methods": [
           "GET",
           "POST",
