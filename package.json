@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@swc/core": "^1.13.3",
+    "@swc/core": "^1.13.5",
     "@swc/helpers": "^0.5.17",
     "@swc/jest": "^0.2.39",
     "@testing-library/dom": "^9.3.4",
